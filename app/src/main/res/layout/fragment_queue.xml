@@ -5,7 +5,7 @@
                 android:id="@+id/activity_queue"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="agersant.polaris.features.queue.QueueActivity">
+                tools:context="agersant.polaris.features.queue.QueueFragment">
 
 	<androidx.appcompat.widget.Toolbar
 		android:id="@+id/toolbar"
@@ -15,7 +15,7 @@
 		app:popupTheme="@style/PolarisToolbarMenu"/>
 
 	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/queue_recycler_view"
+		android:id="@+id/recycler_view"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_above="@+id/navigation"
@@ -24,7 +24,7 @@
 		tools:listitem="@layout/view_queue_item"/>
 
 	<LinearLayout
-		android:id="@+id/queue_tutorial"
+		android:id="@+id/tutorial"
 		android:orientation="vertical"
 		android:layout_centerVertical="true"
 		android:layout_width="match_parent"

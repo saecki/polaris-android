@@ -10,8 +10,8 @@ import com.google.android.exoplayer2.upstream.DefaultDataSource;
 
 import java.io.File;
 
+import agersant.polaris.App;
 import agersant.polaris.CollectionItem;
-import agersant.polaris.PolarisApplication;
 import agersant.polaris.PolarisPlayer;
 import agersant.polaris.api.local.OfflineCache;
 
@@ -113,10 +113,9 @@ class DownloadQueueWorkItem {
 	}
 
 	private void broadcast(@SuppressWarnings("SameParameterValue") String event) {
-		PolarisApplication application = PolarisApplication.getInstance();
 		Intent intent = new Intent();
 		intent.setAction(event);
-		application.sendBroadcast(intent);
+		App.instance.sendBroadcast(intent);
 	}
 
 }

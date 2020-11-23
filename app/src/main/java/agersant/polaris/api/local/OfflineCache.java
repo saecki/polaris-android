@@ -27,9 +27,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+import agersant.polaris.App;
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
-import agersant.polaris.PolarisApplication;
 import agersant.polaris.PolarisPlayer;
 import agersant.polaris.R;
 
@@ -519,10 +519,9 @@ public class OfflineCache {
 	}
 
 	private void broadcast(String event) {
-		PolarisApplication application = PolarisApplication.getInstance();
 		Intent intent = new Intent();
 		intent.setAction(event);
-		application.sendBroadcast(intent);
+		App.instance.sendBroadcast(intent);
 	}
 
 	private enum CacheDataType {
