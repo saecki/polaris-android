@@ -227,10 +227,10 @@ public class QueueFragment extends Fragment {
     }
 
     private void updateOrderingIcon() {
-        int icon = getIconForOrdering(playbackQueue.getOrdering());
-        MenuItem orderingItem = binding.toolbar.getMenu().findItem(R.id.action_ordering);
-        if (orderingItem != null) {
-            orderingItem.setIcon(icon);
-        }
+        //int icon = getIconForOrdering(playbackQueue.getOrdering());
+        //MenuItem orderingItem = binding.toolbar.getMenu().findItem(R.id.action_ordering);
+        //if (orderingItem != null) {
+        //    orderingItem.setIcon(icon);
+        //}
     }
 }

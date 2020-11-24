@@ -1,4 +1,4 @@
-package agersant.polaris.features.browse;
+package agersant.polaris.features.collection;
 
 
 import android.content.Context;
@@ -43,7 +43,7 @@ public class BrowseViewAlbum extends BrowseViewContent {
 		artist = findViewById(R.id.album_artist);
 		title = findViewById(R.id.album_title);
 
-		RecyclerView recyclerView = findViewById(R.id.browse_recycler_view);
+		RecyclerView recyclerView = findViewById(R.id.recycler_view);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(context));
 

@@ -1,4 +1,4 @@
-package agersant.polaris.features.browse;
+package agersant.polaris.features.collection;
 
 import android.content.Context;
 import android.content.Intent;

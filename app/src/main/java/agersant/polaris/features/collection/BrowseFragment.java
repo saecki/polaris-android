@@ -1,6 +1,5 @@
-package agersant.polaris.features.browse;
+package agersant.polaris.features.collection;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
-import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
@@ -31,7 +28,7 @@ public class BrowseFragment extends Fragment {
     private FragmentBrowseBinding binding;
     private ItemsCallback fetchCallback;
     private NavigationMode navigationMode;
-    private SwipyRefreshLayout.OnRefreshListener onRefresh;
+    private SwipeRefreshLayout.OnRefreshListener onRefresh;
     private ArrayList<? extends CollectionItem> items;
     private API api;
     private ServerAPI serverAPI;
@@ -66,14 +63,14 @@ public class BrowseFragment extends Fragment {
             }
         };
 
-        Intent intent = App.instance.getIntent();
-        navigationMode = (NavigationMode) intent.getSerializableExtra(BrowseFragment.NAVIGATION_MODE);
+        //Intent intent = App.instance.getIntent();
+        //navigationMode = (NavigationMode) intent.getSerializableExtra(BrowseFragment.NAVIGATION_MODE);
 
-        if (navigationMode == NavigationMode.RANDOM) {
-            onRefresh = (SwipyRefreshLayoutDirection direction) -> loadContent();
-        }
+        //if (navigationMode == NavigationMode.RANDOM) {
+        //    onRefresh = (SwipeRefreshLayoutDirection direction) -> loadContent();
+        //}
 
-        loadContent();
+        //loadContent();
     }
 
     @Nullable
@@ -81,31 +78,33 @@ public class BrowseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentBrowseBinding.inflate(inflater);
 
+        loadContent();
+
         return binding.getRoot();
     }
 
     private void loadContent() {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.errorMessage.setVisibility(View.GONE);
-        Intent intent = App.instance.getIntent();
-        switch (navigationMode) {
-            case PATH: {
-                String path = intent.getStringExtra(BrowseFragment.PATH);
-                if (path == null) {
-                    path = "";
-                }
-                loadPath(path);
-                break;
-            }
-            case RANDOM: {
-                loadRandom();
-                break;
-            }
-            case RECENT: {
-                loadRecent();
-                break;
-            }
-        }
+        //Intent intent = App.instance.getIntent();
+        //switch (navigationMode) {
+        //    case PATH: {
+        //        String path = intent.getStringExtra(BrowseFragment.PATH);
+        //        if (path == null) {
+        //            path = "";
+        //        }
+        //        loadPath(path);
+        //        break;
+        //    }
+        //    case RANDOM: {
+        //        loadRandom();
+        //        break;
+        //    }
+        //    case RECENT: {
+        //        loadRecent();
+        //        break;
+        //    }
+        //}
     }
 
     @SuppressWarnings("UnusedParameters")

@@ -1,7 +1,5 @@
-package agersant.polaris.features.browse;
+package agersant.polaris.features.collection;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import agersant.polaris.App;
+import agersant.polaris.R;
 import agersant.polaris.api.API;
 import agersant.polaris.databinding.FragmentCollectionBinding;
 
@@ -46,27 +47,36 @@ public class CollectionFragment extends Fragment {
     }
 
     public void browseDirectories(View view) {
-        Context context = view.getContext();
-        Intent intent = new Intent(context, BrowseFragment.class);
-        intent.putExtra(BrowseFragment.NAVIGATION_MODE, BrowseFragment.NavigationMode.PATH);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        context.startActivity(intent);
+        NavController controller = Navigation.findNavController(view);
+        controller.navigate(R.id.action_nav_collection_to_nav_browse);
+
+        //Context context = view.getContext();
+        //Intent intent = new Intent(context, BrowseFragment.class);
+        //intent.putExtra(BrowseFragment.NAVIGATION_MODE, BrowseFragment.NavigationMode.PATH);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        //context.startActivity(intent);
     }
 
     public void browseRandom(View view) {
-        Context context = view.getContext();
-        Intent intent = new Intent(context, BrowseFragment.class);
-        intent.putExtra(BrowseFragment.NAVIGATION_MODE, BrowseFragment.NavigationMode.RANDOM);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        context.startActivity(intent);
+        NavController controller = Navigation.findNavController(view);
+        controller.navigate(R.id.action_nav_collection_to_nav_browse);
+
+        //Context context = view.getContext();
+        //Intent intent = new Intent(context, BrowseFragment.class);
+        //intent.putExtra(BrowseFragment.NAVIGATION_MODE, BrowseFragment.NavigationMode.RANDOM);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        //context.startActivity(intent);
     }
 
     public void browseRecent(View view) {
-        Context context = view.getContext();
-        Intent intent = new Intent(context, BrowseFragment.class);
-        intent.putExtra(BrowseFragment.NAVIGATION_MODE, BrowseFragment.NavigationMode.RECENT);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        context.startActivity(intent);
+        NavController controller = Navigation.findNavController(view);
+        controller.navigate(R.id.action_nav_collection_to_nav_browse);
+
+        //Context context = view.getContext();
+        //Intent intent = new Intent(context, BrowseFragment.class);
+        //intent.putExtra(BrowseFragment.NAVIGATION_MODE, BrowseFragment.NavigationMode.RECENT);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        //context.startActivity(intent);
     }
 
     @Override

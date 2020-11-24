@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 
 
@@ -17,8 +16,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
         App.instance = this
         App.state = PolarisState(this)
         App.resources = resources
@@ -28,21 +25,25 @@ class MainActivity : AppCompatActivity() {
         startService(playbackServiceIntent)
         startService(Intent(this, PolarisDownloadService::class.java))
 
+        super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+        //navController = findNavController(R.id.nav_host_fragment)
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_collection,
                 R.id.nav_queue,
                 R.id.nav_now_playing,
-            )
+            ),
+            binding.drawerLayout,
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navigation.setupWithNavController(navController)
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.bottomNavigation.setupWithNavController(navController)
+        binding.drawerNavigation.setupWithNavController(navController)
     }
 }

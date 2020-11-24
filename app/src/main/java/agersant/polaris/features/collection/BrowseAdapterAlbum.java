@@ -1,4 +1,4 @@
-package agersant.polaris.features.browse;
+package agersant.polaris.features.collection;
 
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -13,8 +13,8 @@ import agersant.polaris.PlaybackQueue;
 import agersant.polaris.R;
 import agersant.polaris.api.API;
 
-import static agersant.polaris.features.browse.BrowseAdapterAlbum.AlbumViewType.DISC_HEADER;
-import static agersant.polaris.features.browse.BrowseAdapterAlbum.AlbumViewType.TRACK;
+import static agersant.polaris.features.collection.BrowseAdapterAlbum.AlbumViewType.DISC_HEADER;
+import static agersant.polaris.features.collection.BrowseAdapterAlbum.AlbumViewType.TRACK;
 
 
 class BrowseAdapterAlbum extends BrowseAdapter {

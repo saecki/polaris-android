@@ -109,14 +109,14 @@
 	</LinearLayout>
 
 	<com.google.android.material.bottomnavigation.BottomNavigationView
-		android:id="@+id/navigation"
+		android:id="@+id/bottom_navigation"
 		android:layout_width="match_parent"
 		android:layout_height="56dp"
 		app:itemBackground="@color/blueGrey900"
 		android:background="@color/blueGrey900"
 		app:itemIconTint="@drawable/bottom_navigation_item"
 		app:itemTextColor="@drawable/bottom_navigation_item"
-		app:menu="@menu/menu_navigation"
+		app:menu="@menu/nav_bottom"
 		/>
 
 </LinearLayout>

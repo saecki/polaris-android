@@ -217,20 +217,21 @@ public class PlayerFragment extends Fragment {
     private void populateWithTrack(CollectionItem item) {
         assert item != null;
 
-        String title = item.getTitle();
-        if (title != null) {
-            binding.toolbar.setTitle(title);
-        }
+        // TODO: replace with new views
+        //String title = item.getTitle();
+        //if (title != null) {
+        //    binding.toolbar.setTitle(title);
+        //}
 
-        String artist = item.getArtist();
-        if (artist != null) {
-            binding.toolbar.setSubtitle(artist);
-        }
+        //String artist = item.getArtist();
+        //if (artist != null) {
+        //    binding.toolbar.setSubtitle(artist);
+        //}
 
-        String artworkPath = item.getArtwork();
-        if (artworkPath != null) {
-            api.loadImageIntoView(item, binding.artwork);
-        }
+        //String artworkPath = item.getArtwork();
+        //if (artworkPath != null) {
+        //    api.loadImageIntoView(item, binding.artwork);
+        //}
     }
 
     @SuppressWarnings("UnusedParameters")
