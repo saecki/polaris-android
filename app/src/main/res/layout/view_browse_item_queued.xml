@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="vertical"
-	tools:layout_height="48dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/belowBackground"
+    tools:layout_height="48dp">
 
-	<ImageView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:contentDescription="@null"
-		android:background="@color/pink400"/>
+    <ImageView
+        android:id="@+id/status_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="12dp"
+        android:contentDescription="@string/add_to_queue"
+        app:tint="?attr/colorAdd"
+        tools:background="@drawable/ic_playlist_play_black_24dp" />
 
-	<ImageView
-		android:id="@+id/status_icon"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_centerVertical="true"
-		android:layout_marginEnd="12dp"
-		android:layout_marginStart="20dp"
-		android:tint="@color/white"
-		android:contentDescription="@string/add_to_queue"
-		tools:background="@drawable/ic_playlist_play_black_24dp"/>
-
-	<TextView
-		android:id="@+id/status_text"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_centerVertical="true"
-		android:layout_toEndOf="@+id/status_icon"
-		android:fontFamily="sans-serif"
-		android:textColor="@color/white"
-		android:textSize="18sp"
-		tools:text="Add to queue"/>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/status_text"
+        android:textAppearance="?textAppearanceListItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/status_icon"
+        android:gravity="start|center"
+        android:textColor="?colorAdd"
+        tools:text="Add to queue" />
 
 </RelativeLayout>

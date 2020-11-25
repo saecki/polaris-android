@@ -16,7 +16,8 @@
 
 	<color name="red500">#F44336</color>
 
-	<color name="white">#FFFFFF</color>
-
 	<color name="aquamarine">#58F5D1</color>
+
+	<color name="belowBackground">#eeeeee</color>
+	<color name="add">#009E2C</color>
 </resources>

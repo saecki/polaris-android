@@ -89,12 +89,12 @@ public class QueueFragment extends Fragment {
         player = state.player;
         offlineCache = state.offlineCache;
         downloadQueue = state.downloadQueue;
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         binding = FragmentQueueBinding.inflate(inflater);
 
         binding.recyclerView.setHasFixedSize(true);

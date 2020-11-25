@@ -34,7 +34,6 @@ class DirectoriesFragment : Fragment() {
             override fun onSuccess(items: ArrayList<out CollectionItem?>) {
                 activity?.runOnUiThread {
                     binding.progressBar.visibility = View.GONE
-                    binding.swipeRefresh.isRefreshing = false
                 }
                 model.items.postValue(items)
             }
@@ -43,7 +42,6 @@ class DirectoriesFragment : Fragment() {
                 activity?.runOnUiThread {
                     binding.progressBar.visibility = View.GONE
                     binding.errorMessage.visibility = View.VISIBLE
-                    binding.swipeRefresh.isRefreshing = false
                 }
             }
         }
@@ -67,7 +65,6 @@ class DirectoriesFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.setHasFixedSize(true)
         binding.errorRetry.setOnClickListener { loadContent() }
-        binding.swipeRefresh.setOnRefreshListener { loadContent() }
 
         loadContent()
 

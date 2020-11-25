@@ -7,15 +7,20 @@
         <item name="colorPrimaryDark">@color/lightBlue800</item> <!--Status bar background-->
         <item name="colorAccent">@color/lightBlue600</item> <!--Media player seek bar-->
         <item name="colorSecondary">@color/lightBlue600</item> <!--Media player seek bar-->
+
+        <item name="colorAdd">@color/add</item>
+
+
+        <item name="appBarLayoutStyle">@style/AppbarLayout</item>
+
+        <item name="android:statusBarColor">?colorBackgroundFloating</item>
+        <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
     </style>
 
-    <style name="Divider">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <item name="background">@android:drawable/divider_horizontal_bright</item>
+    <style name="AppbarLayout" parent="Widget.Design.AppBarLayout">
+        <item name="android:backgroundTint">?colorBackgroundFloating</item>
     </style>
+
 
     <style name="CollectionSection" parent="Widget.MaterialComponents.TextView">
         <item name="drawableTint">?colorOnBackground</item>
@@ -23,6 +28,10 @@
         <item name="android:padding">@dimen/collection_text_padding</item>
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6</item>
         <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Card" parent="Widget.MaterialComponents.CardView">
+        <item name="android:elevation">@dimen/card_elevation</item>
     </style>
 
 </resources>

@@ -2,13 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="bottom"
-    android:padding="@dimen/collection_margin"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/collection_margin">
 
     <com.google.android.material.card.MaterialCardView
+        style="@style/Card"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/collection_height"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/collection_margin">
 
         <com.google.android.material.textview.MaterialTextView
@@ -22,8 +24,9 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        style="@style/Card"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/collection_height"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/collection_margin">
 
         <com.google.android.material.textview.MaterialTextView
@@ -37,8 +40,9 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        style="@style/Card"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/collection_height"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/collection_margin">
 
         <com.google.android.material.textview.MaterialTextView
@@ -52,8 +56,9 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        style="@style/Card"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/collection_height"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/collection_margin">
 
         <com.google.android.material.textview.MaterialTextView
