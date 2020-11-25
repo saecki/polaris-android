@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_nav_collection_to_nav_browse"
             app:destination="@id/nav_browse" />
+        <action
+            android:id="@+id/action_nav_collection_to_nav_directories"
+            app:destination="@id/nav_directories" />
     </fragment>
 
     <fragment
@@ -37,5 +40,11 @@
         android:name="agersant.polaris.features.collection.BrowseFragment"
         android:label="@string/collection"
         tools:layout="@layout/fragment_browse" />
+
+    <fragment
+        android:id="@+id/nav_directories"
+        android:name="agersant.polaris.features.collection.directories.DirectoriesFragment"
+        android:label="@string/collection"
+        tools:layout="@layout/fragment_directories" />
 
 </navigation>

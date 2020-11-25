@@ -16,15 +16,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.instance = this
-        App.state = PolarisState(this)
-        App.resources = resources
-
-        val playbackServiceIntent = Intent(this, PolarisPlaybackService::class.java)
-        playbackServiceIntent.action = PolarisPlaybackService.APP_INTENT_COLD_BOOT
-        startService(playbackServiceIntent)
-        startService(Intent(this, PolarisDownloadService::class.java))
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -32,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        //navController = findNavController(R.id.nav_host_fragment)
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(

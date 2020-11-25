@@ -13,7 +13,7 @@ android {
     compileSdkVersion 29
     ndkVersion "21.3.6528147"
     defaultConfig {
-        applicationId "agersant.polaris"
+        applicationId "agersant.polarisnew"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode Integer.valueOf(System.env.VERSION_CODE ?: 1)
@@ -52,13 +52,15 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation "androidx.appcompat:appcompat:1.2.0"
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
-    implementation "androidx.preference:preference-ktx:1.1.1"
     implementation "androidx.core:core-ktx:1.3.2"
+    implementation "androidx.gridlayout:gridlayout:1.0.0"
     implementation "androidx.media:media:1.2.0"
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.1"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.1"
+    implementation "androidx.preference:preference-ktx:1.1.1"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "com.github.PaulWoitaschek.ExoPlayer-Extensions-Autobuild:flac:2.9.6"
     implementation "com.google.android.exoplayer:exoplayer-core:2.11.8"

@@ -35,7 +35,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import agersant.polaris.api.API;
-import agersant.polaris.features.player.PlayerFragment;
 
 
 public class PolarisPlaybackService extends Service {
@@ -306,8 +305,8 @@ public class PolarisPlaybackService extends Service {
 
         // On tap action
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this)
-            .addParentStack(PlayerFragment.class)
-            .addNextIntent(new Intent(this, PlayerFragment.class));
+            .addParentStack(MainActivity.class)
+            .addNextIntent(new Intent(this, MainActivity.class));
         PendingIntent tapPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // On dismiss action

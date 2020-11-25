@@ -39,7 +39,7 @@
             app:drawableTint="@color/red500" />
 
         <Button
-            android:id="@+id/browse_error_retry"
+            android:id="@+id/error_retry"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:onClick="retry"

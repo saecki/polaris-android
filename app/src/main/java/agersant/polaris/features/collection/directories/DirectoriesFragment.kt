@@ -1,6 +1,7 @@
 package agersant.polaris.features.collection.directories
 
 import agersant.polaris.App
+import agersant.polaris.CollectionItem
 import agersant.polaris.api.ItemsCallback
 import agersant.polaris.databinding.FragmentDirectoriesBinding
 import agersant.polaris.features.collection.BrowseAdapterExplorer
@@ -12,16 +13,42 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
+import java.util.*
 
 class DirectoriesFragment : Fragment() {
-    private val viewModel: DirectoriesViewmodel by viewModels()
+    companion object {
+        const val PATH = "PATH"
+    }
+
+    private val model: DirectoriesViewModel by viewModels()
+    private lateinit var path: String
+
     private lateinit var binding: FragmentDirectoriesBinding
     private lateinit var fetchCallback: ItemsCallback
+    private lateinit var adapter: BrowseAdapterExplorer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val that = this
+        fetchCallback = object : ItemsCallback {
+            override fun onSuccess(items: ArrayList<out CollectionItem?>) {
+                activity?.runOnUiThread {
+                    binding.progressBar.visibility = View.GONE
+                    binding.swipeRefresh.isRefreshing = false
+                }
+                model.items.postValue(items)
+            }
+
+            override fun onError() {
+                activity?.runOnUiThread {
+                    binding.progressBar.visibility = View.GONE
+                    binding.errorMessage.visibility = View.VISIBLE
+                    binding.swipeRefresh.isRefreshing = false
+                }
+            }
+        }
+
+        path = arguments?.getString(PATH) ?: ""
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -30,32 +57,27 @@ class DirectoriesFragment : Fragment() {
         val callback: ItemTouchHelper.Callback = BrowseTouchCallback()
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
-        binding.recyclerView.adapter = BrowseAdapterExplorer(App.state.api, App.state.playbackQueue)
 
-        binding.browseErrorRetry.setOnClickListener { loadContent() }
+        adapter = BrowseAdapterExplorer(App.state.api, App.state.playbackQueue)
+
+        model.items.observe(viewLifecycleOwner) { items ->
+            adapter.setItems(items)
+        }
+
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.setHasFixedSize(true)
+        binding.errorRetry.setOnClickListener { loadContent() }
+        binding.swipeRefresh.setOnRefreshListener { loadContent() }
+
+        loadContent()
 
         return binding.root
     }
 
     private fun loadContent() {
-        //Intent intent = App.instance.getIntent();
-        //switch (navigationMode) {
-        //    case PATH: {
-        //        String path = intent.getStringExtra(BrowseFragment.PATH);
-        //        if (path == null) {
-        //            path = "";
-        //        }
-        //        loadPath(path);
-        //        break;
-        //    }
-        //    case RANDOM: {
-        //        loadRandom();
-        //        break;
-        //    }
-        //    case RECENT: {
-        //        loadRecent();
-        //        break;
-        //    }
-        //}
+        binding.progressBar.visibility = View.VISIBLE
+        binding.errorMessage.visibility = View.GONE
+
+        App.state.api.browse(path, fetchCallback)
     }
 }

@@ -21,6 +21,7 @@ import agersant.polaris.api.ItemsCallback;
 import agersant.polaris.api.remote.ServerAPI;
 import agersant.polaris.databinding.FragmentBrowseBinding;
 
+
 public class BrowseFragment extends Fragment {
 
     public static final String PATH = "PATH";
@@ -47,7 +48,7 @@ public class BrowseFragment extends Fragment {
         fetchCallback = new ItemsCallback() {
             @Override
             public void onSuccess(final ArrayList<? extends CollectionItem> items) {
-                App.instance.runOnUiThread(() -> {
+                getActivity().runOnUiThread(() -> {
                     binding.progressBar.setVisibility(View.GONE);
                     that.items = items;
                     that.displayContent();
@@ -56,7 +57,7 @@ public class BrowseFragment extends Fragment {
 
             @Override
             public void onError() {
-                App.instance.runOnUiThread(() -> {
+                getActivity().runOnUiThread(() -> {
                     binding.progressBar.setVisibility(View.GONE);
                     binding.errorMessage.setVisibility(View.VISIBLE);
                 });
@@ -75,7 +76,9 @@ public class BrowseFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+        @NonNull LayoutInflater inflater,
+        @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentBrowseBinding.inflate(inflater);
 
         loadContent();

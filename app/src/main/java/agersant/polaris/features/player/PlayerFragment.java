@@ -128,6 +128,20 @@ public class PlayerFragment extends Fragment {
             }
         });
 
+        binding.skipNext.setOnClickListener((View) -> {
+            player.skipNext();
+        });
+        binding.skipPrevious.setOnClickListener((View) -> {
+            player.skipPrevious();
+        });
+        binding.pauseToggle.setOnClickListener((View) -> {
+            if (player.isPlaying()) {
+                player.pause();
+            } else {
+                player.resume();
+            }
+        });
+
         refresh();
 
         return binding.getRoot();
@@ -157,16 +171,6 @@ public class PlayerFragment extends Fragment {
     public void onResume() {
         super.onResume();
         refresh();
-    }
-
-    @SuppressWarnings("UnusedParameters")
-    public void skipPrevious(View view) {
-        player.skipPrevious();
-    }
-
-    @SuppressWarnings("UnusedParameters")
-    public void skipNext(View view) {
-        player.skipNext();
     }
 
     private void updateContent() {
@@ -217,29 +221,24 @@ public class PlayerFragment extends Fragment {
     private void populateWithTrack(CollectionItem item) {
         assert item != null;
 
-        // TODO: replace with new views
-        //String title = item.getTitle();
-        //if (title != null) {
-        //    binding.toolbar.setTitle(title);
-        //}
+        String title = item.getTitle();
+        if (title != null) {
+            binding.title.setText(title);
+        }
 
-        //String artist = item.getArtist();
-        //if (artist != null) {
-        //    binding.toolbar.setSubtitle(artist);
-        //}
+        String artist = item.getArtist();
+        if (artist != null) {
+            binding.artist.setText(artist);
+        }
 
-        //String artworkPath = item.getArtwork();
-        //if (artworkPath != null) {
-        //    api.loadImageIntoView(item, binding.artwork);
-        //}
-    }
+        String album = item.getAlbum();
+        if (album != null) {
+            binding.album.setText(album);
+        }
 
-    @SuppressWarnings("UnusedParameters")
-    public void togglePause(View view) {
-        if (player.isPlaying()) {
-            player.pause();
-        } else {
-            player.resume();
+        String artworkPath = item.getArtwork();
+        if (artworkPath != null) {
+            api.loadImageIntoView(item, binding.artwork);
         }
     }
 }

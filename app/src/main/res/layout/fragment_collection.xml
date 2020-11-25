@@ -2,63 +2,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+    android:gravity="bottom"
+    android:padding="@dimen/collection_margin"
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/browse_directories"
-        style="?android:attr/actionButtonStyle"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:drawableStart="@drawable/ic_folder_black_24dp"
-        android:drawablePadding="12dp"
-        android:gravity="center_vertical"
-        android:text="@string/collection_browse_directories"
-        android:textColor="@color/collection_button_text"
-        android:textSize="18sp" />
+        android:layout_height="@dimen/collection_height"
+        android:layout_margin="@dimen/collection_margin">
 
-    <View style="@style/Divider" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/browse_directories"
+            style="@style/CollectionSection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/ic_folder_black_24dp"
+            android:text="@string/collection_browse_directories" />
 
-    <Button
-        android:id="@+id/random_albums"
-        style="?android:attr/actionButtonStyle"
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:drawableStart="@drawable/ic_shuffle_black_24dp"
-        android:drawablePadding="12dp"
-        android:gravity="center_vertical"
-        android:text="@string/collection_random_albums"
-        android:textColor="@color/collection_button_text"
-        android:textSize="18sp" />
+        android:layout_height="@dimen/collection_height"
+        android:layout_margin="@dimen/collection_margin">
 
-    <View style="@style/Divider" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/random_albums"
+            style="@style/CollectionSection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/ic_shuffle_black_24dp"
+            android:text="@string/collection_random_albums" />
 
-    <Button
-        android:id="@+id/recently_added"
-        style="?android:attr/actionButtonStyle"
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:drawableStart="@drawable/ic_new_releases_black_24dp"
-        android:drawablePadding="12dp"
-        android:gravity="center_vertical"
-        android:text="@string/collection_recently_added"
-        android:textColor="@color/collection_button_text"
-        android:textSize="18sp" />
+        android:layout_height="@dimen/collection_height"
+        android:layout_margin="@dimen/collection_margin">
 
-    <View style="@style/Divider" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/recently_added"
+            style="@style/CollectionSection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/ic_new_releases_black_24dp"
+            android:text="@string/collection_recently_added" />
 
-    <Button
-        android:id="@+id/playlists"
-        style="?android:attr/actionButtonStyle"
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:drawableStart="@drawable/ic_queue_music_black_24dp"
-        android:drawablePadding="12dp"
-        android:enabled="false"
-        android:gravity="center_vertical"
-        android:text="@string/collection_playlists"
-        android:textColor="@color/collection_button_text"
-        android:textSize="18sp" />
+        android:layout_height="@dimen/collection_height"
+        android:layout_margin="@dimen/collection_margin">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/playlists"
+            style="@style/CollectionSection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/ic_queue_music_black_24dp"
+            android:enabled="false"
+            android:text="@string/collection_playlists" />
+
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

@@ -11,19 +11,19 @@ import agersant.polaris.api.API;
 
 public class BrowseAdapterExplorer extends BrowseAdapter {
 
-	private final API api;
-	private final PlaybackQueue playbackQueue;
+    private final API api;
+    private final PlaybackQueue playbackQueue;
 
-	public BrowseAdapterExplorer(API api, PlaybackQueue playbackQueue) {
-		super();
-		this.api = api;
-		this.playbackQueue = playbackQueue;
-	}
+    public BrowseAdapterExplorer(API api, PlaybackQueue playbackQueue) {
+        super();
+        this.api = api;
+        this.playbackQueue = playbackQueue;
+    }
 
-	@Override
-	public BrowseItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View itemQueueStatusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_browse_item_queued, parent, false);
-		View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_browse_explorer_item, parent, false);
-		return new BrowseItemHolderExplorer(api, playbackQueue, this, itemView, itemQueueStatusView);
-	}
+    @Override
+    public BrowseItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemQueueStatusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_browse_item_queued, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_browse_explorer_item, parent, false);
+        return new BrowseItemHolderExplorer(api, playbackQueue, this, itemView, itemQueueStatusView);
+    }
 }

@@ -48,7 +48,7 @@ public class CollectionFragment extends Fragment {
 
     public void browseDirectories(View view) {
         NavController controller = Navigation.findNavController(view);
-        controller.navigate(R.id.action_nav_collection_to_nav_browse);
+        controller.navigate(R.id.action_nav_collection_to_nav_directories);
 
         //Context context = view.getContext();
         //Intent intent = new Intent(context, BrowseFragment.class);

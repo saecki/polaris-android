@@ -17,7 +17,7 @@ abstract class BrowseAdapter
 		setItems(new ArrayList<>());
 	}
 
-	void setItems(ArrayList<? extends CollectionItem> items) {
+	public void setItems(ArrayList<? extends CollectionItem> items) {
 		this.items = items;
 		notifyDataSetChanged();
 	}
