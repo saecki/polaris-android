@@ -2,23 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:colorBackground"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/browse_explorer_button"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/browse_explorer_item"
+        style="@style/CollectionItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:colorBackground"
         android:drawablePadding="12dp"
-        android:drawableTint="?colorPrimary"
+        android:drawableTint="?colorOnBackground"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:textAppearance="?textAppearanceListItem"
+        android:textColor="?android:textColorPrimary"
         tools:drawableLeft="@drawable/ic_folder_open_black_24dp"
         tools:text="Dead Can Dance" />
 

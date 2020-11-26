@@ -1,7 +1,8 @@
 package agersant.polaris.features.collection;
 
 import android.view.View;
-import android.widget.Button;
+
+import com.google.android.material.textview.MaterialTextView;
 
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
@@ -11,18 +12,18 @@ import agersant.polaris.api.API;
 
 class BrowseItemHolderExplorer extends BrowseItemHolder {
 
-	private final Button button;
+	private final MaterialTextView item;
 
 	BrowseItemHolderExplorer(API api, PlaybackQueue playbackQueue, BrowseAdapter adapter, View itemView, View itemQueueStatusView) {
 		super(api, playbackQueue, adapter, itemView, itemQueueStatusView);
-		button = itemView.findViewById(R.id.browse_explorer_button);
-		button.setOnClickListener(this);
+		item = itemView.findViewById(R.id.browse_explorer_item);
+		item.setOnClickListener(this);
 	}
 
 	@Override
 	void bindItem(CollectionItem item) {
 		super.bindItem(item);
-		button.setText(item.getName());
+		this.item.setText(item.getName());
 
 		int icon;
 		if (item.isDirectory()) {
@@ -31,8 +32,8 @@ class BrowseItemHolderExplorer extends BrowseItemHolder {
 			icon = R.drawable.ic_audiotrack_black_24dp;
 		}
 
-		button.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
-		button.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, 0, 0);
+		this.item.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
+		this.item.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, 0, 0);
 	}
 
 }

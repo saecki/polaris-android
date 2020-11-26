@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/belowBackground"
     tools:layout_height="48dp">
 
     <ImageView
@@ -20,7 +19,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/status_text"
-        android:textAppearance="?textAppearanceListItem"
+        android:textAppearance="?textAppearanceButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

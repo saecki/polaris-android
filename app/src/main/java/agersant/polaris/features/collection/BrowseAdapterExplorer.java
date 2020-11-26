@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.jetbrains.annotations.NotNull;
+
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.R;
 import agersant.polaris.api.API;
@@ -20,6 +22,7 @@ public class BrowseAdapterExplorer extends BrowseAdapter {
         this.playbackQueue = playbackQueue;
     }
 
+    @NotNull
     @Override
     public BrowseItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemQueueStatusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_browse_item_queued, parent, false);

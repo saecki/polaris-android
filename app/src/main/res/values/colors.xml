@@ -20,4 +20,5 @@
 
 	<color name="belowBackground">#eeeeee</color>
 	<color name="add">#009E2C</color>
+	<color name="remove">#FF2700</color>
 </resources>

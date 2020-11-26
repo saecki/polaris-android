@@ -33,21 +33,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+            android:textAppearance="?textAppearanceHeadline6" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/artist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+            android:textAppearance="?textAppearanceBody1" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/album"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+            android:textAppearance="?textAppearanceBody1" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/buffering"

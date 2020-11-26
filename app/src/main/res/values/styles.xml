@@ -3,35 +3,44 @@
 
     <!-- Base application theme. -->
     <style name="Polaris" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/lightBlue600</item> <!--Task manager toolbar-->
-        <item name="colorPrimaryDark">@color/lightBlue800</item> <!--Status bar background-->
-        <item name="colorAccent">@color/lightBlue600</item> <!--Media player seek bar-->
-        <item name="colorSecondary">@color/lightBlue600</item> <!--Media player seek bar-->
+        <item name="colorPrimary">@color/lightBlue600</item>
+        <item name="colorPrimaryDark">@color/lightBlue800</item>
+        <item name="colorAccent">@color/lightBlue600</item>
+        <item name="colorSecondary">@color/lightBlue600</item>
 
         <item name="colorAdd">@color/add</item>
 
-
-        <item name="appBarLayoutStyle">@style/AppbarLayout</item>
-
         <item name="android:statusBarColor">?colorBackgroundFloating</item>
         <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
+
+        <item name="appBarLayoutStyle">@style/AppbarLayout</item>
+        <item name="materialCardViewStyle">@style/Card</item>
     </style>
 
+    <!-- Override Styles -->
     <style name="AppbarLayout" parent="Widget.Design.AppBarLayout">
-        <item name="android:backgroundTint">?colorBackgroundFloating</item>
-    </style>
-
-
-    <style name="CollectionSection" parent="Widget.MaterialComponents.TextView">
-        <item name="drawableTint">?colorOnBackground</item>
-        <item name="android:drawablePadding">@dimen/collection_icon_padding</item>
-        <item name="android:padding">@dimen/collection_text_padding</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6</item>
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="Card" parent="Widget.MaterialComponents.CardView">
-        <item name="android:elevation">@dimen/card_elevation</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+    </style>
+
+    <!-- Custom Styles -->
+    <style name="CollectionSection" parent="Widget.MaterialComponents.TextView">
+        <item name="drawableTint">?colorOnBackground</item>
+        <item name="android:drawablePadding">@dimen/collection_section_icon_padding</item>
+        <item name="android:padding">@dimen/collection_section_text_padding</item>
+        <item name="android:textAppearance">?textAppearanceHeadline6</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="CollectionItem" parent="Widget.MaterialComponents.TextView">
+        <item name="drawableTint">?colorOnBackground</item>
+        <item name="android:drawablePadding">@dimen/collection_item_icon_padding</item>
+        <item name="android:padding">@dimen/collection_item_text_padding</item>
+        <item name="android:textAppearance">?textAppearanceBody1</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
 </resources>
