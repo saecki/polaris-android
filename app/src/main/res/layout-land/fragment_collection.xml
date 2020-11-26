@@ -9,12 +9,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:padding="@dimen/card_margin"
-        app:orientation="vertical">
+        app:columnCount="2"
+        app:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin">
+            android:layout_margin="@dimen/card_margin"
+            app:layout_columnWeight="1">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/browse_directories"
@@ -27,9 +29,10 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin">
+            android:layout_margin="@dimen/card_margin"
+            app:layout_columnWeight="1">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/random_albums"
@@ -42,9 +45,10 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin">
+            android:layout_margin="@dimen/card_margin"
+            app:layout_columnWeight="1">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/recently_added"
@@ -57,9 +61,10 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin">
+            android:layout_margin="@dimen/card_margin"
+            app:layout_columnWeight="1">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/playlists"

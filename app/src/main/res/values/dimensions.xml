@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="collection_section_icon_padding">24dp</dimen>
-    <dimen name="collection_section_text_padding">24dp</dimen>
+    <dimen name="collection_section_icon_padding">16dp</dimen>
+    <dimen name="collection_section_text_padding">16dp</dimen>
     <dimen name="collection_section_margin">8dp</dimen>
 
-    <dimen name="collection_item_icon_padding">16dp</dimen>
-    <dimen name="collection_item_text_padding">16dp</dimen>
+    <dimen name="collection_item_horizontal_padding">16dp</dimen>
+    <dimen name="collection_item_vertical_padding">8dp</dimen>
 
-    <dimen name="card_margin">8dp</dimen>
+    <dimen name="card_margin">6dp</dimen>
     <dimen name="card_elevation">3dp</dimen>
 
-    <dimen name="toolbar_margin">16dp</dimen>
-    <dimen name="toolbar_radius">8dp</dimen>
+    <dimen name="toolbar_margin">12dp</dimen>
+    <dimen name="toolbar_radius">10dp</dimen>
+    <dimen name="toolbar_elevation">8dp</dimen>
 
 </resources>

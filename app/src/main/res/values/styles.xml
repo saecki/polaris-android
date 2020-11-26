@@ -13,15 +13,10 @@
         <item name="android:statusBarColor">?colorBackgroundFloating</item>
         <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
 
-        <item name="appBarLayoutStyle">@style/AppbarLayout</item>
         <item name="materialCardViewStyle">@style/Card</item>
     </style>
 
     <!-- Override Styles -->
-    <style name="AppbarLayout" parent="Widget.Design.AppBarLayout">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
     <style name="Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardElevation">@dimen/card_elevation</item>
     </style>
@@ -37,8 +32,11 @@
 
     <style name="CollectionItem" parent="Widget.MaterialComponents.TextView">
         <item name="drawableTint">?colorOnBackground</item>
-        <item name="android:drawablePadding">@dimen/collection_item_icon_padding</item>
-        <item name="android:padding">@dimen/collection_item_text_padding</item>
+        <item name="android:drawablePadding">@dimen/collection_item_horizontal_padding</item>
+        <item name="android:paddingTop">@dimen/collection_item_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/collection_item_vertical_padding</item>
+        <item name="android:paddingLeft">@dimen/collection_item_horizontal_padding</item>
+        <item name="android:paddingRight">@dimen/collection_item_horizontal_padding</item>
         <item name="android:textAppearance">?textAppearanceBody1</item>
         <item name="android:gravity">center_vertical</item>
     </style>
