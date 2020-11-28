@@ -23,9 +23,9 @@ internal class BrowseItemHolderExplorer(
         super.bind(item)
         text.text = item.name
         val iconRes = if (item.isDirectory)
-            R.drawable.ic_folder_open_black_24dp
+            R.drawable.baseline_folder_open_24
         else
-            R.drawable.ic_audiotrack_black_24dp
+            R.drawable.baseline_audiotrack_24
 
         icon.setImageResource(iconRes)
     }

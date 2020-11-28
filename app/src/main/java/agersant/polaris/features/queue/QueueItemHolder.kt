@@ -40,12 +40,11 @@ class QueueItemHolder(
         private val itemHolderWeakReference: WeakReference<QueueItemHolder> = WeakReference(itemHolder)
 
         override fun doInBackground(vararg params: Void?): QueueItemState {
-            return if (offlineCache.hasAudio(item!!.path)) {
-                QueueItemState.Downloaded
-            } else if (downloadQueue.isDownloading(item) || downloadQueue.isStreaming(item)) {
-                QueueItemState.Downloading
-            } else {
-                QueueItemState.Idle
+            return when {
+                offlineCache.hasAudio(item!!.path) -> QueueItemState.Downloaded
+                downloadQueue.isDownloading(item) -> QueueItemState.Downloading
+                downloadQueue.isStreaming(item) -> QueueItemState.Streaming
+                else -> QueueItemState.Idle
             }
         }
 
@@ -74,13 +73,13 @@ class QueueItemHolder(
         val isPlaying = appState.player.currentItem === item
         queueItemView.setIsPlaying(isPlaying)
         if (updateIconTask != null) {
-            updateIconTask!!.cancel(true)
+            updateIconTask?.cancel(true)
             updateIconTask = null
         }
+        beginIconUpdate()
         if (item.artwork != null) {
             appState.api.loadImageIntoView(item, artwork)
         }
-        beginIconUpdate()
     }
 
     private fun setState(newState: QueueItemState) {
@@ -90,12 +89,16 @@ class QueueItemHolder(
                 statusIcon.setImageDrawable(null)
                 statusIcon.contentDescription = ""
             }
+            QueueItemState.Streaming -> {
+                statusIcon.setImageResource(R.drawable.baseline_play_arrow_24)
+                statusIcon.contentDescription = App.resources.getString(R.string.queue_streaming)
+            }
             QueueItemState.Downloading -> {
-                statusIcon.setImageResource(R.drawable.ic_sync_black_24dp)
+                statusIcon.setImageResource(R.drawable.baseline_sync_24)
                 statusIcon.contentDescription = App.resources.getString(R.string.queue_downloading)
             }
             QueueItemState.Downloaded -> {
-                statusIcon.setImageResource(R.drawable.ic_sd_storage_black_24dp)
+                statusIcon.setImageResource(R.drawable.baseline_check_circle_24)
                 statusIcon.contentDescription = App.resources.getString(R.string.queue_cached)
             }
         }

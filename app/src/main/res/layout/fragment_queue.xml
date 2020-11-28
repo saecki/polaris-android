@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="true"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_queue_item" />
 
     <LinearLayout
         android:id="@+id/tutorial"
@@ -29,7 +30,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/ic_queue_black_24dp"
+            android:background="@drawable/baseline_playlist_add_24"
             android:backgroundTint="@color/grey500"
             android:contentDescription="@string/queue_empty" />
 

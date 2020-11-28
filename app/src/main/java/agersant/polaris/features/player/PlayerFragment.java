@@ -186,7 +186,7 @@ public class PlayerFragment extends Fragment {
     private void updateControls() {
         final float disabledAlpha = 0.2f;
 
-        int playPauseIcon = player.isPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
+        int playPauseIcon = player.isPlaying() ? R.drawable.baseline_pause_24 : R.drawable.baseline_play_arrow_24;
         binding.pauseToggle.setImageResource(playPauseIcon);
         binding.pauseToggle.setAlpha(player.isIdle() ? disabledAlpha : 1.f);
 
@@ -223,17 +223,11 @@ public class PlayerFragment extends Fragment {
     private void populateWithTrack(CollectionItem item) {
         assert item != null;
 
-        String title = item.getTitle();
-        binding.title.setText(title);
+        binding.title.setText(item.getTitle());
+        binding.artist.setText(item.getArtist());
+        binding.album.setText(item.getAlbum());
 
-        String artist = item.getArtist();
-        binding.artist.setText(artist);
-
-        String album = item.getAlbum();
-        binding.album.setText(album);
-
-        String artworkPath = item.getArtwork();
-        if (artworkPath != null) {
+        if (item.getArtwork() != null) {
             api.loadImageIntoView(item, binding.artwork);
         }
     }

@@ -1,7 +1,7 @@
 package agersant.polaris.features.collection
 
 import agersant.polaris.CollectionItem
-import agersant.polaris.ui.CollectionItemDiffUtil
+import agersant.polaris.adapter.CollectionItemDiffUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 

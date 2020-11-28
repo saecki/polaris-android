@@ -17,12 +17,12 @@
             android:layout_margin="@dimen/card_margin">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/browse_directories"
+                android:id="@+id/directories"
                 style="@style/CollectionSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableStart="@drawable/ic_folder_black_24dp"
-                android:text="@string/collection_browse_directories" />
+                android:drawableStart="@drawable/baseline_folder_24"
+                android:text="@string/collection_directories" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -32,43 +32,77 @@
             android:layout_margin="@dimen/card_margin">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/random_albums"
+                android:id="@+id/artists"
                 style="@style/CollectionSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableStart="@drawable/ic_shuffle_black_24dp"
-                android:text="@string/collection_random_albums" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/recently_added"
-                style="@style/CollectionSection"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawableStart="@drawable/ic_new_releases_black_24dp"
-                android:text="@string/collection_recently_added" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/playlists"
-                style="@style/CollectionSection"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawableStart="@drawable/ic_queue_music_black_24dp"
+                android:drawableStart="@drawable/baseline_people_alt_24"
                 android:enabled="false"
-                android:text="@string/collection_playlists" />
+                android:text="@string/collection_artists" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_margin">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/albums"
+                style="@style/CollectionSection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableStart="@drawable/baseline_album_24"
+                android:enabled="false"
+                android:text="@string/collection_albums" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_margin">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/genres"
+                style="@style/CollectionSection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableStart="@drawable/baseline_local_offer_24"
+                android:enabled="false"
+                android:text="@string/collection_genres" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_margin">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/random"
+                style="@style/CollectionSection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableStart="@drawable/baseline_shuffle_24"
+                android:enabled="false"
+                android:text="@string/collection_random" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_margin">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recent"
+                style="@style/CollectionSection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableStart="@drawable/baseline_new_releases_24"
+                android:enabled="false"
+                android:text="@string/collection_recent" />
 
         </com.google.android.material.card.MaterialCardView>
 

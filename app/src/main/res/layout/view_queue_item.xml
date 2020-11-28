@@ -3,27 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="wrap_content"
     android:duplicateParentState="true"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/queue_item_horizontal_spacing"
+    android:paddingTop="@dimen/queue_item_vertical_spacing"
+    android:paddingEnd="@dimen/queue_item_horizontal_spacing">
 
-    <ImageView
-        android:id="@+id/artwork"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:contentDescription="@string/album_artwork"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/artwork_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/queue_artwork_margin"
+        app:cardCornerRadius="@dimen/queue_artwork_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:background="@drawable/artwork" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/artwork"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/album_artwork"
+            tools:background="@drawable/artwork" />
+
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/collection_item_horizontal_padding"
-        android:layout_marginEnd="@dimen/collection_item_horizontal_padding"
+        android:layout_marginStart="@dimen/collection_item_horizontal_spacing"
+        android:layout_marginEnd="@dimen/collection_item_horizontal_spacing"
         android:duplicateParentState="true"
         android:ellipsize="end"
         android:maxLines="1"
@@ -31,16 +43,17 @@
         android:textColor="@color/queue_item_foreground"
         app:layout_constraintBottom_toTopOf="@id/artist"
         app:layout_constraintEnd_toStartOf="@id/status_icon"
-        app:layout_constraintStart_toEndOf="@id/artwork"
+        app:layout_constraintStart_toEndOf="@id/artwork_container"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Elevator Sunshine Girl" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/artist"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/collection_item_horizontal_padding"
-        android:layout_marginEnd="@dimen/collection_item_horizontal_padding"
+        android:layout_marginStart="@dimen/collection_item_horizontal_spacing"
+        android:layout_marginEnd="@dimen/collection_item_horizontal_spacing"
         android:duplicateParentState="true"
         android:ellipsize="end"
         android:maxLines="1"
@@ -48,20 +61,20 @@
         android:textColor="@color/queue_item_foreground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/status_icon"
-        app:layout_constraintStart_toEndOf="@id/artwork"
+        app:layout_constraintStart_toEndOf="@id/artwork_container"
         app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Solar Fields" />
 
     <ImageView
         android:id="@+id/status_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:duplicateParentState="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/queue_item_foreground"
-        tools:background="@drawable/ic_sd_storage_black_24dp" />
+        tools:src="@drawable/baseline_check_circle_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

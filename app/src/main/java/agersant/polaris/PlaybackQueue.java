@@ -14,6 +14,12 @@ import agersant.polaris.api.remote.DownloadQueue;
 
 public class PlaybackQueue {
 
+    public enum Ordering {
+        Sequence,
+        RepeatOne,
+        RepeatAll,
+    }
+
     public static final String CHANGED_ORDERING = "CHANGED_ORDERING";
     public static final String QUEUED_ITEM = "QUEUED_ITEM";
     public static final String QUEUED_ITEMS = "QUEUED_ITEMS";
@@ -28,7 +34,7 @@ public class PlaybackQueue {
 
     PlaybackQueue() {
         content = new ArrayList<>();
-        ordering = Ordering.SEQUENCE;
+        ordering = Ordering.Sequence;
     }
 
     ArrayList<CollectionItem> getContent() {
@@ -124,6 +130,10 @@ public class PlaybackQueue {
         return content.size();
     }
 
+    public ArrayList<CollectionItem> getItems() {
+        return content;
+    }
+
     public CollectionItem getItem(int position) {
         return content.get(position);
     }
@@ -133,7 +143,7 @@ public class PlaybackQueue {
             return null;
         }
 
-        if (ordering == Ordering.REPEAT_ONE) {
+        if (ordering == Ordering.RepeatOne) {
             return from;
         } else {
             int currentIndex = content.indexOf(from);
@@ -143,7 +153,7 @@ public class PlaybackQueue {
                 int newIndex = currentIndex + delta;
                 if (newIndex >= 0 && newIndex < content.size()) {
                     return content.get(newIndex);
-                } else if (ordering == Ordering.REPEAT_ALL) {
+                } else if (ordering == Ordering.RepeatAll) {
                     if (delta > 0) {
                         return content.get(0);
                     } else {
@@ -215,11 +225,5 @@ public class PlaybackQueue {
         }
 
         return bestItem;
-    }
-
-    public enum Ordering {
-        SEQUENCE,
-        REPEAT_ONE,
-        REPEAT_ALL,
     }
 }

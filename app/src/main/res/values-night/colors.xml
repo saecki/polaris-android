@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="belowBackground">#000000</color>
+    <color name="backgroundFloating">#282828</color>
     <color name="add">#00BB34</color>
     <color name="remove">#DB2200</color>
 </resources>

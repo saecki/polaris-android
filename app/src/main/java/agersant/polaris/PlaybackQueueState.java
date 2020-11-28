@@ -15,7 +15,7 @@ class PlaybackQueueState implements Serializable {
 
 	PlaybackQueueState() {
 		queueContent = new ArrayList<>();
-		queueOrdering = PlaybackQueue.Ordering.SEQUENCE;
+		queueOrdering = PlaybackQueue.Ordering.Sequence;
 		queueIndex = -1;
 		trackProgress = 0.f;
 	}

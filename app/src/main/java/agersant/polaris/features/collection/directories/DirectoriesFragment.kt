@@ -52,21 +52,20 @@ class DirectoriesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDirectoriesBinding.inflate(inflater)
 
+        binding.recyclerView.setHasFixedSize(true)
+        adapter = BrowseAdapterExplorer(App.state.api, App.state.playbackQueue)
+        binding.recyclerView.adapter = adapter
         val callback: ItemTouchHelper.Callback = BrowseTouchCallback()
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
-        adapter = BrowseAdapterExplorer(App.state.api, App.state.playbackQueue)
+        binding.errorRetry.setOnClickListener { loadContent() }
+
+        loadContent()
 
         model.items.observe(viewLifecycleOwner) { items ->
             adapter.items = items
         }
-
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.setHasFixedSize(true)
-        binding.errorRetry.setOnClickListener { loadContent() }
-
-        loadContent()
 
         return binding.root
     }

@@ -31,8 +31,10 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_collection,
-                R.id.nav_queue,
+                R.id.nav_playlists,
                 R.id.nav_now_playing,
+                R.id.nav_queue,
+                R.id.nav_search,
             ),
             binding.drawerLayout,
         )

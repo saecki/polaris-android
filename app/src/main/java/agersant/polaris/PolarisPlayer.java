@@ -51,12 +51,10 @@ public class PolarisPlayer implements Player.EventListener {
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                switch (intent.getAction()) {
-                    case PlaybackQueue.NO_LONGER_EMPTY:
-                        if (isIdle() || !isPlaying()) {
-                            skipNext();
-                        }
-                        break;
+                if (PlaybackQueue.NO_LONGER_EMPTY.equals(intent.getAction())) {
+                    if (isIdle() || !isPlaying()) {
+                        skipNext();
+                    }
                 }
             }
         };

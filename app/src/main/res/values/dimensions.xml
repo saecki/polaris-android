@@ -5,8 +5,17 @@
     <dimen name="collection_section_text_padding">16dp</dimen>
     <dimen name="collection_section_margin">8dp</dimen>
 
-    <dimen name="collection_item_horizontal_padding">16dp</dimen>
-    <dimen name="collection_item_vertical_padding">8dp</dimen>
+    <dimen name="collection_item_horizontal_spacing">16dp</dimen>
+    <dimen name="collection_item_vertical_spacing">16dp</dimen>
+
+    <dimen name="player_artwork_radius">16dp</dimen>
+    <dimen name="player_artwork_vertical_margin">8dp</dimen>
+    <dimen name="player_artwork_horizontal_margin">16dp</dimen>
+
+    <dimen name="queue_item_horizontal_spacing">12dp</dimen>
+    <dimen name="queue_item_vertical_spacing">12dp</dimen>
+    <dimen name="queue_artwork_radius">8dp</dimen>
+    <dimen name="queue_artwork_margin">2dp</dimen>
 
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_elevation">3dp</dimen>

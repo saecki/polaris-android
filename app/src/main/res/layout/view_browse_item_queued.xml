@@ -8,16 +8,17 @@
 
     <ImageView
         android:id="@+id/status_icon"
-        style="@style/CollectionItemIconStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/add_to_queue"
-        android:src="@drawable/ic_playlist_play_black_24dp"
-        app:tint="?colorAdd" />
+        android:paddingStart="@dimen/collection_item_horizontal_spacing"
+        android:paddingTop="@dimen/collection_item_vertical_spacing"
+        android:paddingEnd="@dimen/collection_item_horizontal_spacing"
+        app:tint="?colorAdd"
+        tools:src="@drawable/baseline_playlist_add_24" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/status_text"
-        style="@style/CollectionItemText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

@@ -5,20 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:colorBackground"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/collection_item_horizontal_spacing"
+    android:paddingTop="@dimen/queue_item_vertical_spacing"
+    android:paddingEnd="@dimen/collection_item_horizontal_spacing">
 
     <ImageView
         android:id="@+id/icon"
-        style="@style/CollectionItemIconStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:contentDescription="@string/add_to_queue"
-        android:src="@drawable/ic_folder_open_black_24dp"
+        android:paddingEnd="@dimen/collection_item_horizontal_spacing"
+        android:src="@drawable/baseline_folder_open_24"
         app:tint="?android:textColorPrimary" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text"
-        style="@style/CollectionItemText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"

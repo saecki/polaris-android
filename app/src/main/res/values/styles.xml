@@ -7,17 +7,26 @@
         <item name="colorPrimaryDark">@color/lightBlue800</item>
         <item name="colorAccent">@color/lightBlue600</item>
         <item name="colorSecondary">@color/lightBlue600</item>
+        <item name="colorBackgroundFloating">@color/backgroundFloating</item>
 
         <item name="colorAdd">@color/add</item>
 
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">?colorBackgroundFloating</item>
         <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
 
-        <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
+        <item name="appBarLayoutStyle">@style/AppBarLayout</item>
+
         <item name="materialCardViewStyle">@style/Card</item>
     </style>
 
     <!-- Override Styles -->
+    <style name="AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
+        <item name="android:backgroundTint">?colorBackgroundFloating</item>
+    </style>
+
+    <style name="BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="android:background">?colorBackgroundFloating</item>
+    </style>
 
     <style name="Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardElevation">@dimen/card_elevation</item>
@@ -25,27 +34,10 @@
 
     <!-- Custom Styles -->
     <style name="CollectionSection" parent="Widget.MaterialComponents.TextView">
-        <item name="drawableTint">?colorOnBackground</item>
+        <item name="drawableTint">?android:textColorPrimary</item>
         <item name="android:drawablePadding">@dimen/collection_section_icon_padding</item>
         <item name="android:padding">@dimen/collection_section_text_padding</item>
         <item name="android:textAppearance">?textAppearanceHeadline6</item>
-        <item name="android:gravity">center_vertical</item>
-    </style>
-
-    <style name="CollectionItemText" parent="Widget.MaterialComponents.TextView">
-        <item name="android:paddingTop">@dimen/collection_item_vertical_padding</item>
-        <item name="android:paddingBottom">@dimen/collection_item_vertical_padding</item>
-        <item name="android:paddingLeft">@dimen/collection_item_horizontal_padding</item>
-        <item name="android:paddingRight">@dimen/collection_item_horizontal_padding</item>
-        <item name="android:textAppearance">?textAppearanceListItem</item>
-        <item name="android:gravity">center_vertical</item>
-    </style>
-
-    <style name="CollectionItemIconStart">
-        <item name="android:paddingTop">@dimen/collection_item_vertical_padding</item>
-        <item name="android:paddingBottom">@dimen/collection_item_vertical_padding</item>
-        <item name="android:paddingLeft">@dimen/collection_item_horizontal_padding</item>
-        <item name="android:paddingRight">0dp</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 

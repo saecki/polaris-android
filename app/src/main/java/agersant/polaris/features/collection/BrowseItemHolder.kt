@@ -81,26 +81,26 @@ abstract class BrowseItemHolder(
 
     private fun setStatusToIdle() {
         statusText.setText(R.string.add_to_queue)
-        statusIcon.setImageResource(R.drawable.ic_playlist_play_black_24dp)
+        statusIcon.setImageResource(R.drawable.baseline_playlist_add_24)
         itemView.requestLayout()
     }
 
     private fun setStatusToFetching() {
         statusText.setText(R.string.queuing)
-        statusIcon.setImageResource(R.drawable.ic_hourglass_empty_black_24dp)
+        statusIcon.setImageResource(R.drawable.baseline_hourglass_empty_24)
         itemView.requestLayout()
     }
 
     private fun setStatusToQueued() {
         statusText.setText(R.string.queued)
-        statusIcon.setImageResource(R.drawable.ic_check_black_24dp)
+        statusIcon.setImageResource(R.drawable.baseline_playlist_add_check_24)
         itemView.requestLayout()
         waitAndSwipeBack()
     }
 
     private fun setStatusToQueueError() {
         statusText.setText(R.string.queuing_error)
-        statusIcon.setImageResource(R.drawable.ic_error_black_24dp)
+        statusIcon.setImageResource(R.drawable.baseline_error_24)
         itemView.requestLayout()
         waitAndSwipeBack()
     }

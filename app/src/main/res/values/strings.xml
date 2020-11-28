@@ -2,19 +2,18 @@
     <string name="app_name">PolarisNEW</string>
 
     <string name="collection">Collection</string>
-    <string name="collection_browse_directories">Browse Directories</string>
-    <string name="collection_random_albums">Random Albums</string>
-    <string name="collection_recently_added">Recently Added</string>
-    <string name="collection_playlists">Playlists</string>
+    <string name="collection_directories">Directories</string>
+    <string name="collection_random">Random</string>
+    <string name="collection_recent">Recent</string>
+    <string name="collection_artists">Artists</string>
+    <string name="collection_albums">Albums</string>
+    <string name="collection_genres">Genres</string>
 
     <string name="browse_error">An error occurred while listing content</string>
     <string name="browse_error_retry">Retry</string>
     <string name="browse_disc_number">Disc %1$d</string>
 
-    <string name="queue">Queue</string>
-    <string name="queue_empty">Make a playlist by swiping music from your collection to here.</string>
-    <string name="queue_downloading">Downloading</string>
-    <string name="queue_cached">Cached Locally</string>
+    <string name="playlists">Playlists</string>
 
     <string name="now_playing">Now Playing</string>
     <string name="player_artwork">Album Artwork</string>
@@ -25,6 +24,14 @@
     <string name="player_pause">Pause</string>
     <string name="player_opening">Opening…</string>
     <string name="player_buffering">Buffering…</string>
+
+    <string name="queue">Queue</string>
+    <string name="queue_empty">Make a playlist by swiping music from your collection to here.</string>
+    <string name="queue_streaming">Streaming</string>
+    <string name="queue_downloading">Downloading</string>
+    <string name="queue_cached">Cached Locally</string>
+
+    <string name="search">Search</string>
 
     <string name="pref_server_url">Server address</string>
     <string name="pref_username">Username</string>

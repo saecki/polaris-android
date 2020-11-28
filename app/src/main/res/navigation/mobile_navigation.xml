@@ -10,24 +10,29 @@
         android:name="agersant.polaris.features.settings.SettingsFragment"
         android:label="@string/settings" />
 
+
     <fragment
         android:id="@+id/nav_collection"
         android:name="agersant.polaris.features.collection.CollectionFragment"
         android:label="@string/collection"
         tools:layout="@layout/fragment_collection">
         <action
-            android:id="@+id/action_nav_collection_to_nav_browse"
-            app:destination="@id/nav_browse" />
-        <action
             android:id="@+id/action_nav_collection_to_nav_directories"
             app:destination="@id/nav_directories" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_directories"
+        android:name="agersant.polaris.features.collection.directories.DirectoriesFragment"
+        android:label="@string/collection"
+        tools:layout="@layout/fragment_directories" />
+
 
     <fragment
-        android:id="@+id/nav_queue"
-        android:name="agersant.polaris.features.queue.QueueFragment"
-        android:label="@string/queue"
-        tools:layout="@layout/fragment_queue" />
+        android:id="@+id/nav_playlists"
+        android:name="agersant.polaris.features.playlist.PlaylistFragment"
+        android:label="@string/playlists"
+        tools:layout="@layout/fragment_playlists" />
+
 
     <fragment
         android:id="@+id/nav_now_playing"
@@ -35,16 +40,18 @@
         android:label="@string/now_playing"
         tools:layout="@layout/fragment_player" />
 
-    <fragment
-        android:id="@+id/nav_browse"
-        android:name="agersant.polaris.features.collection.BrowseFragment"
-        android:label="@string/collection"
-        tools:layout="@layout/fragment_browse" />
 
     <fragment
-        android:id="@+id/nav_directories"
-        android:name="agersant.polaris.features.collection.directories.DirectoriesFragment"
-        android:label="@string/collection"
-        tools:layout="@layout/fragment_directories" />
+        android:id="@+id/nav_queue"
+        android:name="agersant.polaris.features.queue.QueueFragment"
+        android:label="@string/queue"
+        tools:layout="@layout/fragment_queue" />
+
+
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="agersant.polaris.features.search.SearchFragment"
+        android:label="@string/search"
+        tools:layout="@layout/fragment_search" />
 
 </navigation>

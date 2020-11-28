@@ -14,7 +14,6 @@ Experimental fork of the [Android client for Polaris](https://github.com/agersan
 - [ ] Genres
 - [ ] Random
 - [ ] Recent
-- [ ] History?
 - Lists
   - [x] Swipe right to enqueue
   - [ ] Swipe left to play next
@@ -25,16 +24,20 @@ Experimental fork of the [Android client for Polaris](https://github.com/agersan
 - [ ] Swipe left to play next
 
 ### Now Playing
-- [ ] Playback options (repeat, repeat all, shuffle)
+- [ ] Playback options (default, repeat, repeat all)
 - [ ] Jump to artist
 - [ ] Jump to album
 - [ ] Song info (metadata, codec, filename, downloaded?)
 - [ ] Playback time or state (buffering, error)
 
-### (ToDo) Queue
-- [ ] serach queue
-- [ ] jump to current track
+### Queue
+- [ ] Seach queue
+- [ ] Jump to current track
+- [ ] Multiple selection
+    - [ ] Add to playlist
+    - [ ] Remove
+    - [ ] Play next
 
-- [ ] ### Search
+- [ ] ### (ToDo) Search
 - [ ] categorize (all, artists, albums, songs)
 - [ ] history
