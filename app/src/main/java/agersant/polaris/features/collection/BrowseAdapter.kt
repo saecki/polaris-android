@@ -2,12 +2,19 @@ package agersant.polaris.features.collection
 
 import agersant.polaris.CollectionItem
 import agersant.polaris.ui.CollectionItemDiffUtil
-import agersant.polaris.ui.OverscrollAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 
-abstract class BrowseAdapter() : OverscrollAdapter<CollectionItem, BrowseItemHolder>(CollectionItemDiffUtil.Factory()) {
+abstract class BrowseAdapter() : RecyclerView.Adapter<BrowseItemHolder>() {
+
+    open var items: List<CollectionItem> = listOf()
+        set(value) {
+            val diff = DiffUtil.calculateDiff(CollectionItemDiffUtil(field, value))
+            field = value
+            diff.dispatchUpdatesTo(this)
+        }
 
     override fun onBindViewHolder(holder: BrowseItemHolder, position: Int) {
-        super.onBindViewHolder(holder, position)
         holder.bind(items[position])
     }
 

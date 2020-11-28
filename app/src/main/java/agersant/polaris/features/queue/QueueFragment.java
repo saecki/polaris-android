@@ -89,9 +89,9 @@ public class QueueFragment extends Fragment {
         @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         binding = FragmentQueueBinding.inflate(inflater);
+        binding.recyclerView.setHasFixedSize(true);
 
         adapter = new QueueAdapter(state);
-        adapter.setTopPadding(App.appBarLayout.getHeight());
         binding.recyclerView.setAdapter(adapter);
 
         ItemTouchHelper.Callback callback = new QueueTouchCallback(adapter);

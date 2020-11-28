@@ -1,14 +1,12 @@
 package agersant.polaris.features.queue
 
-import agersant.polaris.CollectionItem
 import agersant.polaris.PolarisState
-import agersant.polaris.ui.CollectionItemDiffUtil
-import agersant.polaris.ui.OverscrollAdapter
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
 internal class QueueAdapter(
     private val state: PolarisState,
-) : OverscrollAdapter<CollectionItem, QueueItemHolder>(CollectionItemDiffUtil.Factory()) {
+) : RecyclerView.Adapter<QueueItemHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QueueItemHolder {
         val view = QueueItemView(parent.context)
@@ -16,7 +14,6 @@ internal class QueueAdapter(
     }
 
     override fun onBindViewHolder(holder: QueueItemHolder, position: Int) {
-        super.onBindViewHolder(holder, position)
         holder.bind(state.playbackQueue.getItem(position))
     }
 

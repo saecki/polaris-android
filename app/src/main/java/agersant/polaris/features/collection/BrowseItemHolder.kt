@@ -7,7 +7,6 @@ import agersant.polaris.R
 import agersant.polaris.api.API
 import agersant.polaris.api.ItemsCallback
 import agersant.polaris.features.collection.directories.DirectoriesFragment
-import agersant.polaris.ui.OverscrollAdapter
 import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Handler

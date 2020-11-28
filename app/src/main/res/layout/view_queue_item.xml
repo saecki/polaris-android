@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,49 +13,55 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:contentDescription="@string/album_artwork"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:background="@drawable/artwork" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/collection_item_horizontal_padding"
         android:layout_marginEnd="@dimen/collection_item_horizontal_padding"
         android:duplicateParentState="true"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="?textAppearanceListItem"
+        android:textColor="@color/queue_item_foreground"
+        app:layout_constraintBottom_toTopOf="@id/artist"
+        app:layout_constraintEnd_toStartOf="@id/status_icon"
+        app:layout_constraintStart_toEndOf="@id/artwork"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Elevator Sunshine Girl" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="?textAppearanceListItem"
-            android:textColor="@color/queue_item_foreground"
-            tools:text="Elevator Sunshine Girl" />
-
-        <TextView
-            android:id="@+id/artist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="?textAppearanceListItemSecondary"
-            android:textColor="@color/queue_item_foreground"
-            tools:text="Solar Fields" />
-
-    </LinearLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/artist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/collection_item_horizontal_padding"
+        android:layout_marginEnd="@dimen/collection_item_horizontal_padding"
+        android:duplicateParentState="true"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="?textAppearanceListItemSecondary"
+        android:textColor="@color/queue_item_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/status_icon"
+        app:layout_constraintStart_toEndOf="@id/artwork"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="Solar Fields" />
 
     <ImageView
         android:id="@+id/status_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_gravity="center_vertical"
         android:layout_marginEnd="12dp"
         android:duplicateParentState="true"
-        android:src="@drawable/ic_sd_storage_black_24dp"
-        app:tint="@color/queue_item_foreground" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/queue_item_foreground"
+        tools:background="@drawable/ic_sd_storage_black_24dp" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

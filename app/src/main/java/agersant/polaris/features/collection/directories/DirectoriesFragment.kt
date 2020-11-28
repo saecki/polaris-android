@@ -57,7 +57,6 @@ class DirectoriesFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
         adapter = BrowseAdapterExplorer(App.state.api, App.state.playbackQueue)
-        adapter.topPadding = App.appBarLayout.height
 
         model.items.observe(viewLifecycleOwner) { items ->
             adapter.items = items

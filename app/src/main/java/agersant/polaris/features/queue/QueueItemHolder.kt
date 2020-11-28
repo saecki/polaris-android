@@ -1,5 +1,6 @@
 package agersant.polaris.features.queue
 
+import agersant.polaris.App
 import agersant.polaris.CollectionItem
 import agersant.polaris.PolarisState
 import agersant.polaris.R
@@ -76,7 +77,9 @@ class QueueItemHolder(
             updateIconTask!!.cancel(true)
             updateIconTask = null
         }
-        appState.api.loadImageIntoView(item, artwork)
+        if (item.artwork != null) {
+            appState.api.loadImageIntoView(item, artwork)
+        }
         beginIconUpdate()
     }
 
@@ -85,12 +88,15 @@ class QueueItemHolder(
         when (itemState) {
             QueueItemState.Idle -> {
                 statusIcon.setImageDrawable(null)
+                statusIcon.contentDescription = ""
             }
             QueueItemState.Downloading -> {
                 statusIcon.setImageResource(R.drawable.ic_sync_black_24dp)
+                statusIcon.contentDescription = App.resources.getString(R.string.queue_downloading)
             }
             QueueItemState.Downloaded -> {
                 statusIcon.setImageResource(R.drawable.ic_sd_storage_black_24dp)
+                statusIcon.contentDescription = App.resources.getString(R.string.queue_cached)
             }
         }
     }
