@@ -19,6 +19,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        App.appBarLayout = binding.appBarLayout
+        App.toolbar = binding.toolbar
+
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 

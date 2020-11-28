@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Space style="@style/ToolbarSpacing" />
+
     <agersant.polaris.ui.SquareLayout
         android:id="@+id/viewGroup"
         android:layout_width="match_parent"

@@ -24,6 +24,7 @@ import agersant.polaris.R;
 import agersant.polaris.api.API;
 import agersant.polaris.databinding.FragmentPlayerBinding;
 
+
 public class PlayerFragment extends Fragment {
 
     private FragmentPlayerBinding binding;
@@ -107,7 +108,9 @@ public class PlayerFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+        @NonNull LayoutInflater inflater,
+        @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentPlayerBinding.inflate(inflater);
 
         binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -215,26 +218,19 @@ public class PlayerFragment extends Fragment {
         } else {
             binding.buffering.setVisibility(View.INVISIBLE);
         }
-
     }
 
     private void populateWithTrack(CollectionItem item) {
         assert item != null;
 
         String title = item.getTitle();
-        if (title != null) {
-            binding.title.setText(title);
-        }
+        binding.title.setText(title);
 
         String artist = item.getArtist();
-        if (artist != null) {
-            binding.artist.setText(artist);
-        }
+        binding.artist.setText(artist);
 
         String album = item.getAlbum();
-        if (album != null) {
-            binding.album.setText(album);
-        }
+        binding.album.setText(album);
 
         String artworkPath = item.getArtwork();
         if (artworkPath != null) {

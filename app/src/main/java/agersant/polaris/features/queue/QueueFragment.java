@@ -15,10 +15,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Random;
 
@@ -31,15 +28,13 @@ import agersant.polaris.api.local.OfflineCache;
 import agersant.polaris.api.remote.DownloadQueue;
 import agersant.polaris.databinding.FragmentQueueBinding;
 
+
 public class QueueFragment extends Fragment {
 
     private QueueAdapter adapter;
     private BroadcastReceiver receiver;
     private FragmentQueueBinding binding;
-    private PlaybackQueue playbackQueue;
-    private PolarisPlayer player;
-    private OfflineCache offlineCache;
-    private DownloadQueue downloadQueue;
+    private PolarisState state;
 
     private void subscribeToEvents() {
         IntentFilter filter = new IntentFilter();
@@ -84,36 +79,25 @@ public class QueueFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        PolarisState state = App.state;
-        playbackQueue = state.playbackQueue;
-        player = state.player;
-        offlineCache = state.offlineCache;
-        downloadQueue = state.downloadQueue;
+        state = App.state;
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+        @NonNull LayoutInflater inflater,
+        @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         binding = FragmentQueueBinding.inflate(inflater);
 
-        binding.recyclerView.setHasFixedSize(true);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(App.instance));
-        DefaultItemAnimator animator = new DefaultItemAnimator() {
-            @Override
-            public boolean animateRemove(RecyclerView.ViewHolder holder) {
-                holder.itemView.setAlpha(0.f);
-                return false;
-            }
+        adapter = new QueueAdapter(state);
+        adapter.setTopPadding(App.appBarLayout.getHeight());
+        binding.recyclerView.setAdapter(adapter);
 
-            @Override
-            public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
-                return true;
-            }
-        };
-        binding.recyclerView.setItemAnimator(animator);
+        ItemTouchHelper.Callback callback = new QueueTouchCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView);
 
-        populate();
         updateTutorial();
 
         return binding.getRoot();
@@ -158,34 +142,23 @@ public class QueueFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_clear:
-                clear();
-                return true;
-            case R.id.action_shuffle:
-                shuffle();
-                return true;
-            case R.id.action_ordering_sequence:
-            case R.id.action_ordering_repeat_one:
-            case R.id.action_ordering_repeat_all:
-                setOrdering(item);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_clear) {
+            clear();
+            return true;
+        } else if (itemId == R.id.action_shuffle) {
+            shuffle();
+            return true;
+        } else if (itemId == R.id.action_ordering_sequence || itemId == R.id.action_ordering_repeat_one || itemId == R.id.action_ordering_repeat_all) {
+            setOrdering(item);
+            return true;
         }
-    }
-
-    private void populate() {
-        adapter = new QueueAdapter(playbackQueue, player, offlineCache, downloadQueue);
-        ItemTouchHelper.Callback callback = new QueueTouchCallback(adapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(binding.recyclerView);
-        binding.recyclerView.setAdapter(adapter);
+        return super.onOptionsItemSelected(item);
     }
 
     private void clear() {
         int oldCount = adapter.getItemCount();
-        playbackQueue.clear();
+        state.playbackQueue.clear();
         adapter.notifyItemRangeRemoved(0, oldCount);
     }
 
@@ -194,22 +167,19 @@ public class QueueFragment extends Fragment {
         int count = adapter.getItemCount();
         for (int i = 0; i <= count - 2; i++) {
             int j = i + rng.nextInt(count - i);
-            playbackQueue.move(i, j);
+            state.playbackQueue.move(i, j);
             adapter.notifyItemMoved(i, j);
         }
     }
 
     private void setOrdering(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_ordering_sequence:
-                playbackQueue.setOrdering(PlaybackQueue.Ordering.SEQUENCE);
-                break;
-            case R.id.action_ordering_repeat_one:
-                playbackQueue.setOrdering(PlaybackQueue.Ordering.REPEAT_ONE);
-                break;
-            case R.id.action_ordering_repeat_all:
-                playbackQueue.setOrdering(PlaybackQueue.Ordering.REPEAT_ALL);
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_ordering_sequence) {
+            state.playbackQueue.setOrdering(PlaybackQueue.Ordering.SEQUENCE);
+        } else if (itemId == R.id.action_ordering_repeat_one) {
+            state.playbackQueue.setOrdering(PlaybackQueue.Ordering.REPEAT_ONE);
+        } else if (itemId == R.id.action_ordering_repeat_all) {
+            state.playbackQueue.setOrdering(PlaybackQueue.Ordering.REPEAT_ALL);
         }
         updateOrderingIcon();
     }
@@ -227,10 +197,10 @@ public class QueueFragment extends Fragment {
     }
 
     private void updateOrderingIcon() {
-        //int icon = getIconForOrdering(playbackQueue.getOrdering());
-        //MenuItem orderingItem = binding.toolbar.getMenu().findItem(R.id.action_ordering);
-        //if (orderingItem != null) {
-        //    orderingItem.setIcon(icon);
-        //}
+        int icon = getIconForOrdering(state.playbackQueue.getOrdering());
+        MenuItem orderingItem = App.toolbar.getMenu().findItem(R.id.action_ordering);
+        if (orderingItem != null) {
+            orderingItem.setIcon(icon);
+        }
     }
 }

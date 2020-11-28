@@ -10,7 +10,7 @@
 
         <item name="colorAdd">@color/add</item>
 
-        <item name="android:statusBarColor">?colorBackgroundFloating</item>
+        <item name="android:statusBarColor">?android:colorBackground</item>
         <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
 
         <item name="materialCardViewStyle">@style/Card</item>
@@ -30,15 +30,33 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
-    <style name="CollectionItem" parent="Widget.MaterialComponents.TextView">
-        <item name="drawableTint">?colorOnBackground</item>
-        <item name="android:drawablePadding">@dimen/collection_item_horizontal_padding</item>
+    <style name="CollectionItemText" parent="Widget.MaterialComponents.TextView">
         <item name="android:paddingTop">@dimen/collection_item_vertical_padding</item>
         <item name="android:paddingBottom">@dimen/collection_item_vertical_padding</item>
         <item name="android:paddingLeft">@dimen/collection_item_horizontal_padding</item>
         <item name="android:paddingRight">@dimen/collection_item_horizontal_padding</item>
-        <item name="android:textAppearance">?textAppearanceBody1</item>
+        <item name="android:textAppearance">?textAppearanceListItem</item>
         <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="CollectionItemIconStart">
+        <item name="android:paddingTop">@dimen/collection_item_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/collection_item_vertical_padding</item>
+        <item name="android:paddingLeft">@dimen/collection_item_horizontal_padding</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="ToolbarSpacing">
+        <item name="android:layout_marginTop">@dimen/toolbar_margin_vertical</item>
+        <item name="android:layout_marginBottom">@dimen/toolbar_margin_vertical</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="ScrollViewSpacing">
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_width">0dp</item>
     </style>
 
 </resources>

@@ -11,6 +11,7 @@ import java.util.Collections;
 import agersant.polaris.api.local.OfflineCache;
 import agersant.polaris.api.remote.DownloadQueue;
 
+
 public class PlaybackQueue {
 
     public static final String CHANGED_ORDERING = "CHANGED_ORDERING";
