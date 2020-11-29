@@ -4,21 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="end"
     android:orientation="horizontal"
     android:paddingStart="@dimen/collection_item_horizontal_spacing"
     android:paddingTop="@dimen/collection_item_vertical_spacing"
     android:paddingEnd="@dimen/collection_item_horizontal_spacing"
     android:paddingBottom="@dimen/collection_item_vertical_spacing">
-
-    <ImageView
-        android:id="@+id/status_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:contentDescription="@string/add_to_queue"
-        android:paddingEnd="@dimen/collection_item_horizontal_spacing"
-        app:tint="?colorAdd"
-        tools:src="@drawable/baseline_playlist_add_24" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/status_text"
@@ -26,7 +17,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textAppearance="?textAppearanceButton"
-        android:textColor="?colorAdd"
+        android:textColor="?colorAddNext"
         tools:text="Add to queue" />
+
+    <ImageView
+        android:id="@+id/status_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/add_to_queue"
+        android:paddingStart="@dimen/collection_item_horizontal_spacing"
+        app:tint="?colorAddNext"
+        tools:src="@drawable/baseline_playlist_add_24" />
 
 </LinearLayout>

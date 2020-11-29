@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlin.random.Random
 
 class QueueViewModel : ViewModel() {
     var receiver: BroadcastReceiver? = null
@@ -17,7 +18,7 @@ class QueueViewModel : ViewModel() {
     var lastPlayingTrack = playingTrackPositon()
     val playingTrack = MutableLiveData(playingTrackPositon())
     val items = MutableLiveData<List<CollectionItem>>(state.playbackQueue.items.toList())
-    val itemsState = MutableLiveData(Unit)
+    val itemsState = MutableLiveData(0)
     val ordering = MutableLiveData(state.playbackQueue.ordering)
 
     init {
@@ -40,7 +41,7 @@ class QueueViewModel : ViewModel() {
     }
 
     private fun playingTrackPositon(): Int {
-        return state.playbackQueue.items.indexOf(state.player.currentItem)
+        return state.playbackQueue.items.indexOfFirst { it === state.player.currentItem }
     }
 
     private fun subscribeEvents() {
@@ -73,7 +74,7 @@ class QueueViewModel : ViewModel() {
                     OfflineCache.AUDIO_CACHED,
                     OfflineCache.AUDIO_REMOVED_FROM_CACHE,
                     DownloadQueue.WORKLOAD_CHANGED,
-                    -> itemsState.value = Unit
+                    -> itemsState.value = Random.nextInt()
                 }
             }
         }

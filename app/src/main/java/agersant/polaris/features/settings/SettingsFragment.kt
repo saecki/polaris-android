@@ -14,11 +14,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val passwordKey = resources.getString(R.string.pref_key_password)
         val passwordPreference = findPreference<EditTextPreference>(passwordKey)!!
-        passwordPreference.setOnPreferenceChangeListener { _, newValue ->
-            passwordPreference.summary = newValue.toString().replace(".".toRegex(), "*")
-            true
-        }
-        passwordPreference.summary = passwordPreference.text.toString().replace(".".toRegex(), "*")
+        passwordPreference.summaryProvider = PasswordSummaryProvider()
 
         val themeKey = resources.getString(R.string.pref_key_theme)
         val themePreference = findPreference<ListPreference>(themeKey)!!

@@ -14,7 +14,8 @@ internal class BrowseItemHolderExplorer(
     adapter: BrowseAdapter,
     itemView: View,
     itemQueueStatusView: View,
-) : BrowseItemHolder(api, playbackQueue, adapter, itemView, itemQueueStatusView) {
+    itemQueueNextStatusView: View,
+) : BrowseItemHolder(api, playbackQueue, adapter, itemView, itemQueueStatusView, itemQueueNextStatusView) {
 
     private val text: MaterialTextView = itemView.findViewById(R.id.text)
     private val icon: ImageView = itemView.findViewById(R.id.icon)
@@ -31,6 +32,6 @@ internal class BrowseItemHolderExplorer(
     }
 
     init {
-        text.setOnClickListener(this)
+        itemView.setOnClickListener(this)
     }
 }

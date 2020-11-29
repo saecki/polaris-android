@@ -10,13 +10,17 @@
         <item name="colorBackgroundFloating">@color/backgroundFloating</item>
 
         <item name="colorAdd">@color/add</item>
+        <item name="colorAddNext">@color/addNext</item>
+        <item name="colorRemove">@color/remove</item>
 
         <item name="android:statusBarColor">?colorBackgroundFloating</item>
         <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
 
         <item name="appBarLayoutStyle">@style/AppBarLayout</item>
-
-        <item name="materialCardViewStyle">@style/Card</item>
     </style>
 
     <!-- Override Styles -->
@@ -25,11 +29,7 @@
     </style>
 
     <style name="BottomNavigationView" parent="Widget.Design.BottomNavigationView">
-        <item name="android:background">?colorBackgroundFloating</item>
-    </style>
-
-    <style name="Card" parent="Widget.MaterialComponents.CardView">
-        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="android:backgroundTint">?colorBackgroundFloating</item>
     </style>
 
     <!-- Custom Styles -->

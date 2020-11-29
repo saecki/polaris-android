@@ -26,15 +26,15 @@ abstract class BrowseItemHolder(
     private val adapter: BrowseAdapter,
     itemView: View,
     private val queueStatusView: View,
+    private val queueNextStatusView: View,
 ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
     private lateinit var item: CollectionItem
-    private val statusText: MaterialTextView = queueStatusView.findViewById(R.id.status_text)
-    private val statusIcon: ImageView = queueStatusView.findViewById(R.id.status_icon)
 
     open fun bind(item: CollectionItem) {
         this.item = item
-        setStatusToIdle()
+        setStatusToIdle(queueStatusView)
+        setStatusToIdle(queueNextStatusView)
     }
 
     override fun onClick(view: View) {
@@ -46,24 +46,34 @@ abstract class BrowseItemHolder(
         }
     }
 
-    open fun onSwiped(view: View?) {
-        if (item.isDirectory) {
-            queueDirectory()
-            setStatusToFetching()
+    open fun onSwiped(view: View?, direction: Int) {
+        if (direction == ItemTouchHelper.LEFT) {
+            if (item.isDirectory) {
+                queueDirectory(queueNextStatusView) //TODO: queue next
+                setStatusToFetching(queueNextStatusView)
+            } else {
+                playbackQueue.addItem(item) //TODO: queue next
+                setStatusToQueued(queueNextStatusView)
+            }
         } else {
-            playbackQueue.addItem(item)
-            setStatusToQueued()
+            if (item.isDirectory) {
+                queueDirectory(queueStatusView)
+                setStatusToFetching(queueStatusView)
+            } else {
+                playbackQueue.addItem(item)
+                setStatusToQueued(queueStatusView)
+            }
         }
     }
 
-    private fun queueDirectory() {
+    private fun queueDirectory(view: View) {
         val fetchingItem = item
         val handlers: ItemsCallback = object : ItemsCallback {
             override fun onSuccess(items: ArrayList<out CollectionItem>) {
                 Handler(Looper.getMainLooper()).post {
                     playbackQueue.addItems(items)
                     if (item === fetchingItem) {
-                        setStatusToQueued()
+                        setStatusToQueued(view)
                     }
                 }
             }
@@ -71,7 +81,7 @@ abstract class BrowseItemHolder(
             override fun onError() {
                 Handler(Looper.getMainLooper()).post {
                     if (item === fetchingItem) {
-                        setStatusToQueueError()
+                        setStatusToQueueError(view)
                     }
                 }
             }
@@ -79,29 +89,37 @@ abstract class BrowseItemHolder(
         api.flatten(item.path, handlers)
     }
 
-    private fun setStatusToIdle() {
+    private fun setStatusToIdle(view: View) {
+        val statusText = view.findViewById<MaterialTextView>(R.id.status_text)
+        val statusIcon = view.findViewById<ImageView>(R.id.status_icon)
         statusText.setText(R.string.add_to_queue)
         statusIcon.setImageResource(R.drawable.baseline_playlist_add_24)
-        itemView.requestLayout()
+        view.requestLayout()
     }
 
-    private fun setStatusToFetching() {
+    private fun setStatusToFetching(view: View) {
+        val statusText = view.findViewById<MaterialTextView>(R.id.status_text)
+        val statusIcon = view.findViewById<ImageView>(R.id.status_icon)
         statusText.setText(R.string.queuing)
         statusIcon.setImageResource(R.drawable.baseline_hourglass_empty_24)
-        itemView.requestLayout()
+        view.requestLayout()
     }
 
-    private fun setStatusToQueued() {
+    private fun setStatusToQueued(view: View) {
+        val statusText = view.findViewById<MaterialTextView>(R.id.status_text)
+        val statusIcon = view.findViewById<ImageView>(R.id.status_icon)
         statusText.setText(R.string.queued)
         statusIcon.setImageResource(R.drawable.baseline_playlist_add_check_24)
-        itemView.requestLayout()
+        view.requestLayout()
         waitAndSwipeBack()
     }
 
-    private fun setStatusToQueueError() {
+    private fun setStatusToQueueError(view: View) {
+        val statusText = view.findViewById<MaterialTextView>(R.id.status_text)
+        val statusIcon = view.findViewById<ImageView>(R.id.status_icon)
         statusText.setText(R.string.queuing_error)
         statusIcon.setImageResource(R.drawable.baseline_error_24)
-        itemView.requestLayout()
+        view.requestLayout()
         waitAndSwipeBack()
     }
 
@@ -113,20 +131,37 @@ abstract class BrowseItemHolder(
                 val position = adapterPosition
                 adapter.notifyItemChanged(position)
             }
-        }, App.resources.getInteger(android.R.integer.config_longAnimTime).toLong())
+        }, App.resources.getInteger(android.R.integer.config_longAnimTime).toLong() * 2)
     }
 
     fun onChildDraw(canvas: Canvas, dX: Float, actionState: Int) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             val widthSpec = View.MeasureSpec.makeMeasureSpec(itemView.width, View.MeasureSpec.EXACTLY)
             val heightSpec = View.MeasureSpec.makeMeasureSpec(itemView.height, View.MeasureSpec.EXACTLY)
-            queueStatusView.measure(widthSpec, heightSpec)
-            queueStatusView.layout(0, 0, queueStatusView.measuredWidth, queueStatusView.measuredHeight)
-            canvas.save()
-            canvas.translate(itemView.left.toFloat(), itemView.top.toFloat())
-            canvas.clipRect(0, 0, ceil(dX.toDouble()).toInt(), queueStatusView.measuredHeight)
-            queueStatusView.draw(canvas)
-            canvas.restore()
+
+            if (dX > 0) {
+                queueStatusView.measure(widthSpec, heightSpec)
+                queueStatusView.layout(0, 0, queueStatusView.measuredWidth, queueStatusView.measuredHeight)
+                canvas.save()
+                canvas.translate(itemView.left.toFloat(), itemView.top.toFloat())
+
+                val clipWidth = ceil(dX.toDouble()).toInt()
+                canvas.clipRect(0, 0, clipWidth, queueStatusView.measuredHeight)
+
+                queueStatusView.draw(canvas)
+                canvas.restore()
+            } else {
+                queueNextStatusView.measure(widthSpec, heightSpec)
+                queueNextStatusView.layout(0, 0, queueNextStatusView.measuredWidth, queueNextStatusView.measuredHeight)
+                canvas.save()
+                canvas.translate(itemView.left.toFloat(), itemView.top.toFloat())
+
+                val clipWidth = ceil(dX.toDouble()).toInt()
+                canvas.clipRect(itemView.width - clipWidth, 0, clipWidth, queueNextStatusView.measuredHeight)
+
+                queueNextStatusView.draw(canvas)
+                canvas.restore()
+            }
         }
     }
 

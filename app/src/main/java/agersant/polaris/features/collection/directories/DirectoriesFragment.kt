@@ -21,7 +21,6 @@ class DirectoriesFragment : Fragment() {
     }
 
     private val model: DirectoriesViewModel by viewModels()
-    private lateinit var path: String
 
     private lateinit var binding: FragmentDirectoriesBinding
     private lateinit var fetchCallback: ItemsCallback
@@ -46,7 +45,9 @@ class DirectoriesFragment : Fragment() {
             }
         }
 
-        path = arguments?.getString(PATH) ?: ""
+        model.path = arguments?.getString(PATH) ?: ""
+
+        model.fetchUpdates()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -59,21 +60,20 @@ class DirectoriesFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
-        binding.errorRetry.setOnClickListener { loadContent() }
-
-        loadContent()
+        binding.errorRetry.setOnClickListener { model.fetchUpdates() }
 
         model.items.observe(viewLifecycleOwner) { items ->
             adapter.items = items
         }
+        model.fetching.observe(viewLifecycleOwner) { fetching ->
+            if (fetching) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.GONE
+        }
+        model.fetchingError.observe(viewLifecycleOwner) { error ->
+            if (error) binding.errorMessage.visibility = View.VISIBLE
+            else binding.errorMessage.visibility = View.GONE
+        }
 
         return binding.root
-    }
-
-    private fun loadContent() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.errorMessage.visibility = View.GONE
-
-        App.state.api.browse(path, fetchCallback)
     }
 }

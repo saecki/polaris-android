@@ -14,7 +14,7 @@ internal class BrowseItemHolderDiscography(
     adapter: BrowseAdapter,
     itemView: View,
     itemQueueStatusView: View,
-) : BrowseItemHolder(api, playbackQueue, adapter, itemView, itemQueueStatusView) {
+) : BrowseItemHolder(api, playbackQueue, adapter, itemView, itemQueueStatusView, itemQueueStatusView) { //TODO use different status view for queue next
 
     private val artwork: ImageView = itemView.findViewById(R.id.artwork)
     private val artist: TextView = itemView.findViewById(R.id.artist)

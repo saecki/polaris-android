@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="agersant.polaris.features.collection.CollectionFragment">
 
     <androidx.gridlayout.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:padding="@dimen/card_margin"
+        android:padding="@dimen/collection_section_margin"
         app:columnCount="2"
         app:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
+            android:layout_margin="@dimen/collection_section_margin"
             app:layout_columnWeight="1">
 
             <com.google.android.material.textview.MaterialTextView
@@ -31,7 +33,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
+            android:layout_margin="@dimen/collection_section_margin"
             app:layout_columnWeight="1">
 
             <com.google.android.material.textview.MaterialTextView
@@ -48,7 +50,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
+            android:layout_margin="@dimen/collection_section_margin"
             app:layout_columnWeight="1">
 
             <com.google.android.material.textview.MaterialTextView
@@ -65,7 +67,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
+            android:layout_margin="@dimen/collection_section_margin"
             app:layout_columnWeight="1">
 
             <com.google.android.material.textview.MaterialTextView
@@ -82,7 +84,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
+            android:layout_margin="@dimen/collection_section_margin"
             app:layout_columnWeight="1">
 
             <com.google.android.material.textview.MaterialTextView
@@ -99,7 +101,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
+            android:layout_margin="@dimen/collection_section_margin"
             app:layout_columnWeight="1">
 
             <com.google.android.material.textview.MaterialTextView

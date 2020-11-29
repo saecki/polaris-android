@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PolarisNEW</string>
+
+    <string name="collection">Collection</string>
+    <string name="collection_directories">Ordner</string>
+    <string name="collection_random">Zufällig</string>
+    <string name="collection_recent">Kürzlich</string>
+    <string name="collection_artists">Künstler</string>
+    <string name="collection_albums">Albums</string>
+    <string name="collection_genres">Genres</string>
+
+    <string name="browse_error">An error occurred while listing content</string>
+    <string name="browse_error_retry">Erneut versuchen</string>
+    <string name="browse_disc_number">CD %1$d</string>
+
+    <string name="playlists">Wiedergabelisten</string>
+
+    <string name="now_playing">Now Playing</string>
+    <string name="player_artwork">Album Artwork</string>
+    <string name="player_previous_track">Vorheriges Lied</string>
+    <string name="player_next_track">Nächstes Lied</string>
+    <string name="player_play_pause">Abspielen/Pausieren</string>
+    <string name="player_play">Abspielen</string>
+    <string name="player_pause">Pausieren</string>
+    <string name="player_opening">Öffnen…</string>
+    <string name="player_buffering">Laden…</string>
+
+    <string name="queue">Warteschlange</string>
+    <string name="queue_empty">Make a playlist by swiping music from your collection to here.</string>
+    <string name="queue_streaming">Streaming</string>
+    <string name="queue_downloading">Downloading</string>
+    <string name="queue_cached">Cached Locally</string>
+
+    <string name="search">Suchen</string>
+
+    <string name="pref_server_url">Server Adresse</string>
+    <string name="pref_username">Benutzer</string>
+    <string name="pref_password">Passwort</string>
+    <string name="pref_offline">Offline Modus</string>
+    <string name="pref_num_songs_preload">Songs to preload</string>
+    <string name="pref_offline_cache_size">Offline Cache Größe</string>
+    <string name="pref_theme">Erscheinungsbild</string>
+
+    <string name="settings">Einstellungen</string>
+    <string name="clear">Alle entfernen</string>
+    <string name="shuffle">Shuffle</string>
+
+    <string name="ordering">Ordering</string>
+    <string name="ordering_sequence">Standard</string>
+    <string name="ordering_repeat_one">Eins wiederholen</string>
+    <string name="ordering_repeat_all">Alle wiederholen</string>
+
+    <string name="add_to_queue">Queue</string>
+    <string name="queued">Added to queue</string>
+    <string name="queuing">Fetching…</string>
+    <string name="queuing_error">Something went wrong</string>
+    <string name="album_artwork">Album Artwork</string>
+    <string name="playback_error">A media playback error occurred</string>
+
+    <string name="media_player_service_description">Audio playback service for Polaris</string>
+    <string name="download_service_description">Music download service for Polaris</string>
+    <string name="scrobble_service_description">Last.fm scrobbling service for Polaris</string>
+
+    <string name="media_notifications_channel_description">Polaris audio playback controls</string>
+</resources>

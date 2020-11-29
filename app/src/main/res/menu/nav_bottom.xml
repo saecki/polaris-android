@@ -2,27 +2,32 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_collection"
+        android:id="@+id/collection"
+        android:contentDescription="@string/collection"
         android:icon="@drawable/baseline_library_music_24"
         android:title="@string/collection" />
 
     <item
-        android:id="@+id/nav_playlists"
+        android:id="@+id/playlists"
+        android:contentDescription="@string/playlists"
         android:icon="@drawable/baseline_queue_music_24"
         android:title="@string/playlists" />
 
     <item
-        android:id="@+id/nav_now_playing"
+        android:id="@+id/now_playing"
+        android:contentDescription="@string/now_playing"
         android:icon="@drawable/baseline_play_circle_filled_24"
         android:title="@string/now_playing" />
 
     <item
-        android:id="@+id/nav_queue"
+        android:id="@+id/queue"
+        android:contentDescription="@string/queue"
         android:icon="@drawable/baseline_playlist_play_24"
         android:title="@string/queue" />
 
     <item
-        android:id="@+id/nav_search"
+        android:id="@+id/search"
+        android:contentDescription="@string/search"
         android:icon="@drawable/baseline_search_24"
         android:title="@string/search" />
 

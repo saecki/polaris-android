@@ -20,5 +20,6 @@
 
     <color name="backgroundFloating">#FFFFFF</color>
     <color name="add">#009E2C</color>
+    <color name="addNext">#D7850A</color>
     <color name="remove">#FF2700</color>
 </resources>

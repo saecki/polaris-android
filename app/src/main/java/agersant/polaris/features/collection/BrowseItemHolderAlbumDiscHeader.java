@@ -15,7 +15,7 @@ class BrowseItemHolderAlbumDiscHeader extends BrowseItemHolder {
     private final TextView textView;
 
     BrowseItemHolderAlbumDiscHeader(API api, PlaybackQueue playbackQueue, BrowseAdapter adapter, View itemView, View itemQueueStatusView) {
-        super(api, playbackQueue, adapter, itemView, itemQueueStatusView);
+        super(api, playbackQueue, adapter, itemView, itemQueueStatusView, itemQueueStatusView);
         textView = itemView.findViewById(R.id.disc);
     }
 
@@ -25,7 +25,7 @@ class BrowseItemHolderAlbumDiscHeader extends BrowseItemHolder {
     }
 
     @Override
-    public void onSwiped(View view) {
+    public void onSwiped(View view, int direction) {
         throw new UnsupportedOperationException();
     }
 

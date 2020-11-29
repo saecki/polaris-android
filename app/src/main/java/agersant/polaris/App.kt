@@ -35,9 +35,9 @@ object App {
         companion object {
             fun tryFrom(value: Any?): Theme {
                 return try {
-                    Theme.values()[value.toString().toInt()]
+                    values()[value.toString().toInt()]
                 } catch (e: Throwable) {
-                    Theme.System
+                    System
                 }
             }
         }

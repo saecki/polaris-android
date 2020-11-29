@@ -14,7 +14,7 @@ internal class BrowseItemHolderAlbumTrack(
     adapter: BrowseAdapter,
     itemView: View,
     itemQueueStatusView: View,
-) : BrowseItemHolder(api, playbackQueue, adapter, itemView, itemQueueStatusView) {
+) : BrowseItemHolder(api, playbackQueue, adapter, itemView, itemQueueStatusView, itemQueueStatusView) { //TODO use different status view for queue next
 
     private val trackNumberText: TextView = itemView.findViewById(R.id.track_number)
     private val titleText: TextView = itemView.findViewById(R.id.title)

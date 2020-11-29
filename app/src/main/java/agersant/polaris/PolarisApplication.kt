@@ -19,6 +19,5 @@ class PolarisApplication : Application() {
         playbackServiceIntent.action = PolarisPlaybackService.APP_INTENT_COLD_BOOT
         startService(playbackServiceIntent)
         startService(Intent(this, PolarisDownloadService::class.java))
-
     }
 }

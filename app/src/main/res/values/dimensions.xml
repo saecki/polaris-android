@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="collection_section_icon_padding">16dp</dimen>
-    <dimen name="collection_section_text_padding">16dp</dimen>
-    <dimen name="collection_section_margin">8dp</dimen>
+    <dimen name="collection_section_icon_padding">12dp</dimen>
+    <dimen name="collection_section_text_padding">12dp</dimen>
+    <dimen name="collection_section_margin">6dp</dimen>
 
+    <dimen name="collection_item_height">48dp</dimen>
     <dimen name="collection_item_horizontal_spacing">16dp</dimen>
-    <dimen name="collection_item_vertical_spacing">16dp</dimen>
+    <dimen name="collection_item_vertical_spacing">8dp</dimen>
 
     <dimen name="player_artwork_radius">16dp</dimen>
     <dimen name="player_artwork_vertical_margin">8dp</dimen>
     <dimen name="player_artwork_horizontal_margin">16dp</dimen>
 
     <dimen name="queue_item_horizontal_spacing">12dp</dimen>
-    <dimen name="queue_item_vertical_spacing">12dp</dimen>
+    <dimen name="queue_item_vertical_spacing">6dp</dimen>
     <dimen name="queue_artwork_radius">8dp</dimen>
     <dimen name="queue_artwork_margin">2dp</dimen>
-
-    <dimen name="card_margin">8dp</dimen>
-    <dimen name="card_elevation">3dp</dimen>
 
     <dimen name="toolbar_margin_horizontal">16dp</dimen>
     <dimen name="toolbar_margin_vertical">8dp</dimen>
     <dimen name="toolbar_radius">10dp</dimen>
     <dimen name="toolbar_elevation">8dp</dimen>
+
+    <dimen name="corner_radius">8dp</dimen>
+    <dimen name="dialog_corner_radius">8dp</dimen>
+    <dimen name="card_elevation">3dp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="button_corner_radius">4dp</dimen>
 
 </resources>
