@@ -1,6 +1,5 @@
 package agersant.polaris.features.collection
 
-import agersant.polaris.App
 import agersant.polaris.CollectionItem
 import agersant.polaris.PlaybackQueue
 import agersant.polaris.R
@@ -13,6 +12,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.ImageView
+import androidx.core.os.postDelayed
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -126,12 +126,12 @@ abstract class BrowseItemHolder(
     private fun waitAndSwipeBack() {
         val oldItem = item
         val handler = Handler()
-        handler.postDelayed({
+        handler.postDelayed(1000L) {
             if (item === oldItem) {
                 val position = adapterPosition
                 adapter.notifyItemChanged(position)
             }
-        }, App.resources.getInteger(android.R.integer.config_longAnimTime).toLong() * 2)
+        }
     }
 
     fun onChildDraw(canvas: Canvas, dX: Float, actionState: Int) {
@@ -145,7 +145,7 @@ abstract class BrowseItemHolder(
                 canvas.save()
                 canvas.translate(itemView.left.toFloat(), itemView.top.toFloat())
 
-                val clipWidth = ceil(dX.toDouble()).toInt()
+                val clipWidth = ceil(dX).toInt()
                 canvas.clipRect(0, 0, clipWidth, queueStatusView.measuredHeight)
 
                 queueStatusView.draw(canvas)
@@ -156,7 +156,7 @@ abstract class BrowseItemHolder(
                 canvas.save()
                 canvas.translate(itemView.left.toFloat(), itemView.top.toFloat())
 
-                val clipWidth = ceil(dX.toDouble()).toInt()
+                val clipWidth = ceil(dX).toInt()
                 canvas.clipRect(itemView.width - clipWidth, 0, clipWidth, queueNextStatusView.measuredHeight)
 
                 queueNextStatusView.draw(canvas)

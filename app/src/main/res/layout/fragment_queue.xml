@@ -11,7 +11,10 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="true"
+        android:overScrollMode="never"
+        android:paddingTop="@dimen/queue_item_vertical_spacing"
+        android:paddingBottom="@dimen/queue_item_vertical_spacing"
+        android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/view_queue_item" />
 

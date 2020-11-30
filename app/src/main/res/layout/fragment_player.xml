@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/player_artwork_horizontal_margin"
-        app:cardCornerRadius="@dimen/player_artwork_radius">
+        app:cardCornerRadius="@dimen/player_artwork_vertical_radius">
 
         <agersant.polaris.ui.SquareLayout
             android:id="@+id/viewGroup"

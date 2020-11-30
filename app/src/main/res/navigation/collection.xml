@@ -21,4 +21,6 @@
         android:label="@string/collection"
         tools:layout="@layout/fragment_directories" />
 
+    <include app:graph="@navigation/settings" />
+
 </navigation>

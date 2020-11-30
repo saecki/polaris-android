@@ -18,8 +18,9 @@
 
     <color name="aquamarine">#58F5D1</color>
 
+    <color name="backgroundBelow">#FFFFFF</color>
     <color name="backgroundFloating">#FFFFFF</color>
     <color name="add">#009E2C</color>
-    <color name="addNext">#D7850A</color>
+    <color name="addNext">#F69502</color>
     <color name="remove">#FF2700</color>
 </resources>

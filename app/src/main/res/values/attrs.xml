@@ -6,6 +6,8 @@
     <declare-styleable name="QueueItemView">
         <attr name="state_is_playing" format="boolean" />
     </declare-styleable>
+
+    <attr name="colorBackgroundBelow" format="color"/>
     <attr name="colorAdd" format="color" />
     <attr name="colorAddNext" format="color" />
     <attr name="colorRemove" format="color" />

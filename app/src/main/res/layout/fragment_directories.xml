@@ -9,18 +9,20 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:overScrollMode="never"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/view_browse_explorer_item" />
 
-    <ProgressBar
+    <!-- TODO: use drawable without padding -->
+    <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progress_bar"
+        style="?android:progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:indeterminateTint="@color/lightBlue600"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateDuration="@android:integer/config_shortAnimTime"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <LinearLayout
         android:id="@+id/error_message"

@@ -11,4 +11,6 @@
         android:label="@string/now_playing"
         tools:layout="@layout/fragment_player" />
 
+    <include app:graph="@navigation/settings" />
+
 </navigation>

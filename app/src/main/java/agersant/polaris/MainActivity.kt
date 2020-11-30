@@ -4,8 +4,8 @@ import agersant.polaris.databinding.ActivityMainBinding
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.*
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 
 
@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         if (savedInstanceState == null) setupNavigation()
+
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -43,9 +44,7 @@ class MainActivity : AppCompatActivity() {
             R.navigation.now_playing,
             R.navigation.queue,
             R.navigation.search,
-            R.navigation.settings,
         )
-
 
 
         val controller = binding.bottomNavigation.setupWithNavController(
@@ -56,7 +55,12 @@ class MainActivity : AppCompatActivity() {
         )
 
         controller.observe(this) { navController ->
-            binding.toolbar.setupWithNavController(navController)
+            val appBarConfig = AppBarConfiguration(
+                navController.graph,
+                binding.backdropMenu,
+            )
+
+            binding.toolbar.setupWithNavController(navController, appBarConfig)
             binding.drawerNavigation.setupWithNavController(navController)
         }
         currentNavController = controller

@@ -9,11 +9,12 @@
         <item name="colorSecondary">@color/lightBlue600</item>
         <item name="colorBackgroundFloating">@color/backgroundFloating</item>
 
+        <item name="colorBackgroundBelow">@color/backgroundBelow</item>
         <item name="colorAdd">@color/add</item>
         <item name="colorAddNext">@color/addNext</item>
         <item name="colorRemove">@color/remove</item>
 
-        <item name="android:statusBarColor">?colorBackgroundFloating</item>
+        <item name="android:statusBarColor">?colorBackgroundBelow</item>
         <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
         <item name="cornerRadius">@dimen/corner_radius</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
@@ -25,7 +26,9 @@
 
     <!-- Override Styles -->
     <style name="AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
-        <item name="android:backgroundTint">?colorBackgroundFloating</item>
+        <item name="elevation">0dp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:backgroundTint">?colorBackgroundBelow</item>
     </style>
 
     <style name="BottomNavigationView" parent="Widget.Design.BottomNavigationView">
@@ -33,6 +36,11 @@
     </style>
 
     <!-- Custom Styles -->
+    <style name="Content">
+        <item name="android:background">@drawable/content_background</item>
+        <item name="android:elevation">@dimen/content_elevation</item>
+    </style>
+
     <style name="CollectionSection" parent="Widget.MaterialComponents.TextView">
         <item name="drawableTint">?android:textColorPrimary</item>
         <item name="android:drawablePadding">@dimen/collection_section_icon_padding</item>
