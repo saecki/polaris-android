@@ -4,13 +4,12 @@ import agersant.polaris.databinding.ActivityMainBinding
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
-import androidx.navigation.*
+import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 
 
 class MainActivity : AppCompatActivity() {
-
     private var currentNavController: LiveData<NavController>? = null
     private lateinit var binding: ActivityMainBinding
 
@@ -18,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        App.appBarLayout = binding.appBarLayout
         App.toolbar = binding.toolbar
 
         setContentView(binding.root)
@@ -46,7 +44,6 @@ class MainActivity : AppCompatActivity() {
             R.navigation.search,
         )
 
-
         val controller = binding.bottomNavigation.setupWithNavController(
             navGraphIds = navGraphIds,
             fragmentManager = supportFragmentManager,
@@ -61,7 +58,8 @@ class MainActivity : AppCompatActivity() {
             )
 
             binding.toolbar.setupWithNavController(navController, appBarConfig)
-            binding.drawerNavigation.setupWithNavController(navController)
+            binding.backdropNavigation.setupWithNavController(navController)
+            binding.backdropMenu.setUpWithNavController(navController)
         }
         currentNavController = controller
     }

@@ -65,7 +65,7 @@ class QueueFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_queue, menu)
+        inflater.inflate(R.menu.queue, menu)
         updateOrderingIcon(model.ordering.value!!)
     }
 

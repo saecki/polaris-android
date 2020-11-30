@@ -11,6 +11,6 @@
         android:label="@string/queue"
         tools:layout="@layout/fragment_queue" />
 
-    <include app:graph="@navigation/settings" />
+    <include app:graph="@navigation/menu" />
 
 </navigation>

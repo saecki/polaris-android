@@ -1,61 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="0dp"
-        app:layout_constraintTop_toTopOf="parent">
+        android:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/transparent"
-            android:elevation="0dp"
-            android:foregroundTint="?colorOnBackground" />
-
-        <agersant.polaris.ui.BackdropMenu
-            android:id="@+id/backdrop_menu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.navigation.NavigationView
-                android:id="@+id/drawer_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                app:menu="@menu/nav_drawer" />
-
-        </agersant.polaris.ui.BackdropMenu>
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
+    <agersant.polaris.ui.BackdropMenu
+        android:id="@+id/backdrop_menu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:backdropLayout="@id/backdrop_layout">
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/backdrop_navigation"
+            style="@style/BackdropNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/nav_backdrop" />
+
+    </agersant.polaris.ui.BackdropMenu>
+
+    <agersant.polaris.ui.BackdropLayout
+        android:id="@+id/backdrop_layout"
         style="@style/Content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_layout">
+        android:layout_weight="1">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </FrameLayout>
+    </agersant.polaris.ui.BackdropLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/nav_bottom" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -21,6 +21,12 @@
         android:label="@string/collection"
         tools:layout="@layout/fragment_directories" />
 
-    <include app:graph="@navigation/settings" />
+    <include app:graph="@navigation/menu" />
+
+    <fragment
+        android:id="@+id/nav_backdrop"
+        android:name="agersant.polaris.ui.BackdropOverlayView"
+        android:label="Menu"
+        tools:layout="@layout/fragment_backdrop_overlay" />
 
 </navigation>

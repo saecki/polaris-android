@@ -3,11 +3,14 @@
 
     <!-- Base application theme. -->
     <style name="Polaris" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:colorPrimary">@color/lightBlue600</item>
         <item name="colorPrimary">@color/lightBlue600</item>
         <item name="colorPrimaryDark">@color/lightBlue800</item>
         <item name="colorAccent">@color/lightBlue600</item>
         <item name="colorSecondary">@color/lightBlue600</item>
+        <item name="android:colorBackgroundFloating">@color/backgroundFloating</item>
         <item name="colorBackgroundFloating">@color/backgroundFloating</item>
+        <item name="android:windowBackground">@color/backgroundBelow</item>
 
         <item name="colorBackgroundBelow">@color/backgroundBelow</item>
         <item name="colorAdd">@color/add</item>
@@ -21,21 +24,30 @@
         <item name="cardCornerRadius">@dimen/card_corner_radius</item>
         <item name="cardElevation">@dimen/card_elevation</item>
 
-        <item name="appBarLayoutStyle">@style/AppBarLayout</item>
+        <item name="appBarLayoutStyle">@style/BackdropAppBarLayout</item>
+        <item name="navigationViewStyle">@style/BackdropNavigation</item>
+        <item name="bottomNavigationStyle">@style/BottomNavigation</item>
     </style>
 
     <!-- Override Styles -->
-    <style name="AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
+    <style name="BackdropAppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
         <item name="elevation">0dp</item>
         <item name="android:elevation">0dp</item>
         <item name="android:backgroundTint">?colorBackgroundBelow</item>
     </style>
 
-    <style name="BottomNavigationView" parent="Widget.Design.BottomNavigationView">
-        <item name="android:backgroundTint">?colorBackgroundFloating</item>
+    <style name="BackdropNavigation" parent="Widget.Design.NavigationView">
+        <item name="background">?colorBackgroundBelow</item>
+        <item name="itemHorizontalPadding">16dp</item>
+        <item name="android:overScrollMode">never</item>
+    </style>
+
+    <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">?colorBackgroundFloating</item>
     </style>
 
     <!-- Custom Styles -->
+
     <style name="Content">
         <item name="android:background">@drawable/content_background</item>
         <item name="android:elevation">@dimen/content_elevation</item>
