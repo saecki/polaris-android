@@ -3,12 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/collection_item_height"
+    android:background="@drawable/collection_item_explorer_background"
     android:orientation="horizontal"
     android:paddingStart="@dimen/collection_item_horizontal_spacing"
-    android:paddingTop="@dimen/queue_item_vertical_spacing"
-    android:paddingEnd="@dimen/collection_item_horizontal_spacing"
-    android:paddingBottom="@dimen/queue_item_vertical_spacing">
+    android:paddingEnd="@dimen/collection_item_horizontal_spacing">
 
     <ImageView
         android:id="@+id/icon"

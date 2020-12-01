@@ -43,6 +43,7 @@
     <string name="pref_theme">Erscheinungsbild</string>
 
     <string name="settings">Einstellungen</string>
+    <string name="about">About</string>
     <string name="clear">Alle entfernen</string>
     <string name="shuffle">Shuffle</string>
 
@@ -63,4 +64,7 @@
     <string name="scrobble_service_description">Last.fm scrobbling service for Polaris</string>
 
     <string name="media_notifications_channel_description">Polaris audio playback controls</string>
+
+    <string name="about_polaris_github">Polaris auf Github</string>
+    <string name="about_polaris_android_github">Polaris Android auf Github</string>
 </resources>

@@ -41,11 +41,6 @@ class QueueFragment : Fragment() {
         }
         binding.recyclerView.itemAnimator = animator
 
-        model.playingTrack.observe(viewLifecycleOwner) { playingTrack ->
-            adapter.notifyItemChanged(model.lastPlayingTrack)
-            adapter.notifyItemChanged(playingTrack)
-            model.lastPlayingTrack = playingTrack
-        }
         model.items.observe(viewLifecycleOwner) { items ->
             binding.tutorial.visibility = when {
                 items.isEmpty() -> View.VISIBLE

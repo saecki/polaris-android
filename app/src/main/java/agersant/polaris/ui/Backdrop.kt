@@ -1,14 +1,13 @@
 package agersant.polaris.ui
 
 import agersant.polaris.R
-import agersant.polaris.anim.CollapseAnimation
-import agersant.polaris.anim.ExpandAnimation
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.postDelayed
@@ -16,7 +15,11 @@ import androidx.core.view.contains
 import androidx.customview.widget.Openable
 import androidx.navigation.NavController
 
+const val ANIMATION_DURATION: Long = 200L
+
 class BackdropLayout(context: Context, attrs: AttributeSet? = null) : ConstraintLayout(context, attrs) {
+
+    private val wrapContentMeasureSpec = MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
 
     inner class OverlayView(context: Context) : View(context) {
         init {
@@ -25,7 +28,6 @@ class BackdropLayout(context: Context, attrs: AttributeSet? = null) : Constraint
                 ViewGroup.LayoutParams.MATCH_PARENT,
             )
             alpha = 0.5f
-            elevation = 100f
             background = ResourcesCompat.getDrawable(resources, R.drawable.content_background, context.theme)
 
             setOnClickListener { backdropMenu?.close() }
@@ -39,64 +41,68 @@ class BackdropLayout(context: Context, attrs: AttributeSet? = null) : Constraint
         this.backdropMenu = backdropMenu
     }
 
-    fun open(animate: Boolean = true) {
-        if (backdropOverlay !in this) {
-            addView(backdropOverlay)
-        }
+    fun open() {
+        if (backdropOverlay !in this) addView(backdropOverlay)
+
+        backdropMenu?.measure(wrapContentMeasureSpec, wrapContentMeasureSpec)
+        val targetTranslation = backdropMenu?.measuredHeight?.toFloat() ?: 0f
+
+        this.animate()
+            .translationY(targetTranslation)
+            .setDuration(ANIMATION_DURATION)
+            .start()
+
         backdropOverlay.visibility = View.VISIBLE
-        if (animate) {
-            backdropOverlay.animate().setDuration(300).alpha(0.5f).start()
-        } else {
-            backdropOverlay.alpha = 0.5f
-        }
+        backdropOverlay.animate()
+            .alpha(0.5f)
+            .setDuration(ANIMATION_DURATION)
+            .start()
     }
 
-    fun close(animate: Boolean = true) {
-        if (animate) {
-            backdropOverlay.animate().setDuration(300).alpha(0f).start()
-            handler.postDelayed(300) {
-                backdropOverlay.visibility = View.GONE
-            }
-        } else {
-            backdropOverlay.alpha = 0f
+    fun close() {
+        this.animate()
+            .translationY(0f)
+            .setDuration(ANIMATION_DURATION)
+            .start()
+
+        backdropOverlay.animate()
+            .alpha(0.5f)
+            .setDuration(ANIMATION_DURATION)
+            .start()
+        handler.postDelayed(ANIMATION_DURATION) {
             backdropOverlay.visibility = View.GONE
         }
     }
 }
 
-
 class BackdropMenu(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs), Openable {
 
     private var isOpen = false
     private var navController: NavController? = null
+    private var toolbar: Toolbar? = null
+    private var toolbarIcon: Drawable? = null
 
     private var backdropLayoutId: Int? = null
     private val backdropLayout: BackdropLayout? by lazy {
         backdropLayoutId ?: return@lazy null
-        val layout: BackdropLayout? = (parent as ViewGroup).findViewById(backdropLayoutId!!) ?: null
+        val layout: BackdropLayout? = (parent.parent as ViewGroup).findViewById(backdropLayoutId!!) ?: null
         layout?.attachBackdropMenu(this)
-        Log.d("TESTING", "layout: $layout")
-
         layout
     }
 
-    private val collapse: CollapseAnimation by lazy { CollapseAnimation(this).apply { duration = 300 } }
-    private val expand: ExpandAnimation by lazy { ExpandAnimation(this).apply { duration = 300 } }
-
     init {
-        visibility = GONE
+        alpha = 0f
 
         val arr = context.obtainStyledAttributes(attrs, R.styleable.BackdropMenu)
         backdropLayoutId = arr.getResourceId(R.styleable.BackdropMenu_backdropLayout, -1)
         arr.recycle()
-
-        Log.d("TESTING", "backdropLayoutId: $backdropLayoutId")
     }
 
-    fun setUpWithNavController(navController: NavController) {
+    fun setUpWith(navController: NavController, toolbar: Toolbar) {
         this.navController = navController
+        this.toolbar = toolbar
         navController.addOnDestinationChangedListener { _, _, _ ->
-            closeBackdrop()
+            close()
         }
     }
 
@@ -105,40 +111,32 @@ class BackdropMenu(context: Context, attrs: AttributeSet? = null) : LinearLayout
     }
 
     override fun open() {
-        openBackdrop()
-    }
-
-    fun openBackdrop(animate: Boolean = true) { //TODO: animate
         if (isOpen) {
-            closeBackdrop()
+            close()
         } else {
-            isOpen = true
+            toolbarIcon = toolbar?.navigationIcon
+            toolbar?.setNavigationIcon(R.drawable.baseline_close_24)
+            this.animate()
+                .alpha(1f)
+                .setDuration(ANIMATION_DURATION)
+                .start()
+            backdropLayout?.open()
 
-            visibility = View.VISIBLE
-            if (animate) {
-                startAnimation(expand)
-            } else {
-                layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-            }
-            backdropLayout?.open(animate)
+            isOpen = true
         }
     }
 
     override fun close() {
-        closeBackdrop()
-    }
-
-    fun closeBackdrop(animate: Boolean = true) { //TODO: animate
         if (!isOpen) return
+
+        toolbar?.navigationIcon = toolbarIcon
+        this.animate()
+            .alpha(0f)
+            .setDuration(ANIMATION_DURATION)
+            .start()
+        backdropLayout?.close()
 
         isOpen = false
 
-        if (animate) {
-            startAnimation(collapse)
-        } else {
-            layoutParams.height = 0
-            visibility = View.GONE
-        }
-        backdropLayout?.close(animate)
     }
 }

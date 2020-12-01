@@ -8,6 +8,7 @@
         <item name="colorPrimaryDark">@color/lightBlue800</item>
         <item name="colorAccent">@color/lightBlue600</item>
         <item name="colorSecondary">@color/lightBlue600</item>
+        <item name="android:colorBackground">@color/background</item>
         <item name="android:colorBackgroundFloating">@color/backgroundFloating</item>
         <item name="colorBackgroundFloating">@color/backgroundFloating</item>
         <item name="android:windowBackground">@color/backgroundBelow</item>
@@ -27,6 +28,7 @@
         <item name="appBarLayoutStyle">@style/BackdropAppBarLayout</item>
         <item name="navigationViewStyle">@style/BackdropNavigation</item>
         <item name="bottomNavigationStyle">@style/BottomNavigation</item>
+        <item name="recyclerViewStyle">@style/RecyclerView</item>
     </style>
 
     <!-- Override Styles -->
@@ -44,6 +46,11 @@
 
     <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="android:background">?colorBackgroundFloating</item>
+    </style>
+
+    <style name="RecyclerView">
+        <item name="android:overScrollMode">never</item>
+        <item name="android:scrollbarSize">4dp</item>
     </style>
 
     <!-- Custom Styles -->
@@ -71,6 +78,17 @@
     <style name="ScrollViewSpacing">
         <item name="android:layout_height">100dp</item>
         <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="AboutLink" parent="Widget.MaterialComponents.TextView">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/about_drawable_padding</item>
+        <item name="android:paddingLeft">@dimen/about_horizontal_padding</item>>
+        <item name="android:paddingRight">@dimen/about_horizontal_padding</item>>
+        <item name="android:paddingTop">@dimen/about_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/about_vertical_padding</item>
+        <item name="android:textAppearance">?textAppearanceSubtitle2</item>
+        <item name="drawableTint">?colorOnBackground</item>
     </style>
 
 </resources>

@@ -11,6 +11,7 @@
         android:label="@string/playlists"
         tools:layout="@layout/fragment_playlists" />
 
-    <include app:graph="@navigation/menu" />
+    <include app:graph="@navigation/settings" />
+    <include app:graph="@navigation/about" />
 
 </navigation>

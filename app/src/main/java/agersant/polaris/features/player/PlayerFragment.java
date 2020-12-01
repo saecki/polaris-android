@@ -229,6 +229,8 @@ public class PlayerFragment extends Fragment {
 
         if (item.getArtwork() != null) {
             api.loadImageIntoView(item, binding.artwork);
+        } else {
+            binding.artwork.setImageResource(R.drawable.launcher_icon_foreground);
         }
     }
 }

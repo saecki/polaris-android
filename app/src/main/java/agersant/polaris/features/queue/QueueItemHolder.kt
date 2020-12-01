@@ -79,6 +79,8 @@ class QueueItemHolder(
         beginIconUpdate()
         if (item.artwork != null) {
             appState.api.loadImageIntoView(item, artwork)
+        } else {
+            artwork.setImageResource(R.drawable.notification_icon)
         }
     }
 
@@ -89,11 +91,7 @@ class QueueItemHolder(
                 statusIcon.setImageDrawable(null)
                 statusIcon.contentDescription = ""
             }
-            QueueItemState.Streaming -> {
-                statusIcon.setImageResource(R.drawable.baseline_play_arrow_24)
-                statusIcon.contentDescription = App.resources.getString(R.string.queue_streaming)
-            }
-            QueueItemState.Downloading -> {
+            QueueItemState.Streaming, QueueItemState.Downloading -> {
                 statusIcon.setImageResource(R.drawable.baseline_sync_24)
                 statusIcon.contentDescription = App.resources.getString(R.string.queue_downloading)
             }

@@ -15,8 +15,6 @@ class QueueViewModel : ViewModel() {
     var receiver: BroadcastReceiver? = null
     var state: PolarisState = App.state
 
-    var lastPlayingTrack = playingTrackPositon()
-    val playingTrack = MutableLiveData(playingTrackPositon())
     val items = MutableLiveData<List<CollectionItem>>(state.playbackQueue.items.toList())
     val itemsState = MutableLiveData(0)
     val ordering = MutableLiveData(state.playbackQueue.ordering)
@@ -40,10 +38,6 @@ class QueueViewModel : ViewModel() {
         state.playbackQueue.ordering = ordering
     }
 
-    private fun playingTrackPositon(): Int {
-        return state.playbackQueue.items.indexOfFirst { it === state.player.currentItem }
-    }
-
     private fun subscribeEvents() {
         val filter = IntentFilter()
         filter.addAction(PlaybackQueue.REMOVED_ITEM)
@@ -61,16 +55,13 @@ class QueueViewModel : ViewModel() {
                     return
                 }
                 when (intent.action) {
-                    PolarisPlayer.OPENING_TRACK,
-                    PolarisPlayer.PLAYING_TRACK,
-                    -> {
-                        playingTrack.value = playingTrackPositon()
-                    }
                     PlaybackQueue.REMOVED_ITEM,
                     PlaybackQueue.REMOVED_ITEMS,
                     PlaybackQueue.QUEUED_ITEMS,
                     PlaybackQueue.OVERWROTE_QUEUE,
                     -> items.value = state.playbackQueue.items.toList()
+                    PolarisPlayer.OPENING_TRACK,
+                    PolarisPlayer.PLAYING_TRACK,
                     OfflineCache.AUDIO_CACHED,
                     OfflineCache.AUDIO_REMOVED_FROM_CACHE,
                     DownloadQueue.WORKLOAD_CHANGED,

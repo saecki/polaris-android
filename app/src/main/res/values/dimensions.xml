@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="content_corner_radius">16dp</dimen>
+    <dimen name="content_corner_radius">24dp</dimen>
     <dimen name="content_elevation">4dp</dimen>
 
     <dimen name="collection_section_icon_padding">12dp</dimen>
@@ -12,9 +12,9 @@
     <dimen name="collection_item_horizontal_spacing">16dp</dimen>
     <dimen name="collection_item_vertical_spacing">8dp</dimen>
 
-    <dimen name="player_artwork_vertical_radius">8dp</dimen>
+    <dimen name="player_artwork_vertical_radius">16dp</dimen>
     <dimen name="player_artwork_vertical_margin">8dp</dimen>
-    <dimen name="player_artwork_horizontal_radius">8dp</dimen>
+    <dimen name="player_artwork_horizontal_radius">16dp</dimen>
     <dimen name="player_artwork_horizontal_margin">8dp</dimen>
 
     <dimen name="queue_item_horizontal_spacing">12dp</dimen>
@@ -32,5 +32,9 @@
     <dimen name="card_elevation">3dp</dimen>
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="button_corner_radius">4dp</dimen>
+
+    <dimen name="about_horizontal_padding">32dp</dimen>
+    <dimen name="about_vertical_padding">12dp</dimen>
+    <dimen name="about_drawable_padding">24dp</dimen>
 
 </resources>

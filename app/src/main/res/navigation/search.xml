@@ -11,6 +11,7 @@
         android:label="@string/search"
         tools:layout="@layout/fragment_search" />
 
-    <include app:graph="@navigation/menu" />
+    <include app:graph="@navigation/settings" />
+    <include app:graph="@navigation/about" />
 
 </navigation>

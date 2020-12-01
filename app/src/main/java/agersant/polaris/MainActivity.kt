@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
             binding.toolbar.setupWithNavController(navController, appBarConfig)
             binding.backdropNavigation.setupWithNavController(navController)
-            binding.backdropMenu.setUpWithNavController(navController)
+            binding.backdropMenu.setUpWith(navController, binding.toolbar)
         }
         currentNavController = controller
     }
