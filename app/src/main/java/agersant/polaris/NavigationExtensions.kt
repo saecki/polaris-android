@@ -28,7 +28,7 @@ fun BottomNavigationView.setupWithNavController(
     // Result. Mutable live data with the selected controlled
     val selectedNavController = MutableLiveData<NavController>()
 
-    var firstFragmentGraphId = 0
+    var initialFragmentGraphId = 0
 
     // First create a NavHostFragment for each NavGraph ID
     navGraphIds.forEachIndexed { index, navGraphId ->
@@ -45,15 +45,12 @@ fun BottomNavigationView.setupWithNavController(
         // Obtain its id
         val graphId = navHostFragment.navController.graph.id
 
-        if (index == 0) {
-            firstFragmentGraphId = graphId
-        }
-
         // Save to the map
         graphIdToTagMap[graphId] = fragmentTag
 
         // Attach or detach nav host fragment depending on whether it's the selected item.
         if (this.selectedItemId == graphId) {
+            initialFragmentGraphId = graphId
             // Update livedata with the selected graph
             selectedNavController.value = navHostFragment.navController
             attachNavHostFragment(fragmentManager, navHostFragment, index == 0)
@@ -64,8 +61,8 @@ fun BottomNavigationView.setupWithNavController(
 
     // Now connect selecting an item with swapping Fragments
     var selectedItemTag = graphIdToTagMap[this.selectedItemId]
-    val firstFragmentTag = graphIdToTagMap[firstFragmentGraphId]
-    var isOnFirstFragment = selectedItemTag == firstFragmentTag
+    val initialFragmentTag = graphIdToTagMap[initialFragmentGraphId]
+    var isOnFirstFragment = selectedItemTag == initialFragmentTag
 
     // When a navigation item is selected
     setOnNavigationItemSelectedListener { item ->
@@ -76,13 +73,12 @@ fun BottomNavigationView.setupWithNavController(
             val newlySelectedItemTag = graphIdToTagMap[item.itemId]
             if (selectedItemTag != newlySelectedItemTag) {
                 // Pop everything above the first fragment (the "fixed start destination")
-                fragmentManager.popBackStack(firstFragmentTag,
+                fragmentManager.popBackStack(initialFragmentTag,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
-                    as NavHostFragment
+                val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag) as NavHostFragment
 
                 // Exclude the first fragment tag because it's always in the back stack.
-                if (firstFragmentTag != newlySelectedItemTag) {
+                if (initialFragmentTag != newlySelectedItemTag) {
                     // Commit a transaction that cleans the back stack and adds the first fragment
                     // to it, creating the fixed started destination.
                     fragmentManager.beginTransaction()
@@ -97,16 +93,16 @@ fun BottomNavigationView.setupWithNavController(
                             // Detach all other Fragments
                             graphIdToTagMap.forEach { _, fragmentTagIter ->
                                 if (fragmentTagIter != newlySelectedItemTag) {
-                                    detach(fragmentManager.findFragmentByTag(firstFragmentTag)!!)
+                                    detach(fragmentManager.findFragmentByTag(initialFragmentTag)!!)
                                 }
                             }
                         }
-                        .addToBackStack(firstFragmentTag)
+                        .addToBackStack(initialFragmentTag)
                         .setReorderingAllowed(true)
                         .commit()
                 }
                 selectedItemTag = newlySelectedItemTag
-                isOnFirstFragment = selectedItemTag == firstFragmentTag
+                isOnFirstFragment = selectedItemTag == initialFragmentTag
                 selectedNavController.value = selectedFragment.navController
                 true
             } else {
@@ -123,8 +119,8 @@ fun BottomNavigationView.setupWithNavController(
 
     // Finally, ensure that we update our BottomNavigationView when the back stack changes
     fragmentManager.addOnBackStackChangedListener {
-        if (!isOnFirstFragment && !fragmentManager.isOnBackStack(firstFragmentTag)) {
-            this.selectedItemId = firstFragmentGraphId
+        if (!isOnFirstFragment && !fragmentManager.isOnBackStack(initialFragmentTag)) {
+            this.selectedItemId = initialFragmentGraphId
         }
 
         // Reset the graph if the currentDestination is not valid (happens when the back

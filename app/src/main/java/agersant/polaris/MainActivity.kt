@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             R.navigation.search,
         )
 
-        val startIndex = App.preferences.int(resources.getString(R.string.pref_key_start_screen), 2)
+        val startIndex = App.preferences.intString(resources.getString(R.string.pref_key_start_screen), 2)
         binding.bottomNavigation.selectedItemId = App.StartScreen.values()[startIndex].id
 
         val controller = binding.bottomNavigation.setupWithNavController(

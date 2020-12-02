@@ -46,7 +46,7 @@ object App {
         Playlists(R.id.playlists),
         NowPlaying(R.id.now_playing),
         Queue(R.id.queue),
-        Search(R.id.search);
+        Search(R.id.search),
     }
 }
 
