@@ -1,7 +1,9 @@
 package agersant.polaris
 
 import agersant.polaris.databinding.ActivityMainBinding
+import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
@@ -63,6 +65,11 @@ class MainActivity : AppCompatActivity() {
             binding.toolbar.setupWithNavController(navController, appBarConfig)
             binding.backdropNavigation.setupWithNavController(navController)
             binding.backdropMenu.setUpWith(navController, binding.toolbar)
+
+            navController.addOnDestinationChangedListener { _, _, _ ->
+                (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                    .hideSoftInputFromWindow(binding.root.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            }
         }
         currentNavController = controller
     }

@@ -19,6 +19,7 @@ import android.widget.Toast
 import java.io.*
 import java.lang.ref.WeakReference
 import java.util.*
+import kotlin.system.exitProcess
 
 class PolarisPlaybackService : Service() {
     private val binder: IBinder = PolarisBinder()
@@ -170,6 +171,7 @@ class PolarisPlaybackService : Service() {
     }
 
     override fun onDestroy() {
+        notificationManager.cancel(MEDIA_NOTIFICATION)
         mediaSession.release()
         unregisterReceiver(receiver)
         autoSaveHandler.removeCallbacksAndMessages(null)
@@ -214,6 +216,10 @@ class PolarisPlaybackService : Service() {
             MEDIA_INTENT_SKIP_NEXT -> player.skipNext()
             MEDIA_INTENT_SKIP_PREVIOUS -> player.skipPrevious()
             MEDIA_INTENT_DISMISS -> stopSelf()
+            MEDIA_INTENT_EXIT -> {
+                stopSelf()
+                //TODO: exit app and playback
+            }
         }
     }
 
@@ -281,6 +287,7 @@ class PolarisPlaybackService : Service() {
             notificationBuilder.addAction(generateAction(R.drawable.baseline_play_arrow_24, R.string.player_play, MEDIA_INTENT_PLAY))
         }
         notificationBuilder.addAction(generateAction(R.drawable.baseline_skip_next_24, R.string.player_previous_track, MEDIA_INTENT_SKIP_NEXT))
+        notificationBuilder.addAction(generateAction(R.drawable.baseline_close_24, R.string.player_exit, MEDIA_INTENT_EXIT))
 
         // Emit notification
         emitNotification(notificationBuilder, item)
@@ -383,6 +390,7 @@ class PolarisPlaybackService : Service() {
         private const val MEDIA_INTENT_SKIP_NEXT = "MEDIA_INTENT_SKIP_NEXT"
         private const val MEDIA_INTENT_SKIP_PREVIOUS = "MEDIA_INTENT_SKIP_PREVIOUS"
         private const val MEDIA_INTENT_DISMISS = "MEDIA_INTENT_DISMISS"
+        private const val MEDIA_INTENT_EXIT = "MEDIA_INTENT_EXIT"
         const val APP_INTENT_COLD_BOOT = "POLARIS_PLAYBACK_SERVICE_COLD_BOOT"
         private const val NOTIFICATION_CHANNEL_ID = "POLARIS_NOTIFICATION_CHANNEL_ID"
         private const val MEDIA_SESSION_UPDATE_DELAY: Long = 5000

@@ -8,16 +8,16 @@ import android.content.IntentFilter;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 
 import agersant.polaris.api.API;
 import agersant.polaris.api.FetchAudioTask;
+
 
 public class PolarisPlayer implements Player.EventListener {
 
@@ -43,7 +43,7 @@ public class PolarisPlayer implements Player.EventListener {
         this.api = api;
         this.playbackQueue = playbackQueue;
         resumeProgress = -1.f;
-        mediaPlayer = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector());
+        mediaPlayer = new SimpleExoPlayer.Builder(context).build();
         mediaPlayer.addListener(this);
 
         IntentFilter filter = new IntentFilter();
@@ -242,7 +242,7 @@ public class PolarisPlayer implements Player.EventListener {
 
         switch (playbackState) {
             case Player.STATE_READY:
-                if (resumeProgress > 0.f) {
+                if (resumeProgress > 0f) {
                     seekToRelative(resumeProgress);
                 }
                 break;

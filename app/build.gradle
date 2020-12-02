@@ -72,8 +72,9 @@ dependencies {
     // Preferences
     implementation "androidx.preference:preference-ktx:1.1.1"
 
-    // Media session TODO: replace with media2
-    implementation "androidx.media:media:1.2.0"
+    // Media session
+    implementation "androidx.media2:media2-session:1.0.3"
+    implementation "androidx.media2:media2-widget:1.0.3"
 
     // Media player
     implementation "com.github.PaulWoitaschek.ExoPlayer-Extensions-Autobuild:flac:2.9.6"

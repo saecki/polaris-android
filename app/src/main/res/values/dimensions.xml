@@ -22,6 +22,13 @@
     <dimen name="queue_artwork_radius">8dp</dimen>
     <dimen name="queue_artwork_margin">2dp</dimen>
 
+    <dimen name="search_box_horizontal_margin">20dp</dimen>
+    <dimen name="search_box_vertical_margin">16dp</dimen>
+
+    <dimen name="about_horizontal_padding">32dp</dimen>
+    <dimen name="about_vertical_padding">12dp</dimen>
+    <dimen name="about_drawable_padding">24dp</dimen>
+
     <dimen name="toolbar_margin_horizontal">16dp</dimen>
     <dimen name="toolbar_margin_vertical">8dp</dimen>
     <dimen name="toolbar_radius">10dp</dimen>
@@ -32,9 +39,5 @@
     <dimen name="card_elevation">3dp</dimen>
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="button_corner_radius">4dp</dimen>
-
-    <dimen name="about_horizontal_padding">32dp</dimen>
-    <dimen name="about_vertical_padding">12dp</dimen>
-    <dimen name="about_drawable_padding">24dp</dimen>
 
 </resources>

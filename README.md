@@ -4,7 +4,7 @@ Experimental fork of the [Android client for Polaris](https://github.com/agersan
 ## Goals
 - [x] Use Android Jetpack navigation system
 - [ ] Replace Intent-Broadcast communication with LiveData
-- [ ] Design revamp
+- [x] Design revamp
 - [x] Dark theme
 
 ### Collection
@@ -17,6 +17,7 @@ Experimental fork of the [Android client for Polaris](https://github.com/agersan
 - Lists
   - [x] Swipe right to enqueue
   - [ ] Swipe left to play next
+  - [ ] Search current list
 
 ### (ToDo) Playlists
 - [ ] search current playlist
@@ -38,6 +39,6 @@ Experimental fork of the [Android client for Polaris](https://github.com/agersan
     - [ ] Remove
     - [ ] Play next
 
-- [ ] ### (ToDo) Search
+### (ToDo) Search
 - [ ] categorize (all, artists, albums, songs)
 - [ ] history

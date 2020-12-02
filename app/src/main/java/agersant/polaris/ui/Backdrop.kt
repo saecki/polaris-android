@@ -1,16 +1,18 @@
 package agersant.polaris.ui
 
 import agersant.polaris.R
+import agersant.polaris.setOnFinished
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewPropertyAnimator
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.postDelayed
 import androidx.core.view.contains
 import androidx.customview.widget.Openable
 import androidx.navigation.NavController
@@ -27,13 +29,15 @@ class BackdropLayout(context: Context, attrs: AttributeSet? = null) : Constraint
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT,
             )
-            alpha = 0.5f
+            alpha = 0f
             background = ResourcesCompat.getDrawable(resources, R.drawable.content_background, context.theme)
 
             setOnClickListener { backdropMenu?.close() }
         }
     }
 
+    private var slideAnimator: ViewPropertyAnimator? = null
+    private var overlayAnimator: ViewPropertyAnimator? = null
     private var backdropMenu: BackdropMenu? = null
     private val backdropOverlay: OverlayView by lazy { OverlayView(context) }
 
@@ -47,31 +51,38 @@ class BackdropLayout(context: Context, attrs: AttributeSet? = null) : Constraint
         backdropMenu?.measure(wrapContentMeasureSpec, wrapContentMeasureSpec)
         val targetTranslation = backdropMenu?.measuredHeight?.toFloat() ?: 0f
 
+        this.clearAnimation()
         this.animate()
+            .setInterpolator(AccelerateDecelerateInterpolator())
             .translationY(targetTranslation)
             .setDuration(ANIMATION_DURATION)
             .start()
 
         backdropOverlay.visibility = View.VISIBLE
+        backdropOverlay.clearAnimation()
         backdropOverlay.animate()
+            .setInterpolator(AccelerateDecelerateInterpolator())
             .alpha(0.5f)
             .setDuration(ANIMATION_DURATION)
+            .setOnFinished {}
             .start()
     }
 
     fun close() {
+        this.clearAnimation()
         this.animate()
+            .setInterpolator(AccelerateDecelerateInterpolator())
             .translationY(0f)
             .setDuration(ANIMATION_DURATION)
             .start()
 
+        backdropOverlay.clearAnimation()
         backdropOverlay.animate()
-            .alpha(0.5f)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .alpha(0f)
             .setDuration(ANIMATION_DURATION)
+            .setOnFinished { backdropOverlay.visibility = View.GONE }
             .start()
-        handler.postDelayed(ANIMATION_DURATION) {
-            backdropOverlay.visibility = View.GONE
-        }
     }
 }
 
@@ -116,9 +127,14 @@ class BackdropMenu(context: Context, attrs: AttributeSet? = null) : LinearLayout
 
             toolbarIcon = toolbar?.navigationIcon
             toolbar?.setNavigationIcon(R.drawable.baseline_close_24)
+
+            this.visibility = View.VISIBLE
+            this.clearAnimation()
             this.animate()
+                .setInterpolator(AccelerateDecelerateInterpolator())
                 .alpha(1f)
                 .setDuration(ANIMATION_DURATION)
+                .setOnFinished {}
                 .start()
             backdropLayout?.open()
 
@@ -131,13 +147,16 @@ class BackdropMenu(context: Context, attrs: AttributeSet? = null) : LinearLayout
         toolbar ?: throw IllegalStateException("The BackdropMenu has not been set up")
 
         toolbar?.navigationIcon = toolbarIcon
+
+        this.clearAnimation()
         this.animate()
+            .setInterpolator(AccelerateDecelerateInterpolator())
             .alpha(0f)
             .setDuration(ANIMATION_DURATION)
+            .setOnFinished { this.visibility = View.GONE }
             .start()
         backdropLayout?.close()
 
         isOpen = false
-
     }
 }

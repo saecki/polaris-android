@@ -25,6 +25,7 @@
     <string name="player_pause">Pausieren</string>
     <string name="player_opening">Öffnen…</string>
     <string name="player_buffering">Laden…</string>
+    <string name="player_exit">Beenden</string>
 
     <string name="queue">Warteschlange</string>
     <string name="queue_empty">Make a playlist by swiping music from your collection to here.</string>
