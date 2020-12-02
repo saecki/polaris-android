@@ -2,6 +2,7 @@
 Experimental fork of the [Android client for Polaris](https://github.com/agersant/polaris-android).
 
 ## Goals
+- [ ] Convert to Kotlin
 - [x] Use Android Jetpack navigation system
 - [ ] Replace Intent-Broadcast communication with LiveData
 - [x] Design revamp
