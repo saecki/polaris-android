@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">PolarisNEW</string>
 
-    <string name="collection">Collection</string>
+    <string name="collection">Sammlung</string>
     <string name="collection_directories">Ordner</string>
     <string name="collection_random">Zufällig</string>
     <string name="collection_recent">Kürzlich</string>
@@ -16,7 +16,7 @@
 
     <string name="playlists">Wiedergabelisten</string>
 
-    <string name="now_playing">Now Playing</string>
+    <string name="now_playing">Abspielden</string>
     <string name="player_artwork">Album Artwork</string>
     <string name="player_previous_track">Vorheriges Lied</string>
     <string name="player_next_track">Nächstes Lied</string>
@@ -41,9 +41,17 @@
     <string name="pref_num_songs_preload">Songs to preload</string>
     <string name="pref_offline_cache_size">Offline Cache Größe</string>
     <string name="pref_theme">Erscheinungsbild</string>
+    <string name="pref_start_screen">Start Bildschirm</string>
+
+    <string name="pref_num_songs_preload_unlimited">Unbegrenzt</string>
+    <string name="pref_num_songs_preload_none">Keine</string>
+    <string name="pref_offline_cache_size_unlimited">Unbegrenzt</string>
+    <string name="pref_theme_system">System</string>
+    <string name="pref_theme_dark">Dunkel</string>
+    <string name="pref_theme_light">Hell</string>
 
     <string name="settings">Einstellungen</string>
-    <string name="about">About</string>
+    <string name="about">Über</string>
     <string name="clear">Alle entfernen</string>
     <string name="shuffle">Shuffle</string>
 

@@ -78,7 +78,6 @@ class BackdropLayout(context: Context, attrs: AttributeSet? = null) : Constraint
 class BackdropMenu(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs), Openable {
 
     private var isOpen = false
-    private var navController: NavController? = null
     private var toolbar: Toolbar? = null
     private var toolbarIcon: Drawable? = null
 
@@ -99,7 +98,6 @@ class BackdropMenu(context: Context, attrs: AttributeSet? = null) : LinearLayout
     }
 
     fun setUpWith(navController: NavController, toolbar: Toolbar) {
-        this.navController = navController
         this.toolbar = toolbar
         navController.addOnDestinationChangedListener { _, _, _ ->
             close()
@@ -114,6 +112,8 @@ class BackdropMenu(context: Context, attrs: AttributeSet? = null) : LinearLayout
         if (isOpen) {
             close()
         } else {
+            toolbar ?: throw IllegalStateException("The BackdropMenu has not been set up")
+
             toolbarIcon = toolbar?.navigationIcon
             toolbar?.setNavigationIcon(R.drawable.baseline_close_24)
             this.animate()
@@ -128,6 +128,7 @@ class BackdropMenu(context: Context, attrs: AttributeSet? = null) : LinearLayout
 
     override fun close() {
         if (!isOpen) return
+        toolbar ?: throw IllegalStateException("The BackdropMenu has not been set up")
 
         toolbar?.navigationIcon = toolbarIcon
         this.animate()

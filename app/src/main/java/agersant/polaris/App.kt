@@ -40,5 +40,13 @@ object App {
             }
         }
     }
+
+    enum class StartScreen(val id: Int) {
+        Collection(R.id.collection),
+        Playlists(R.id.playlists),
+        NowPlaying(R.id.now_playing),
+        Queue(R.id.queue),
+        Search(R.id.search);
+    }
 }
 
