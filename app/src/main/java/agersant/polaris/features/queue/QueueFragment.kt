@@ -5,6 +5,7 @@ import agersant.polaris.PlaybackQueue.Ordering
 import agersant.polaris.databinding.FragmentQueueBinding
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -67,7 +68,15 @@ class QueueFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val itemId = item.itemId
         if (itemId == R.id.action_clear) {
-            model.clear()
+            if (model.items.value?.isNotEmpty() == true) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.queue_confirmation_clear)
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
+                        model.clear()
+                    }
+                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
+                    .show()
+            }
             return true
         } else if (itemId == R.id.action_shuffle) {
             model.shuffle()

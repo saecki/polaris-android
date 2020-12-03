@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import com.google.android.material.textview.MaterialTextView
 
-internal class BrowseItemHolderExplorer(
+class BrowseItemHolderExplorer(
     api: API,
     playbackQueue: PlaybackQueue,
     adapter: BrowseAdapter,

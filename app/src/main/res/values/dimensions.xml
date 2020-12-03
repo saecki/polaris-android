@@ -16,6 +16,7 @@
     <dimen name="player_artwork_vertical_margin">8dp</dimen>
     <dimen name="player_artwork_horizontal_radius">16dp</dimen>
     <dimen name="player_artwork_horizontal_margin">8dp</dimen>
+    <dimen name="player_text_icon_padding">8dp</dimen>
 
     <dimen name="queue_item_horizontal_spacing">12dp</dimen>
     <dimen name="queue_item_vertical_spacing">6dp</dimen>

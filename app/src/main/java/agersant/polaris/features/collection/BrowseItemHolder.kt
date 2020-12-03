@@ -52,7 +52,7 @@ abstract class BrowseItemHolder(
                 queueDirectory(queueNextStatusView) //TODO: queue next
                 setStatusToFetching(queueNextStatusView)
             } else {
-                playbackQueue.addItem(item) //TODO: queue next
+                playbackQueue.add(item) //TODO: queue next
                 setStatusToQueued(queueNextStatusView)
             }
         } else {
@@ -60,7 +60,7 @@ abstract class BrowseItemHolder(
                 queueDirectory(queueStatusView)
                 setStatusToFetching(queueStatusView)
             } else {
-                playbackQueue.addItem(item)
+                playbackQueue.add(item)
                 setStatusToQueued(queueStatusView)
             }
         }
@@ -71,7 +71,7 @@ abstract class BrowseItemHolder(
         val handlers: ItemsCallback = object : ItemsCallback {
             override fun onSuccess(items: ArrayList<out CollectionItem>) {
                 Handler(Looper.getMainLooper()).post {
-                    playbackQueue.addItems(items)
+                    playbackQueue.addAll(items)
                     if (item === fetchingItem) {
                         setStatusToQueued(view)
                     }

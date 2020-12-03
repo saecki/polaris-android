@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.random.Random
@@ -15,9 +16,9 @@ class QueueViewModel : ViewModel() {
     var receiver: BroadcastReceiver? = null
     var state: PolarisState = App.state
 
-    val items = MutableLiveData<List<CollectionItem>>(state.playbackQueue.items.toList())
+    val items: LiveData<List<CollectionItem>> = state.playbackQueue.liveItems
+    val ordering = state.playbackQueue.liveOrdering
     val itemsState = MutableLiveData(0)
-    val ordering = MutableLiveData(state.playbackQueue.ordering)
 
     init {
         subscribeEvents()
@@ -25,24 +26,18 @@ class QueueViewModel : ViewModel() {
 
     fun clear() {
         state.playbackQueue.clear()
-        items.value = listOf()
     }
 
     fun shuffle() {
-        state.playbackQueue.items.shuffle()
-        items.value = state.playbackQueue.items.toList()
+        state.playbackQueue.shuffle()
     }
 
     fun setOrdering(ordering: PlaybackQueue.Ordering) {
-        this.ordering.value = ordering
         state.playbackQueue.ordering = ordering
     }
 
     private fun subscribeEvents() {
         val filter = IntentFilter()
-        filter.addAction(PlaybackQueue.REMOVED_ITEM)
-        filter.addAction(PlaybackQueue.REMOVED_ITEMS)
-        filter.addAction(PlaybackQueue.QUEUED_ITEMS)
         filter.addAction(PolarisPlayer.OPENING_TRACK)
         filter.addAction(PolarisPlayer.PLAYING_TRACK)
         filter.addAction(OfflineCache.AUDIO_CACHED)
@@ -55,11 +50,6 @@ class QueueViewModel : ViewModel() {
                     return
                 }
                 when (intent.action) {
-                    PlaybackQueue.REMOVED_ITEM,
-                    PlaybackQueue.REMOVED_ITEMS,
-                    PlaybackQueue.QUEUED_ITEMS,
-                    PlaybackQueue.OVERWROTE_QUEUE,
-                    -> items.value = state.playbackQueue.items.toList()
                     PolarisPlayer.OPENING_TRACK,
                     PolarisPlayer.PLAYING_TRACK,
                     OfflineCache.AUDIO_CACHED,

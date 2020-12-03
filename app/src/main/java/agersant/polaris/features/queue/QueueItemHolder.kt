@@ -103,6 +103,8 @@ class QueueItemHolder(
     }
 
     override fun onClick(view: View) {
-        appState.player.play(item)
+        item?.let {
+            appState.player.play(it)
+        }
     }
 }

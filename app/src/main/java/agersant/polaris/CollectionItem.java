@@ -6,6 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.lang.reflect.Type;
 
@@ -75,6 +77,7 @@ public class CollectionItem implements Cloneable, Serializable {
         return getNameFromPath(path);
     }
 
+    @NotNull
     @Override
     public CollectionItem clone() throws CloneNotSupportedException {
         return (CollectionItem) super.clone();

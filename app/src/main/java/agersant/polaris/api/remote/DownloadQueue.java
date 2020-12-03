@@ -115,7 +115,7 @@ public class DownloadQueue {
 			return;
 		}
 
-		CollectionItem nextItem = playbackQueue.getNextItemToDownload(player.getCurrentItem(), offlineCache, this);
+		CollectionItem nextItem = playbackQueue.nextItemToDownload(player.getCurrentItem(), offlineCache, this);
 		if (nextItem != null) {
 			if (!offlineCache.makeSpace(nextItem)) {
 				return;

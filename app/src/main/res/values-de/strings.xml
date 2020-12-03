@@ -32,6 +32,7 @@
     <string name="queue_streaming">Streaming</string>
     <string name="queue_downloading">Downloading</string>
     <string name="queue_cached">Cached Locally</string>
+    <string name="queue_confirmation_clear">Warteschlange leeren?</string>
 
     <string name="search">Suchen</string>
 

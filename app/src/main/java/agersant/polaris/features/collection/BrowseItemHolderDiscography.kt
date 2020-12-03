@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 
-internal class BrowseItemHolderDiscography(
+class BrowseItemHolderDiscography(
     private val api: API,
     playbackQueue: PlaybackQueue,
     adapter: BrowseAdapter,

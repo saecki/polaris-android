@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.TextView
 import java.util.*
 
-internal class BrowseItemHolderAlbumTrack(
+class BrowseItemHolderAlbumTrack(
     api: API,
     playbackQueue: PlaybackQueue,
     adapter: BrowseAdapter,

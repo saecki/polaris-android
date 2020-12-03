@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-internal class QueueAdapter(
+class QueueAdapter(
     private val state: PolarisState,
     private var items: List<CollectionItem>,
 ) : RecyclerView.Adapter<QueueItemHolder>() {
@@ -27,14 +27,10 @@ internal class QueueAdapter(
 
     fun onItemMove(fromPosition: Int, toPosition: Int) {
         state.playbackQueue.swap(fromPosition, toPosition)
-        items = state.playbackQueue.items.toList()
-        notifyItemMoved(fromPosition, toPosition)
     }
 
     fun onItemDismiss(position: Int) {
-        state.playbackQueue.remove(position)
-        items = state.playbackQueue.items.toList()
-        notifyItemRemoved(position)
+        state.playbackQueue.removeAt(position)
     }
 
     fun updateItems(items: List<CollectionItem>) {

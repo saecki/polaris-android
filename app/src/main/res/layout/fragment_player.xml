@@ -39,24 +39,34 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textAppearance="?textAppearanceHeadline6" />
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?textAppearanceHeadline6"
+            tools:text="Title" />
+
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/artist"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textAppearance="?textAppearanceBody1" />
+            android:layout_gravity="center_horizontal"
+            android:drawableStart="@drawable/baseline_person_24"
+            android:drawablePadding="@dimen/player_text_icon_padding"
+            android:drawableTint="?android:textColorPrimary"
+            android:textAppearance="?textAppearanceBody1"
+            tools:text="Artist" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/album"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textAppearance="?textAppearanceBody1" />
+            android:layout_gravity="center_horizontal"
+            android:drawableStart="@drawable/baseline_album_24"
+            android:drawablePadding="@dimen/player_text_icon_padding"
+            android:drawableTint="?android:textColorPrimary"
+            android:textAppearance="?textAppearanceBody1"
+            tools:text="Album" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/buffering"

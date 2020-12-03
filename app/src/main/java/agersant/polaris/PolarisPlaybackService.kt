@@ -19,7 +19,6 @@ import android.widget.Toast
 import java.io.*
 import java.lang.ref.WeakReference
 import java.util.*
-import kotlin.system.exitProcess
 
 class PolarisPlaybackService : Service() {
     private val binder: IBinder = PolarisBinder()
@@ -334,22 +333,13 @@ class PolarisPlaybackService : Service() {
     }
 
     private fun saveStateToDisk() {
-        // Gather state
-        val state = PlaybackQueueState()
-        state.queueContent = ArrayList()
-        for (item in playbackQueue.content) {
-            try {
-                state.queueContent.add(item.clone())
-            } catch (e: CloneNotSupportedException) {
-                println("Error gathering PlaybackQueueState content: $e")
-            }
-        }
-        state.queueOrdering = playbackQueue.ordering
-        val currentItem = player.currentItem
-        state.queueIndex = playbackQueue.content.indexOf(currentItem)
-        state.trackProgress = player.positionRelative
+        val state = PlaybackQueueState(
+            queueItems = playbackQueue.items.map { it.clone() },
+            queueOrdering = playbackQueue.ordering,
+            queueIndex = playbackQueue.items.indexOfFirst { it === player.currentItem },
+            trackProgress = player.positionRelative
+        )
 
-        // Persist
         val writeState = StateWriteTask(this, state)
         writeState.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR)
     }
@@ -357,15 +347,15 @@ class PolarisPlaybackService : Service() {
     private fun restoreStateFromDisk() {
         val storage = File(cacheDir, "playlist.v" + PlaybackQueueState.VERSION)
         try {
-            FileInputStream(storage).use { `in` ->
+            FileInputStream(storage).use { input ->
                 try {
-                    ObjectInputStream(`in`).use { objIn ->
+                    ObjectInputStream(input).use { objIn ->
                         val state = objIn.readObject()
                         if (state is PlaybackQueueState) {
-                            playbackQueue.content = state.queueContent
+                            playbackQueue.replace(state.queueItems)
                             playbackQueue.ordering = state.queueOrdering
                             if (state.queueIndex >= 0) {
-                                val currentItem = playbackQueue.getItem(state.queueIndex)
+                                val currentItem = playbackQueue.get(state.queueIndex)
                                 if (currentItem != null) {
                                     player.play(currentItem)
                                     player.pause()

@@ -22,7 +22,7 @@ Experimental fork of the [Android client for Polaris](https://github.com/agersan
 
 ### (ToDo) Playlists
 - [ ] search current playlist
-- [x] Swipe right to enqueue
+- [ ] Swipe right to enqueue
 - [ ] Swipe left to play next
 
 ### Now Playing

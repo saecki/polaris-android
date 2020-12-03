@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,10 +8,12 @@
     tools:context="agersant.polaris.features.player.PlayerFragment">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/artwork_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/player_artwork_vertical_margin"
-        app:cardCornerRadius="@dimen/player_artwork_horizontal_radius">
+        app:cardCornerRadius="@dimen/player_artwork_horizontal_radius"
+        app:layout_constraintStart_toStartOf="parent">
 
         <agersant.polaris.ui.SquareLayout
             android:id="@+id/viewGroup"
@@ -38,28 +40,39 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/artwork_container">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textAppearance="?textAppearanceHeadline6" />
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?textAppearanceHeadline6"
+            tools:text="Title" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/artist"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textAppearance="?textAppearanceBody1" />
+            android:layout_gravity="center_horizontal"
+            android:drawableStart="@drawable/baseline_person_24"
+            android:drawablePadding="@dimen/player_text_icon_padding"
+            android:drawableTint="?android:textColorPrimary"
+            android:textAppearance="?textAppearanceBody1"
+            tools:text="Artist" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/album"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textAppearance="?textAppearanceBody1" />
+            android:layout_gravity="center_horizontal"
+            android:drawableStart="@drawable/baseline_album_24"
+            android:drawablePadding="@dimen/player_text_icon_padding"
+            android:drawableTint="?android:textColorPrimary"
+            android:textAppearance="?textAppearanceBody1"
+            tools:text="Album" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/buffering"
@@ -121,4 +134,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

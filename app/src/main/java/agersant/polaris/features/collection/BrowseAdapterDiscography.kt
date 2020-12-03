@@ -6,7 +6,7 @@ import agersant.polaris.api.API
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
-internal class BrowseAdapterDiscography(
+class BrowseAdapterDiscography(
     private val api: API,
     private val playbackQueue: PlaybackQueue,
 ) : BrowseAdapter() {

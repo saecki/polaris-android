@@ -3,7 +3,7 @@ package agersant.polaris.features.queue
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-internal class QueueTouchCallback(private val adapter: QueueAdapter) : ItemTouchHelper.Callback() {
+class QueueTouchCallback(private val adapter: QueueAdapter) : ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean {
         return true
