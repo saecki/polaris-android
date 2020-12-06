@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <agersant.polaris.ui.BackdropMenu
+    <agersant.polaris.ui.backdrop.BackdropMenu
         android:id="@+id/backdrop_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,12 +28,11 @@
             android:scrollIndicators="none"
             android:scrollbarSize="0dp"
             android:scrollbars="none"
-            app:itemIconTint="?colorOnBackground"
             app:menu="@menu/nav_backdrop" />
 
-    </agersant.polaris.ui.BackdropMenu>
+    </agersant.polaris.ui.backdrop.BackdropMenu>
 
-    <agersant.polaris.ui.BackdropLayout
+    <agersant.polaris.ui.backdrop.BackdropLayout
         android:id="@+id/backdrop_layout"
         style="@style/Content"
         android:layout_width="match_parent"
@@ -46,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </agersant.polaris.ui.BackdropLayout>
+    </agersant.polaris.ui.backdrop.BackdropLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:indeterminateDuration="@android:integer/config_shortAnimTime"
+        android:indeterminateDuration="@android:integer/config_mediumAnimTime"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <LinearLayout

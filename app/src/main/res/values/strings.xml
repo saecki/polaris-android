@@ -25,6 +25,8 @@
     <string name="player_opening">Opening…</string>
     <string name="player_buffering">Buffering…</string>
     <string name="player_exit">Exit</string>
+    <string name="player_no_song">[No song]</string>
+    <string name="player_unknown">[unknown]</string>
 
     <string name="queue">Queue</string>
     <string name="queue_empty">Make a playlist by swiping music from your collection to here.</string>
@@ -35,7 +37,8 @@
 
     <string name="search">Search</string>
 
-    <string name="pref_server_url">Server address</string>
+    <string name="pref_server_address">Server address</string>
+    <string name="pref_server_port">Server port</string>
     <string name="pref_username">Username</string>
     <string name="pref_password">Password</string>
     <string name="pref_offline">Offline Mode</string>
@@ -44,7 +47,8 @@
     <string name="pref_theme">Theme</string>
     <string name="pref_start_screen">Start screen</string>
 
-    <string name="pref_key_server_url" translatable="false">server</string>
+    <string name="pref_key_server_address" translatable="false">server_address</string>
+    <string name="pref_key_server_port" translatable="false">server_port</string>
     <string name="pref_key_username" translatable="false">username</string>
     <string name="pref_key_password" translatable="false">password</string>
     <string name="pref_key_offline" translatable="false">offline</string>

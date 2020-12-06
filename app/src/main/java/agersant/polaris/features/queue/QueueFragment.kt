@@ -30,6 +30,8 @@ class QueueFragment : Fragment() {
         val callback: ItemTouchHelper.Callback = QueueTouchCallback(adapter)
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+        adapter.itemTouchHelper = itemTouchHelper
+
         val animator: DefaultItemAnimator = object : DefaultItemAnimator() {
             override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
                 holder.itemView.alpha = 0f

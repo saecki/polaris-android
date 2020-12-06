@@ -4,8 +4,13 @@
     <!--suppress AndroidDomInspection -->
     <EditTextPreference
         android:defaultValue=""
-        android:key="@string/pref_key_server_url"
-        android:title="@string/pref_server_url"
+        android:key="@string/pref_key_server_address"
+        android:title="@string/pref_server_address"
+        app:useSimpleSummaryProvider="true" />
+    <EditTextPreference
+        android:defaultValue="5050"
+        android:key="@string/pref_key_server_port"
+        android:title="@string/pref_server_port"
         app:useSimpleSummaryProvider="true" />
     <!--suppress AndroidDomInspection -->
     <EditTextPreference

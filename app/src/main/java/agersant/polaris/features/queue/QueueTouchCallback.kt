@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 class QueueTouchCallback(private val adapter: QueueAdapter) : ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean {
-        return true
+        return false
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {

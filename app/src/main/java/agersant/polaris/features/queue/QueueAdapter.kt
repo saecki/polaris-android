@@ -2,9 +2,14 @@ package agersant.polaris.features.queue
 
 import agersant.polaris.CollectionItem
 import agersant.polaris.PolarisState
+import agersant.polaris.R
 import agersant.polaris.adapter.CollectionItemDiffUtil
+import android.annotation.SuppressLint
+import android.view.MotionEvent
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 class QueueAdapter(
@@ -12,9 +17,11 @@ class QueueAdapter(
     private var items: List<CollectionItem>,
 ) : RecyclerView.Adapter<QueueItemHolder>() {
 
+    var itemTouchHelper: ItemTouchHelper? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QueueItemHolder {
         val view = QueueItemView(parent.context)
-        return QueueItemHolder(state, view)
+        return QueueItemHolder(state, itemTouchHelper, view)
     }
 
     override fun onBindViewHolder(holder: QueueItemHolder, position: Int) {

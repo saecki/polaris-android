@@ -6,15 +6,20 @@ import agersant.polaris.PolarisState
 import agersant.polaris.R
 import agersant.polaris.api.local.OfflineCache
 import agersant.polaris.api.remote.DownloadQueue
+import android.annotation.SuppressLint
 import android.os.AsyncTask
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.ref.WeakReference
 
+@SuppressLint("ClickableViewAccessibility")
 class QueueItemHolder(
     private val appState: PolarisState,
+    private val itemTouchHelper: ItemTouchHelper?,
     private val queueItemView: QueueItemView,
 ) : RecyclerView.ViewHolder(queueItemView), View.OnClickListener {
 
@@ -28,6 +33,10 @@ class QueueItemHolder(
 
     init {
         queueItemView.setOnClickListener(this)
+        artwork.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) itemTouchHelper?.startDrag(this)
+            true
+        }
     }
 
     private class IconUpdateTask(

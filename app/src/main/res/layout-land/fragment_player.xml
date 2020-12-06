@@ -16,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <agersant.polaris.ui.SquareLayout
-            android:id="@+id/viewGroup"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:preserveWidth="false">
@@ -34,104 +33,12 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-
-    <LinearLayout
+    <include
+        android:id="@+id/controls"
+        layout="@layout/view_player_controls"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/artwork_container">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textAppearance="?textAppearanceHeadline6"
-            tools:text="Title" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/artist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:drawableStart="@drawable/baseline_person_24"
-            android:drawablePadding="@dimen/player_text_icon_padding"
-            android:drawableTint="?android:textColorPrimary"
-            android:textAppearance="?textAppearanceBody1"
-            tools:text="Artist" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/album"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:drawableStart="@drawable/baseline_album_24"
-            android:drawablePadding="@dimen/player_text_icon_padding"
-            android:drawableTint="?android:textColorPrimary"
-            android:textAppearance="?textAppearanceBody1"
-            tools:text="Album" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/buffering"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="-12dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="-3dp"
-            android:text="@string/player_buffering"
-            android:textAlignment="textStart"
-            android:textSize="12sp" />
-
-        <SeekBar
-            android:id="@+id/seek_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100"
-            tools:progress="20"
-            tools:secondaryProgress="20" />
-
-        <LinearLayout
-            android:id="@+id/controls"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/skip_previous"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/player_previous_track"
-                android:src="@drawable/baseline_skip_previous_24"
-                app:tint="?colorOnBackground" />
-
-            <ImageView
-                android:id="@+id/pause_toggle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/player_play_pause"
-                android:src="@drawable/baseline_play_arrow_24"
-                app:tint="?colorOnBackground" />
-
-            <ImageView
-                android:id="@+id/skip_next"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/player_next_track"
-                android:src="@drawable/baseline_skip_next_24"
-                app:tint="?colorOnBackground" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+        app:layout_constraintStart_toEndOf="@id/artwork_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

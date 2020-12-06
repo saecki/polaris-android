@@ -33,8 +33,9 @@ Experimental fork of the [Android client for Polaris](https://github.com/agersan
 - [ ] Playback time or state (buffering, error)
 
 ### Queue
-- [ ] Seach queue
+- [ ] Search queue
 - [ ] Jump to current track
+- [x] Drag songs with their album covers
 - [ ] Multiple selection
     - [ ] Add to playlist
     - [ ] Remove

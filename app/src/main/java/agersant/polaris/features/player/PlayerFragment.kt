@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
+import kotlin.math.roundToInt
 
 class PlayerFragment : Fragment() {
     private var receiver: BroadcastReceiver? = null
@@ -66,12 +67,21 @@ class PlayerFragment : Fragment() {
             if (!seeking) {
                 val precision = 10000
                 val position = player.positionRelative
-                binding.seekBar.max = precision
-                binding.seekBar.progress = (precision * position).toInt()
+                binding.controls.seekBar.max = precision
+                binding.controls.seekBar.progress = (precision * position).toInt()
+                binding.controls.currentTime.text = formatTime(player.currentPosition)
+                binding.controls.totalTime.text = formatTime(player.duration)
             }
             seekBarUpdateHandler.postDelayed(updateSeekBar, 20 /*ms*/)
         }
         seekBarUpdateHandler.post(updateSeekBar)
+    }
+
+    private fun formatTime(time: Float): String {
+        val timeSeconds = (time / 1000).roundToInt()
+        val minutes = timeSeconds / 60
+        val seconds = String.format("%02d", timeSeconds % 60)
+        return "$minutes:$seconds"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +98,7 @@ class PlayerFragment : Fragment() {
         container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = FragmentPlayerBinding.inflate(inflater)
-        binding.seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+        binding.controls.seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             var newPosition = 0
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 newPosition = progress
@@ -104,9 +114,9 @@ class PlayerFragment : Fragment() {
                 updateControls()
             }
         })
-        binding.skipNext.setOnClickListener { View: View? -> player.skipNext() }
-        binding.skipPrevious.setOnClickListener { View: View? -> player.skipPrevious() }
-        binding.pauseToggle.setOnClickListener { View: View? ->
+        binding.controls.skipNext.setOnClickListener { View: View? -> player.skipNext() }
+        binding.controls.skipPrevious.setOnClickListener { View: View? -> player.skipPrevious() }
+        binding.controls.pauseToggle.setOnClickListener { View: View? ->
             if (player.isPlaying) {
                 player.pause()
             } else {
@@ -141,52 +151,48 @@ class PlayerFragment : Fragment() {
     }
 
     private fun updateContent() {
-        val currentItem = player.currentItem
-        currentItem?.let { populateWithTrack(it) }
+        populateWithTrack(player.currentItem)
     }
 
     private fun updateControls() {
         val disabledAlpha = 0.2f
         val playPauseIcon = if (player.isPlaying) R.drawable.baseline_pause_24 else R.drawable.baseline_play_arrow_24
-        binding.pauseToggle.setImageResource(playPauseIcon)
-        binding.pauseToggle.alpha = if (player.isIdle) disabledAlpha else 1f
+        binding.controls.pauseToggle.setImageResource(playPauseIcon)
+        binding.controls.pauseToggle.alpha = if (player.isIdle) disabledAlpha else 1f
         if (playbackQueue.hasNextTrack(player.currentItem)) {
-            binding.skipNext.isClickable = true
-            binding.skipNext.alpha = 1.0f
+            binding.controls.skipNext.isClickable = true
+            binding.controls.skipNext.alpha = 1.0f
         } else {
-            binding.skipNext.isClickable = false
-            binding.skipNext.alpha = disabledAlpha
+            binding.controls.skipNext.isClickable = false
+            binding.controls.skipNext.alpha = disabledAlpha
         }
         if (playbackQueue.hasPreviousTrack(player.currentItem)) {
-            binding.skipPrevious.isClickable = true
-            binding.skipPrevious.alpha = 1.0f
+            binding.controls.skipPrevious.isClickable = true
+            binding.controls.skipPrevious.alpha = 1.0f
         } else {
-            binding.skipPrevious.isClickable = false
-            binding.skipPrevious.alpha = disabledAlpha
+            binding.controls.skipPrevious.isClickable = false
+            binding.controls.skipPrevious.alpha = disabledAlpha
         }
     }
 
     private fun updateBuffering() {
-        if (player.isOpeningSong) {
-            binding.buffering.setText(R.string.player_opening)
-        } else if (player.isBuffering) {
-            binding.buffering.setText(R.string.player_buffering)
-        }
         if (player.isPlaying && (player.isOpeningSong || player.isBuffering)) {
-            binding.buffering.visibility = View.VISIBLE
+            binding.controls.loading.show()
         } else {
-            binding.buffering.visibility = View.INVISIBLE
+            binding.controls.loading.hide()
         }
+
+        binding.controls.loading
     }
 
-    private fun populateWithTrack(item: CollectionItem) {
-        binding.title.text = item.title
-        binding.artist.text = item.artist
-        binding.album.text = item.album
-        if (item.artwork != null) {
+    private fun populateWithTrack(item: CollectionItem?) {
+        binding.controls.title.text = item?.title ?: resources.getString(R.string.player_no_song)
+        binding.controls.artist.text = item?.artist ?: resources.getString(R.string.player_unknown)
+        binding.controls.album.text = item?.album ?: resources.getString(R.string.player_unknown)
+
+        if (item?.artwork != null)
             api.loadImageIntoView(item, binding.artwork)
-        } else {
+        else
             binding.artwork.setImageResource(R.drawable.launcher_icon_foreground)
-        }
     }
 }

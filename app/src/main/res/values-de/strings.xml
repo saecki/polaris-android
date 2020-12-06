@@ -26,6 +26,8 @@
     <string name="player_opening">Öffnen…</string>
     <string name="player_buffering">Laden…</string>
     <string name="player_exit">Beenden</string>
+    <string name="player_no_song">[Kein Lied]</string>
+    <string name="player_unknown">[Unbekannt]</string>
 
     <string name="queue">Warteschlange</string>
     <string name="queue_empty">Make a playlist by swiping music from your collection to here.</string>
@@ -36,7 +38,8 @@
 
     <string name="search">Suchen</string>
 
-    <string name="pref_server_url">Server Adresse</string>
+    <string name="pref_server_address">Server Adresse</string>
+    <string name="pref_server_port">Server Port</string>
     <string name="pref_username">Benutzer</string>
     <string name="pref_password">Passwort</string>
     <string name="pref_offline">Offline Modus</string>

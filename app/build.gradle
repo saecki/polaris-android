@@ -64,6 +64,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
     implementation "androidx.gridlayout:gridlayout:1.0.0"
+    implementation "androidx.dynamicanimation:dynamicanimation:1.0.0"
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.1"
@@ -83,7 +84,6 @@ dependencies {
     // Rest client
     implementation "com.google.code.gson:gson:2.8.6"
     implementation "com.squareup.okhttp3:okhttp:4.9.0"
-
 }
 
 task printVersionName {
