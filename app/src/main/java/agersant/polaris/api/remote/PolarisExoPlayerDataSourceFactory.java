@@ -1,5 +1,7 @@
 package agersant.polaris.api.remote;
 
+import android.util.Log;
+
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultDataSource;
@@ -100,7 +102,7 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
                     }
                     file = new RandomAccessFile(scratchLocation, "rw");
                 } catch (Exception e) {
-                    System.out.println("Error while opening stream file: " + e);
+                    Log.e("POLARIS", "Error while opening stream file: " + e);
                 }
             }
 
@@ -114,23 +116,23 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
             try {
                 file.write(buffer, offset, out);
             } catch (Exception e) {
-                System.out.println("Error while writing audio to stream file: " + e);
+                Log.e("POLARIS", "Error while writing audio to stream file: " + e);
                 file = null;
             }
 
             if (bytesStreamed.nextClearBit(0) >= length) {
-                System.out.println("Streaming complete, saving file for local use: " + item.getPath());
+                Log.i("POLARIS", "Streaming complete, saving file for local use: " + item.getPath());
                 try {
                     file.close();
                 } catch (Exception e) {
-                    System.out.println("Error while closing stream audio file: " + e);
+                    Log.e("POLARIS", "Error while closing stream audio file: " + e);
                 }
                 file = null;
 
                 try (FileInputStream scratchFile = new FileInputStream(scratchLocation)) {
                     offlineCache.putAudio(item, scratchFile);
                 } catch (Exception e) {
-                    System.out.println("Error while saving stream audio in offline cache: " + e);
+                    Log.e("POLARIS", "Error while saving stream audio in offline cache: " + e);
                 }
             }
 
@@ -144,7 +146,7 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
                     file = null;
                 }
             } catch (Exception e) {
-                System.out.println("Error while closing stream file (cleanup): " + e);
+                Log.e("POLARIS", "Error while closing stream file (cleanup): " + e);
             }
         }
     }

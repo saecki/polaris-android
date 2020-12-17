@@ -1,6 +1,7 @@
 package agersant.polaris.api.local;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.google.android.exoplayer2.source.MediaSource;
 
@@ -43,7 +44,7 @@ public class LocalAPI implements IPolarisAPI {
 		try {
 			return offlineCache.getImage(artworkPath);
 		} catch (IOException e) {
-			System.out.println( "Error while retrieving image from local cache: " + artworkPath );
+			Log.e("POLARIS",  "Error while retrieving image from local cache: " + artworkPath );
 		}
 		return null;
 	}

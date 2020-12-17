@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -108,7 +109,7 @@ public class OfflineCache {
                     try {
                         metadata = readMetadata(meta);
                     } catch (IOException e) {
-                        System.out.println("Error reading file metadata for " + child + " " + e);
+                        Log.e("POLARIS", "Error reading file metadata for " + child + " " + e);
                     }
                 }
 
@@ -116,7 +117,7 @@ public class OfflineCache {
                 try {
                     item = readItem(child);
                 } catch (Exception e) {
-                    System.out.println("Error reading collection item for " + child + " " + e);
+                    Log.e("POLARIS", "Error reading collection item for " + child + " " + e);
                 }
 
                 DeletionCandidate candidate = new DeletionCandidate(child, metadata, item);
@@ -186,7 +187,7 @@ public class OfflineCache {
             if (audio.exists()) {
                 long size = audio.length();
                 if (audio.delete()) {
-                    System.out.println("Deleting " + audio);
+                    Log.e("POLARIS", "Deleting " + audio);
                     cleared += size;
                 }
                 if (cleared >= bytesToSave) {
@@ -238,7 +239,7 @@ public class OfflineCache {
         for (File child : files) {
             if (child.isDirectory()) {
                 if (!containsAudio(child)) {
-                    System.out.println("Deleting " + child);
+                    Log.e("POLARIS", "Deleting " + child);
                     deleteDirectory(child);
                 } else {
                     removeEmptyDirectories(child);
@@ -256,7 +257,7 @@ public class OfflineCache {
         try (FileOutputStream itemOut = new FileOutputStream(getCacheFile(path, CacheDataType.ITEM, true))) {
             write(item, itemOut);
         } catch (IOException e) {
-            System.out.println("Error while caching item for local use: " + e);
+            Log.e("POLARIS", "Error while caching item for local use: " + e);
             return;
         }
 
@@ -265,7 +266,7 @@ public class OfflineCache {
                 write(audio, itemOut);
                 broadcast(AUDIO_CACHED);
             } catch (IOException e) {
-                System.out.println("Error while caching audio for local use: " + e);
+                Log.e("POLARIS", "Error while caching audio for local use: " + e);
                 return;
             }
         }
@@ -274,7 +275,7 @@ public class OfflineCache {
             saveMetadata(path, new ItemCacheMetadata());
         }
 
-        System.out.println("Saved audio to offline cache: " + path);
+        Log.i("POLARIS", "Saved audio to offline cache: " + path);
     }
 
     public synchronized void putImage(CollectionItem item, Bitmap image) {
@@ -283,7 +284,7 @@ public class OfflineCache {
         try (FileOutputStream itemOut = new FileOutputStream(getCacheFile(path, CacheDataType.ITEM, true))) {
             write(item, itemOut);
         } catch (IOException e) {
-            System.out.println("Error while caching item for local use: " + e);
+            Log.e("POLARIS", "Error while caching item for local use: " + e);
         }
 
         if (image != null) {
@@ -291,11 +292,11 @@ public class OfflineCache {
             try (FileOutputStream itemOut = new FileOutputStream(getCacheFile(artworkPath, CacheDataType.ARTWORK, true))) {
                 write(image, itemOut);
             } catch (IOException e) {
-                System.out.println("Error while caching artwork for local use: " + e);
+                Log.e("POLARIS", "Error while caching artwork for local use: " + e);
             }
         }
 
-        System.out.println("Saved image to offline cache: " + path);
+        Log.i("POLARIS", "Saved image to offline cache: " + path);
     }
 
     private File getCacheDir(String virtualPath) {
@@ -379,7 +380,7 @@ public class OfflineCache {
         try (FileOutputStream metaOut = new FileOutputStream(getCacheFile(virtualPath, CacheDataType.META, true))) {
             write(metadata, metaOut);
         } catch (IOException e) {
-            System.out.println("Error while caching metadata for local use: " + e);
+            Log.e("POLARIS", "Error while caching metadata for local use: " + e);
         }
     }
 
@@ -436,7 +437,7 @@ public class OfflineCache {
                     out.add(item);
                 }
             } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Error while reading offline cache: " + e);
+                Log.e("POLARIS", "Error while reading offline cache: " + e);
             }
         }
 
@@ -494,7 +495,7 @@ public class OfflineCache {
                     out.add(item);
                 }
             } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Error while reading offline cache: " + e);
+                Log.e("POLARIS", "Error while reading offline cache: " + e);
                 return null;
             }
         }

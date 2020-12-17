@@ -3,6 +3,7 @@ package agersant.polaris.api.remote;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -83,7 +84,7 @@ class DownloadQueueWorkItem {
 	}
 
 	void beginBackgroundDownload() {
-		System.out.println("Beginning background download for: " + item.getPath());
+		Log.i("POLARIS", "Beginning background download for: " + item.getPath());
 		Uri uri = serverAPI.getAudioUri(item.getPath());
 		job = new DownloadTask(dataSource, uri);
 		job.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

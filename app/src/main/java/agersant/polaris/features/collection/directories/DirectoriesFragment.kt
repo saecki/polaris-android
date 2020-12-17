@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -47,7 +48,7 @@ class DirectoriesFragment : Fragment() {
         }
         model.fetching.observe(viewLifecycleOwner) { fetching ->
             if (fetching) binding.progressBar.show()
-            else binding.progressBar.hide()
+            else (binding.progressBar as ContentLoadingProgressBar).hide()
         }
         model.fetchingError.observe(viewLifecycleOwner) { error ->
             if (error) binding.errorMessage.visibility = View.VISIBLE

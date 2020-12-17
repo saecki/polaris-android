@@ -2,6 +2,7 @@ package agersant.polaris.api.remote;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.upstream.DataSpec;
@@ -35,13 +36,13 @@ class DownloadTask extends AsyncTask<Object, Integer, Integer> {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Download task error during reads: " + e + " (" + dataSpec.uri + ")");
+			Log.e("POLARIS", "Download task error during reads: " + e + " (" + dataSpec.uri + ")");
 		}
 
 		try {
 			dataSource.close();
 		} catch (Exception e) {
-			System.out.println("Download task error during close: " + e);
+			Log.e("POLARIS", "Download task error during close: " + e);
 		}
 
 		return 0;

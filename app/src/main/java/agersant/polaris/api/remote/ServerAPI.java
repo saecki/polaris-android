@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.gson.Gson;
@@ -76,7 +77,7 @@ public class ServerAPI implements IRemoteAPI {
             Gson gson = new GsonBuilder().create();
             version = gson.fromJson(response.body().charStream(), versionType);
         } catch (JsonSyntaxException e) {
-            System.out.println("Error parsing API version " + e);
+            Log.e("POLARIS", "Error parsing API version " + e);
             return;
         }
 
@@ -95,7 +96,7 @@ public class ServerAPI implements IRemoteAPI {
             Response response = client.newCall(getVersionRequest()).execute();
             handleAPIVersionResponse(response);
         } catch (IOException e) {
-            System.out.println("Error fetching API version " + e);
+            Log.e("POLARIS", "Error fetching API version " + e);
         }
     }
 
@@ -110,7 +111,7 @@ public class ServerAPI implements IRemoteAPI {
         client.newCall(getVersionRequest()).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                System.out.println("Error fetching API version " + e);
+                Log.e("POLARIS", "Error fetching API version " + e);
                 callback.onError();
             }
 

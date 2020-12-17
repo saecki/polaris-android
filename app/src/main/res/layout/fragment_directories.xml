@@ -13,16 +13,6 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/view_browse_explorer_item" />
 
-    <!-- TODO: use drawable without padding -->
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:indeterminateDuration="@android:integer/config_mediumAnimTime"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
     <LinearLayout
         android:id="@+id/error_message"
         android:layout_width="match_parent"
@@ -47,5 +37,16 @@
             android:layout_height="wrap_content"
             android:text="@string/browse_error_retry" />
     </LinearLayout>
+
+    <!-- TODO: use drawable without padding -->
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:progressBarStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:indeterminate="true"
+        android:indeterminateDuration="2000"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

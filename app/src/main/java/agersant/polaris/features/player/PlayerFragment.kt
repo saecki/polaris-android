@@ -12,9 +12,8 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
-import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
+import com.google.android.material.slider.Slider
 import kotlin.math.roundToInt
 
 class PlayerFragment : Fragment() {
@@ -64,21 +63,22 @@ class PlayerFragment : Fragment() {
 
     private fun scheduleSeekBarUpdates() {
         updateSeekBar = Runnable {
-            if (!seeking) {
-                val precision = 10000
-                val position = player.positionRelative
-                binding.controls.seekBar.max = precision
-                binding.controls.seekBar.progress = (precision * position).toInt()
-                binding.controls.currentTime.text = formatTime(player.currentPosition)
-                binding.controls.totalTime.text = formatTime(player.duration)
-            }
+            val duration = player.duration / 1000
+            val position = player.positionRelative
+            updateTime(position, duration)
             seekBarUpdateHandler.postDelayed(updateSeekBar, 20 /*ms*/)
         }
         seekBarUpdateHandler.post(updateSeekBar)
     }
 
+    private fun updateTime(position: Float, duration: Float) {
+        if (!seeking) binding.controls.slider.value = position
+        binding.controls.currentTime.text = formatTime(position * duration)
+        binding.controls.totalTime.text = formatTime(duration)
+    }
+
     private fun formatTime(time: Float): String {
-        val timeSeconds = (time / 1000).roundToInt()
+        val timeSeconds = if (time.isNaN()) 1 else time.roundToInt()
         val minutes = timeSeconds / 60
         val seconds = String.format("%02d", timeSeconds % 60)
         return "$minutes:$seconds"
@@ -98,25 +98,21 @@ class PlayerFragment : Fragment() {
         container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = FragmentPlayerBinding.inflate(inflater)
-        binding.controls.seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-            var newPosition = 0
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                newPosition = progress
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
+        binding.controls.slider.setLabelFormatter { formatTime(it * player.duration / 1000) }
+        binding.controls.slider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
                 seeking = true
             }
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                player.seekToRelative(newPosition.toFloat() / seekBar.max)
+            override fun onStopTrackingTouch(slider: Slider) {
+                player.seekToRelative(slider.value / slider.valueTo)
                 seeking = false
                 updateControls()
             }
         })
-        binding.controls.skipNext.setOnClickListener { View: View? -> player.skipNext() }
-        binding.controls.skipPrevious.setOnClickListener { View: View? -> player.skipPrevious() }
-        binding.controls.pauseToggle.setOnClickListener { View: View? ->
+        binding.controls.skipNext.setOnClickListener { player.skipNext() }
+        binding.controls.skipPrevious.setOnClickListener { player.skipPrevious() }
+        binding.controls.pauseToggle.setOnClickListener {
             if (player.isPlaying) {
                 player.pause()
             } else {

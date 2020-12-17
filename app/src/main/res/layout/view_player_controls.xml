@@ -69,7 +69,7 @@
         android:paddingVertical="@dimen/player_field_padding"
         android:paddingEnd="@dimen/player_field_padding"
         android:textAppearance="?textAppearanceBody1"
-        app:layout_constraintBottom_toTopOf="@id/seek_bar"
+        app:layout_constraintBottom_toTopOf="@id/control_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@id/album_icon"
@@ -89,51 +89,13 @@
         app:layout_constraintStart_toStartOf="@id/current_time"
         app:layout_constraintTop_toTopOf="@id/current_time" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/current_time"
-        android:layout_width="@dimen/player_time_width"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/player_time_margin"
-        android:textAlignment="textEnd"
-        android:textAppearance="?textAppearanceBody2"
-        app:layout_constraintBottom_toBottomOf="@id/seek_bar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/seek_bar"
-        tools:text="0:16" />
-
-    <SeekBar
-        android:id="@+id/seek_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:paddingTop="@dimen/player_seek_bar_padding"
-        android:paddingBottom="@dimen/player_seek_bar_padding"
-        app:layout_constraintBottom_toTopOf="@id/control_bar"
-        app:layout_constraintEnd_toStartOf="@id/total_time"
-        app:layout_constraintStart_toEndOf="@id/current_time"
-        tools:progress="20"
-        tools:secondaryProgress="20" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/total_time"
-        android:layout_width="@dimen/player_time_width"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/player_time_margin"
-        android:textAlignment="textEnd"
-        android:textAppearance="?textAppearanceBody2"
-        app:layout_constraintBottom_toBottomOf="@id/seek_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/seek_bar"
-        tools:text="12:49" />
-
     <LinearLayout
         android:id="@+id/control_bar"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:layout_margin="@dimen/player_control_bar_margin"
+        android:layout_height="@dimen/player_control_bar_height"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/slider">
 
         <ImageView
             android:id="@+id/skip_previous"
@@ -165,5 +127,38 @@
             app:tint="?colorOnBackground" />
 
     </LinearLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/current_time"
+        android:layout_width="@dimen/player_time_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/player_time_margin"
+        android:textAlignment="textEnd"
+        android:textAppearance="?textAppearanceBody2"
+        app:layout_constraintBottom_toBottomOf="@id/slider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/slider"
+        tools:text="0:16" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/total_time"
+        app:layout_constraintStart_toEndOf="@id/current_time"
+        tools:value="0.07" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/total_time"
+        android:layout_width="@dimen/player_time_width"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/player_time_margin"
+        android:textAlignment="textEnd"
+        android:textAppearance="?textAppearanceBody2"
+        app:layout_constraintBottom_toBottomOf="@id/slider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/slider"
+        tools:text="12:49" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

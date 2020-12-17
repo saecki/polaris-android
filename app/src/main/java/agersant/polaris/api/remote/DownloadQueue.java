@@ -1,6 +1,7 @@
 package agersant.polaris.api.remote;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.exoplayer2.source.MediaSource;
 
@@ -51,7 +52,7 @@ public class DownloadQueue {
 			newWorker = findWorkerToInterrupt();
 		}
 		if (newWorker == null) {
-			System.out.println("ERROR: Could not find a worker for download queue.");
+			Log.e("POLARIS", "ERROR: Could not find a worker for download queue.");
 			return null;
 		}
 

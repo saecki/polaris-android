@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -56,7 +57,7 @@ public class FetchImageTask extends AsyncTask<Void, Void, Bitmap> {
 					InputStream stream = new BufferedInputStream(responseBody.byteStream());
 					bitmap = BitmapFactory.decodeStream(stream);
 				} catch (Exception e) {
-					System.out.println("Error while downloading image: " + e.toString());
+					Log.e("POLARIS", "Error while downloading image: " + e.toString());
 				}
 			}
 		}
