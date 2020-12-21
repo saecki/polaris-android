@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:padding="@dimen/player_field_padding"
-        android:textAppearance="?textAppearanceHeadline6"
+        android:textAppearance="?textAppearanceBody1"
         app:layout_constraintBottom_toTopOf="@id/artist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
         android:layout_gravity="center_horizontal"
         android:paddingVertical="@dimen/player_field_padding"
         android:paddingEnd="@dimen/player_field_padding"
-        android:textAppearance="?textAppearanceBody1"
+        android:textAppearance="?textAppearanceBody2"
         app:layout_constraintBottom_toTopOf="@id/album"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -68,7 +68,7 @@
         android:layout_gravity="center_horizontal"
         android:paddingVertical="@dimen/player_field_padding"
         android:paddingEnd="@dimen/player_field_padding"
-        android:textAppearance="?textAppearanceBody1"
+        android:textAppearance="?textAppearanceBody2"
         app:layout_constraintBottom_toTopOf="@id/control_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -147,6 +147,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/total_time"
         app:layout_constraintStart_toEndOf="@id/current_time"
+        app:thumbRadius="@dimen/player_slider_thumb_radius"
+        app:haloRadius="@dimen/player_slider_halo_radius"
         tools:value="0.07" />
 
     <com.google.android.material.textview.MaterialTextView

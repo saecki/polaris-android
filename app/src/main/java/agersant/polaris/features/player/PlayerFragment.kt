@@ -12,6 +12,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.math.MathUtils
 import androidx.fragment.app.Fragment
 import com.google.android.material.slider.Slider
 import kotlin.math.roundToInt
@@ -72,8 +73,9 @@ class PlayerFragment : Fragment() {
     }
 
     private fun updateTime(position: Float, duration: Float) {
-        if (!seeking) binding.controls.slider.value = position
-        binding.controls.currentTime.text = formatTime(position * duration)
+        val clamped = MathUtils.clamp(position, 0f, 1f)
+        if (!seeking) binding.controls.slider.value = clamped
+        binding.controls.currentTime.text = formatTime(clamped * duration)
         binding.controls.totalTime.text = formatTime(duration)
     }
 

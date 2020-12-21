@@ -75,6 +75,7 @@ class BackdropMenu(context: Context, attrs: AttributeSet? = null) : LinearLayout
     }
 
     override fun onDrag(event: MotionEvent) {
+        springAnim.cancel()
         velocityTracker.addMovement(event)
         val distance = event.y - initialPos + initialValue * measuredHeight
 
