@@ -34,16 +34,25 @@
 
     <agersant.polaris.ui.backdrop.BackdropLayout
         android:id="@+id/backdrop_layout"
-        style="@style/Content"
         android:layout_width="match_parent"
+        android:elevation="@dimen/content_elevation"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host_container"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="?android:colorBackground"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="@dimen/content_corner_radius">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/nav_host_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.google.android.material.card.MaterialCardView>
 
     </agersant.polaris.ui.backdrop.BackdropLayout>
 

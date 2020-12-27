@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.ContextCompat
 
 class BackdropLayout(context: Context, attrs: AttributeSet? = null) : ConstraintLayout(context, attrs) {
 
@@ -19,7 +19,7 @@ class BackdropLayout(context: Context, attrs: AttributeSet? = null) : Constraint
             alpha = 0f
             visibility = GONE
             z = 100f
-            background = ResourcesCompat.getDrawable(resources, R.drawable.content_background, context.theme)
+            background = ContextCompat.getDrawable(context, R.drawable.content_background)
 
             setOnClickListener { backdropMenu?.close() }
         }
@@ -29,8 +29,8 @@ class BackdropLayout(context: Context, attrs: AttributeSet? = null) : Constraint
     val backdropOverlay = OverlayView(context)
 
     init {
+        background = ContextCompat.getDrawable(context, R.drawable.content_background)
         addView(backdropOverlay)
-        backdropOverlay.z
     }
 
     fun attachBackdropMenu(backdropMenu: BackdropMenu) {

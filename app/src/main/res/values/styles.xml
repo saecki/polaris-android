@@ -55,11 +55,6 @@
 
     <!-- Custom Styles -->
 
-    <style name="Content">
-        <item name="android:background">@drawable/content_background</item>
-        <item name="android:elevation">@dimen/content_elevation</item>
-    </style>
-
     <style name="CollectionSection" parent="Widget.MaterialComponents.TextView">
         <item name="drawableTint">?android:textColorPrimary</item>
         <item name="android:drawablePadding">@dimen/collection_section_icon_padding</item>
