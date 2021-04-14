@@ -8,6 +8,8 @@ import agersant.polaris.Song
 import agersant.polaris.api.API
 import agersant.polaris.api.ThumbnailSize
 import agersant.polaris.databinding.ViewBrowseAlbumBinding
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
@@ -16,7 +18,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.ItemTouchHelper
-import java.util.*
 
 @SuppressLint("ViewConstructor")
 private class BrowseViewAlbum(
@@ -46,6 +47,13 @@ private class BrowseViewAlbum(
         itemTouchHelper.attachToRecyclerView(recyclerView)
         adapter = BrowseAdapterAlbum(api, playbackQueue)
         recyclerView.adapter = adapter
+        recyclerView.setOnScrollChangeListener { v, _, _, _, _ ->
+            if (v.canScrollVertically(-1)) {
+                binding.headerDivider.visibility = VISIBLE
+            } else {
+                binding.headerDivider.visibility = INVISIBLE
+            }
+        }
     }
 
     override fun setItems(items: List<CollectionItem>) {
@@ -70,25 +78,27 @@ private class BrowseViewAlbum(
             api.loadThumbnailIntoView(song, ThumbnailSize.Small, artwork) { image ->
                 Palette.from(image).generate { palette ->
                     val swatch = palette?.run {
-                        if (PolarisApp.instance.isDarkMode) {
-                            darkVibrantSwatch
-                                ?: darkMutedSwatch
-                                ?: vibrantSwatch
-                                ?: dominantSwatch
-                                ?: mutedSwatch
-                        } else {
-                            lightVibrantSwatch
-                                ?: lightMutedSwatch
-                                ?: vibrantSwatch
-                                ?: dominantSwatch
-                                ?: mutedSwatch
-                        }
+                        dominantSwatch
+                            ?: mutedSwatch
                     }
 
                     swatch?.run {
-                        headerBackground.setBackgroundColor(rgb)
-                        title.setTextColor(titleTextColor)
-                        artist.setTextColor(bodyTextColor)
+                        val oldBg = 0
+                        val newBg = rgb
+                        val oldPrimary = title.textColors.defaultColor
+                        val newPrimary = titleTextColor
+                        val oldSecondary = artist.textColors.defaultColor
+                        val newSecondary = bodyTextColor
+                        val evaluator = ArgbEvaluator()
+                        val animator = ValueAnimator.ofFloat(0f, 1f)
+                        animator.addUpdateListener {
+                            val f = it.animatedFraction
+                            headerBackground.setBackgroundColor(evaluator.evaluate(f, oldBg, newBg) as Int)
+                            title.setTextColor(evaluator.evaluate(f, oldPrimary, newPrimary) as Int)
+                            artist.setTextColor(evaluator.evaluate(f, oldSecondary, newSecondary) as Int)
+                        }
+                        animator.duration = 250
+                        animator.start()
                     }
                 }
             }
