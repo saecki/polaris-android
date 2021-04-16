@@ -2,7 +2,9 @@ package agersant.polaris
 
 import agersant.polaris.databinding.ActivityMainBinding
 import agersant.polaris.ui.BackdropLayout
+import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration

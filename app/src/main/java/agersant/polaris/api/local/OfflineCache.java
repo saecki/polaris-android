@@ -452,9 +452,13 @@ public class OfflineCache {
         return out;
     }
 
-    ArrayList<CollectionItem> flatten(String path) {
+    public ArrayList<CollectionItem> flatten(String path) {
         File dir = getCacheDir(path);
         return flattenDir(dir);
+    }
+
+    public ArrayList<CollectionItem> search(String query) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     private boolean isInternalFile(File file) {

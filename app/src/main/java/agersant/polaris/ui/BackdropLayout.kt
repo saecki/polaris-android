@@ -97,7 +97,7 @@ class BackdropLayout(context: Context, attrs: AttributeSet? = null) : Constraint
     private fun openInternal() {
         if (!isOpen) {
             toolbarIcon = toolbar.navigationIcon
-            toolbar.setNavigationIcon(R.drawable.ic_close)
+            toolbar.setNavigationIcon(R.drawable.ic_close_24)
         }
 
         springAnim.animateToFinalPosition(backdropMenu.height.toFloat())

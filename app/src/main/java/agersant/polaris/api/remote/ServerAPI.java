@@ -277,6 +277,21 @@ public class ServerAPI implements IRemoteAPI {
         });
     }
 
+    @Override
+    public void search(String query, ItemsCallback handlers) {
+        fetchAPIVersionAsync(new VersionCallback() {
+            @Override
+            public void onSuccess() {
+                currentVersion.search(query, handlers);
+            }
+
+            @Override
+            public void onError() {
+                handlers.onError();
+            }
+        });
+    }
+
     private static class APIVersion {
         int major;
         int minor;

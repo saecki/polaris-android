@@ -27,7 +27,7 @@ import okio.BufferedSink;
 
 public class APIVersion3 extends APIBase implements IRemoteAPI {
 
-    private final Gson gson;
+    protected final Gson gson;
 
     APIVersion3(DownloadQueue downloadQueue, RequestQueue requestQueue) {
         super(downloadQueue, requestQueue);
@@ -142,6 +142,44 @@ public class APIVersion3 extends APIBase implements IRemoteAPI {
                 }
 
                 Type collectionType = new TypeToken<ArrayList<CollectionItem.Song>>() {
+                }.getType();
+                ArrayList<CollectionItem> items;
+                try {
+                    items = gson.fromJson(response.body().charStream(), collectionType);
+                } catch (JsonSyntaxException e) {
+                    handlers.onError();
+                    return;
+                }
+                handlers.onSuccess(items);
+            }
+        };
+        requestQueue.requestAsync(request, callback);
+    }
+
+    @Override
+    public void search(String query, final ItemsCallback handlers) {
+        String requestURL = ServerAPI.getAPIRootURL() + "/search/" + Uri.encode(query);
+        HttpUrl parsedURL = HttpUrl.parse(requestURL);
+        if (parsedURL == null) {
+            handlers.onError();
+            return;
+        }
+
+        Request request = new Request.Builder().url(parsedURL).build();
+        Callback callback = new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                handlers.onError();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.body() == null) {
+                    handlers.onError();
+                    return;
+                }
+
+                Type collectionType = new TypeToken<ArrayList<CollectionItem>>() {
                 }.getType();
                 ArrayList<CollectionItem> items;
                 try {

@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_play_circle_filled_24"
         android:title="@string/now_playing" />
 
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/ic_search_24"
+        android:title="@string/search" />
+
 </menu>

@@ -66,4 +66,13 @@ public class LocalAPI implements IPolarisAPI {
             handlers.onSuccess(items);
         }
     }
+
+    public void search(String query, ItemsCallback handlers) {
+        ArrayList<CollectionItem> items = offlineCache.search(query);
+        if (items == null) {
+            handlers.onError();
+        } else {
+            handlers.onSuccess(items);
+        }
+    }
 }

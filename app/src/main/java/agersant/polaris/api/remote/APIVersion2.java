@@ -154,6 +154,11 @@ public class APIVersion2 extends APIBase implements IRemoteAPI {
     }
 
     @Override
+    public void search(String path, final ItemsCallback handlers) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
     public void setLastFMNowPlaying(String path) {
         String requestURL = ServerAPI.getAPIRootURL() + "/lastfm/now_playing/" + path;
         Request request = new Request.Builder().url(requestURL).put(new RequestBody() {
