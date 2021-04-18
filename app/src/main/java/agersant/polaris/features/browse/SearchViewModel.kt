@@ -47,6 +47,11 @@ class SearchViewModel : ViewModel() {
     val playbackQueue = PolarisApplication.getState().playbackQueue
 
     fun incSearch(query: String) {
+        if (query.isEmpty()) { // TODO: show history
+            searchHandler.removeCallbacks(runSearch)
+            mItems.value = ArrayList()
+            return
+        }
         val currentTime = System.currentTimeMillis()
 
         val delay = lastSearchTime + MIN_SEARCH_DELAY - currentTime

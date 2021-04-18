@@ -8,6 +8,10 @@
         android:id="@+id/search_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:endIconDrawable="@drawable/ic_close_24"
+        app:endIconTint="?android:textColorPrimary"
+        app:endIconCheckable="false"
+        app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
