@@ -47,7 +47,7 @@ class SearchViewModel : ViewModel() {
     val playbackQueue = PolarisApplication.getState().playbackQueue
 
     fun incSearch(query: String) {
-        if (query.isEmpty()) { // TODO: show history
+        if (query.length < 2) { // TODO: show history
             searchHandler.removeCallbacks(runSearch)
             mItems.value = ArrayList()
             return

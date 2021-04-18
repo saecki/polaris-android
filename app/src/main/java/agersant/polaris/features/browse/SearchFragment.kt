@@ -8,6 +8,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.FrameLayout
@@ -37,23 +38,30 @@ class SearchFragment : Fragment() {
         errorMessage = binding.searchErrorMessage
         errorRetry = binding.searchErrorRetry
 
+        model.items.observe(viewLifecycleOwner, this::displayContent)
+        model.fetching.observe(viewLifecycleOwner, progressBar::isVisible::set)
+        model.error.observe(viewLifecycleOwner, errorMessage::isVisible::set)
+
         searchField.addTextChangedListener {
             model.incSearch(it.toString())
+        }
+        searchField.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+                true
+            } else {
+                false
+            }
         }
         errorRetry.setOnClickListener {
             model.incSearch(searchField.text.toString())
         }
 
-        model.items.observe(viewLifecycleOwner) { items ->
-            displayContent(items)
-        }
-        model.error.observe(viewLifecycleOwner, errorMessage::isVisible::set)
-        model.fetching.observe(viewLifecycleOwner, progressBar::isVisible::set)
-
         Handler().postDelayed(50) {
             searchField.requestFocus()
             val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT)
+            imm.showSoftInput(searchField, InputMethodManager.SHOW_FORCED)
         }
 
         return binding.root
