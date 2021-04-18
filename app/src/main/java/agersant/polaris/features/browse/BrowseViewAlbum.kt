@@ -21,7 +21,7 @@ import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.ItemTouchHelper
 
 @SuppressLint("ViewConstructor")
-private class BrowseViewAlbum(
+internal class BrowseViewAlbum(
     context: Context,
     private val api: API,
     playbackQueue: PlaybackQueue,
