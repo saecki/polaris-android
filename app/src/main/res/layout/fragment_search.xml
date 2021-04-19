@@ -27,6 +27,13 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <FrameLayout
+        android:id="@+id/search_content_holder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_container" />
+
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
@@ -60,17 +67,11 @@
 
         <Button
             android:id="@+id/search_error_retry"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/browse_error_retry" />
 
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/search_content_holder"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
