@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.R;
 import agersant.polaris.api.API;
-
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,13 +49,8 @@ public class BrowseViewExplorer extends BrowseViewContent {
     }
 
     @Override
-    void setItems(List<? extends CollectionItem> items) {
-        Collections.sort(items, new Comparator<CollectionItem>() {
-            @Override
-            public int compare(CollectionItem a, CollectionItem b) {
-                return a.getName().compareToIgnoreCase(b.getName());
-            }
-        });
+    void updateItems(List<CollectionItem> items) {
+        Collections.sort(items, (a, b) -> a.getName().compareToIgnoreCase(b.getName()));
         adapter.setItems(items);
     }
 

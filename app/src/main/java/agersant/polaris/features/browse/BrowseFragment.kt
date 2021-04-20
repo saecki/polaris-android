@@ -130,7 +130,7 @@ class BrowseFragment : Fragment() {
                 BrowseViewDiscography(requireContext(), model.api, model.playbackQueue, sortAlbums)
             }
         }
-        content.setItems(items)
+        content.updateItems(items)
         content.setOnRefreshListener(onRefresh)
         content.scrollPosition = model.scrollPosition
 

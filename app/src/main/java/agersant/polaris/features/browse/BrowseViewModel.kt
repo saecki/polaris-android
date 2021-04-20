@@ -8,7 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class BrowseViewModel : ViewModel() {
-    private val mItems: MutableLiveData<List<CollectionItem>> = MutableLiveData(ArrayList())
+
+    private val mItems = MutableLiveData(listOf<CollectionItem>())
     private val mError = MutableLiveData(false)
     private val mFetching = MutableLiveData(false)
 

@@ -110,7 +110,7 @@ internal class BrowseViewAlbum(
         }
     }
 
-    override fun setItems(items: List<CollectionItem>) {
+    override fun updateItems(items: List<CollectionItem>) {
         val songs = items.filterIsInstance<Song>().sortedWith { a, b ->
             val discDifference = a.discNumber - b.discNumber
             if (discDifference != 0) {
@@ -119,7 +119,7 @@ internal class BrowseViewAlbum(
                 a.trackNumber - b.trackNumber
             }
         }
-        adapter.setItems(songs)
+        adapter.updateItems(songs)
         val song = songs.first()
 
         var artistString = song.albumArtist ?: song.artist ?: ""
