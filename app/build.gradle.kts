@@ -100,6 +100,9 @@ dependencies {
     // Swipe refresh layout
     implementation(Deps.swipyRefresh)
 
+    // Palette
+    implementation(Deps.Androidx.palette)
+
     // Tests
     testImplementation(Deps.junit)
 }

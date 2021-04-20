@@ -3,6 +3,7 @@ package agersant.polaris
 import agersant.polaris.ui.Theme
 import android.app.Application
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.MainScope
@@ -48,4 +49,16 @@ class PolarisApp : Application() {
             Theme.Dark -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
     }
+
+    val isDarkMode: Boolean
+        get() {
+            return when (AppCompatDelegate.getDefaultNightMode()) {
+                AppCompatDelegate.MODE_NIGHT_YES -> true
+                AppCompatDelegate.MODE_NIGHT_NO -> false
+                else -> {
+                    val system = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                    system == Configuration.UI_MODE_NIGHT_YES
+                }
+            }
+        }
 }

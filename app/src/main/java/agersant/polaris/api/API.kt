@@ -100,18 +100,19 @@ class API(context: Context) {
         }
     }
 
-    fun loadThumbnailIntoView(item: CollectionItem, size: ThumbnailSize, view: ImageView) { // TODO: remove when possible
+    fun loadThumbnailIntoView(item: CollectionItem, size: ThumbnailSize, view: ImageView, callback: ImageCallback? = null) {// TODO: remove when possible
         val polarisApplication = PolarisApp.instance
         val resources = polarisApplication.resources
         val asyncDrawable = AsyncDrawable(resources, item)
         view.setImageDrawable(asyncDrawable)
 
         val imageViewReference = WeakReference(view)
-        loadThumbnail(item, size) { bitmap: Bitmap? ->
+        loadThumbnail(item, size) { bitmap: Bitmap ->
             val imageView = imageViewReference.get()
             val drawable = imageView?.drawable
             if (drawable === asyncDrawable && asyncDrawable.item === item) {
                 GlobalScope.launch(Dispatchers.Main) {
+                    callback?.onSuccess(bitmap)
                     imageView.setImageBitmap(bitmap)
                 }
             }
@@ -151,6 +152,6 @@ class API(context: Context) {
     internal class AsyncDrawable(res: Resources?, val item: CollectionItem) : BitmapDrawable(res, null as Bitmap?) // TODO: replace with coroutines and lifecyle
 
     fun interface ImageCallback {
-        fun onSuccess(bitmap: Bitmap?)
+        fun onSuccess(bitmap: Bitmap)
     }
 }
