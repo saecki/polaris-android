@@ -19,6 +19,7 @@
             android:id="@+id/search_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="?android:colorBackground"
             android:hint="@string/search_prompt"
             android:imeOptions="actionSearch"
             android:inputType="textCapWords"
