@@ -23,8 +23,8 @@ class FetchImageTask private constructor(
     private val callback: Callback
 ) : AsyncTask<Unit, Unit, Bitmap>() {
 
-    interface Callback {
-        fun onSuccess(bitmap: Bitmap?)
+    fun interface Callback {
+        fun onSuccess(bitmap: Bitmap)
     }
 
     internal class AsyncDrawable(res: Resources?, val item: CollectionItem) : BitmapDrawable(res, null as Bitmap?)

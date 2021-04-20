@@ -2,15 +2,19 @@ package agersant.polaris.features.browse
 
 import agersant.polaris.CollectionItem
 import agersant.polaris.PlaybackQueue
+import agersant.polaris.PolarisApplication
 import agersant.polaris.R
 import agersant.polaris.api.API
 import agersant.polaris.api.ThumbnailSize
 import agersant.polaris.databinding.ViewBrowseAlbumBinding
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.ItemTouchHelper
 import java.util.*
 
@@ -22,6 +26,7 @@ private class BrowseViewAlbum(
 ) : BrowseViewContent(context) {
 
     private val adapter: BrowseAdapter
+    private val headerBackground: View
     private val artwork: ImageView
     private val artist: TextView
     private val title: TextView
@@ -29,6 +34,7 @@ private class BrowseViewAlbum(
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val binding = ViewBrowseAlbumBinding.inflate(inflater, this, true)
+        headerBackground = binding.headerBackground
         artwork = binding.albumArtwork
         artist = binding.albumArtist
         title = binding.albumTitle
@@ -61,7 +67,31 @@ private class BrowseViewAlbum(
         artist.text = artistString
         title.text = item.album ?: ""
         if (item.artwork != null) {
-            api.loadThumbnailIntoView(item, ThumbnailSize.Small, artwork)
+            api.loadThumbnailIntoView(item, ThumbnailSize.Small, artwork) { image ->
+                Palette.from(image).generate { palette ->
+                    val swatch = palette?.run {
+                        if (PolarisApplication.getInstance().isDarkMode) {
+                            darkVibrantSwatch
+                                ?: darkMutedSwatch
+                                ?: vibrantSwatch
+                                ?: dominantSwatch
+                                ?: mutedSwatch
+                        } else {
+                            lightVibrantSwatch
+                                ?: lightMutedSwatch
+                                ?: vibrantSwatch
+                                ?: dominantSwatch
+                                ?: mutedSwatch
+                        }
+                    }
+
+                    swatch?.run {
+                        headerBackground.setBackgroundColor(rgb)
+                        title.setTextColor(titleTextColor)
+                        artist.setTextColor(bodyTextColor)
+                    }
+                }
+            }
         } else {
             artwork.setImageResource(R.drawable.ic_fallback_artwork)
         }

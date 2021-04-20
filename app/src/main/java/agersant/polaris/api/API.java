@@ -57,7 +57,7 @@ public class API {
         FetchImageTask.load(offlineCache, this, serverAPI, localAPI, item, size, callback);
     }
 
-    public void loadThumbnailIntoView(final CollectionItem item, ThumbnailSize size, ImageView view) {
+    public void loadThumbnailIntoView(final CollectionItem item, ThumbnailSize size, ImageView view, FetchImageTask.Callback callback) {
 
         PolarisApplication polarisApplication = PolarisApplication.getInstance();
         Resources resources = polarisApplication.getResources();
@@ -66,6 +66,9 @@ public class API {
 
         final WeakReference<ImageView> imageViewReference = new WeakReference<>(view);
         loadThumbnail(item, size, (Bitmap bitmap) -> {
+            if (callback != null) {
+                callback.onSuccess(bitmap);
+            }
             ImageView imageView = imageViewReference.get();
             if (imageView == null) {
                 return;
@@ -78,6 +81,10 @@ public class API {
                 imageView.setImageBitmap(bitmap);
             }
         });
+    }
+
+    public void loadThumbnailIntoView(final CollectionItem item, ThumbnailSize size, ImageView view) {
+        loadThumbnailIntoView(item, size, view, null);
     }
 
     public void browse(String path, ItemsCallback handlers) {
