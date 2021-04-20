@@ -67,10 +67,6 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    private enum class DisplayMode {
-        EXPLORER, DISCOGRAPHY, ALBUM
-    }
-
     private fun displayContent(items: List<CollectionItem>) {
         val content: BrowseContent = when (getDisplayModeForItems(items)) {
             DisplayMode.EXPLORER -> BrowseContentExplorer(requireContext(), model.api, model.playbackQueue)
@@ -89,17 +85,21 @@ class SearchFragment : Fragment() {
         }
         val album = items[0].album
         var allDirectories = true
-        var allHaveArtwork = true
         var allHaveAlbum = album != null
         for (item in items) {
             allDirectories = allDirectories and item.isDirectory
-            allHaveArtwork = allHaveArtwork and (item.artwork != null)
             allHaveAlbum = allHaveAlbum and (item.album != null)
         }
-        if (allDirectories && allHaveArtwork && allHaveAlbum) {
+        if (allDirectories && allHaveAlbum) {
             return DisplayMode.DISCOGRAPHY
         }
 
         return DisplayMode.EXPLORER
+    }
+
+    private enum class DisplayMode {
+        EXPLORER,
+        DISCOGRAPHY,
+        ALBUM,
     }
 }
