@@ -54,9 +54,11 @@ class PlaybackQueue internal constructor() {
         }
 
     val size: Int
-        get() {
-            return content.size
-        }
+        @JvmName("size")
+        get() = content.size
+
+    val isEmpty: Boolean
+        get() = content.isEmpty()
 
     // Return negative value if a is going to play before b, positive if a is going to play after b
     fun comparePriorities(currentItem: Song?, a: Song, b: Song): Int {
