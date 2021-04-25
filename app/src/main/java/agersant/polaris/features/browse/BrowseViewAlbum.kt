@@ -180,9 +180,10 @@ internal class BrowseViewAlbum(
         animator.start()
     }
 
-    override fun getScrollPosition(): Int {
+    override fun saveScrollPosition(): Int {
         val layoutManger = recyclerView.layoutManager as LinearLayoutManager
         val scrollPosition = layoutManger.findFirstVisibleItemPosition()
+
         if (scrollPosition > 0) {
             return scrollPosition + 1
         } else if (motionLayout?.progress == 1f) {
@@ -192,7 +193,7 @@ internal class BrowseViewAlbum(
         }
     }
 
-    override fun setScrollPosition(position: Int) {
+    override fun restoreScrollPosition(position: Int) {
         if (position >= 1) {
             motionLayout?.progress = 1f
             recyclerView.scrollToPosition(position - 1)

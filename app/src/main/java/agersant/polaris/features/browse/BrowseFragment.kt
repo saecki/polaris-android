@@ -78,7 +78,7 @@ class BrowseFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        model.scrollPosition = contentView?.scrollPosition ?: 0
+        model.scrollPosition = contentView?.saveScrollPosition() ?: 0
         println("scrollPosition: ${model.scrollPosition}")
     }
 
@@ -141,7 +141,7 @@ class BrowseFragment : Fragment() {
         }
         content.updateItems(items)
         content.setOnRefreshListener(onRefresh)
-        content.scrollPosition = model.scrollPosition
+        content.restoreScrollPosition(model.scrollPosition)
 
         contentHolder.removeAllViews()
         contentHolder.addView(content)
