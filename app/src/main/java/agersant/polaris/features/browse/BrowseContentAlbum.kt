@@ -29,12 +29,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 @SuppressLint("ViewConstructor")
-internal class BrowseViewAlbum(
+internal class BrowseContentAlbum(
     context: Context,
     private val api: API,
     playbackQueue: PlaybackQueue,
-) : BrowseViewContent(context) {
+) : BrowseContent(context) {
 
+    override val root: View
     private val recyclerView: RecyclerView
     private val motionLayout: MotionLayout?
     private val headerBackground: View?
@@ -48,8 +49,10 @@ internal class BrowseViewAlbum(
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val binding = ViewBrowseAlbumBinding.inflate(inflater, this, true)
-        recyclerView = binding.browseRecyclerView
+        val binding = ViewBrowseAlbumBinding.inflate(inflater)
+
+        root = binding.root
+        recyclerView = binding.recyclerView
         motionLayout = binding.motionLayout
         headerBackground = binding.headerBackground
         sidebarBackground = binding.sidebarBackground
@@ -59,7 +62,6 @@ internal class BrowseViewAlbum(
         queueAll = binding.queueAll
         divider = binding.headerDivider
 
-        val recyclerView = binding.browseRecyclerView
         recyclerView.setHasFixedSize(true)
 
         val callback: ItemTouchHelper.Callback = BrowseTouchCallback()
@@ -69,7 +71,7 @@ internal class BrowseViewAlbum(
         adapter = BrowseAdapterAlbum(api, playbackQueue)
         recyclerView.adapter = adapter
 
-        when (resources.configuration.orientation) {
+        when (context.resources.configuration.orientation) {
             Configuration.ORIENTATION_PORTRAIT -> {
                 recyclerView.setOnScrollChangeListener { v, _, _, _, _ ->
                     updateDividerVisibility()
@@ -101,7 +103,7 @@ internal class BrowseViewAlbum(
         queueAll.setOnClickListener {
             playbackQueue.addItems(adapter.items.filterIsInstance<Song>())
             queueAll.setIconResource(R.drawable.ic_check_24)
-            handler.postDelayed(1000) {
+            Handler().postDelayed(1000) {
                 queueAll.setIconResource(R.drawable.ic_playlist_play_24)
             }
         }
@@ -204,9 +206,9 @@ internal class BrowseViewAlbum(
 
     private fun updateDividerVisibility() {
         if (recyclerView.canScrollVertically(-1)) {
-            divider?.visibility = VISIBLE
+            divider?.visibility = View.VISIBLE
         } else {
-            divider?.visibility = INVISIBLE
+            divider?.visibility = View.INVISIBLE
         }
     }
 }
