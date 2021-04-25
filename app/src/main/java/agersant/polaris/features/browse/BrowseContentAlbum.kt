@@ -163,8 +163,9 @@ internal class BrowseContentAlbum(
             gradientDrawable = drawable
         }
 
-        val fabInitBg = queueAll.backgroundTintList?.defaultColor ?: 0
-        val fabInitFg = queueAll.currentTextColor
+        val fabInitBg = context.getAttrColor(R.attr.colorSurface)
+        val fabInitFg = context.getAttrColor(R.attr.colorOnSurface)
+
         animator.addUpdateListener {
             val f = it.animatedFraction
 
@@ -177,7 +178,7 @@ internal class BrowseContentAlbum(
             queueAll.setTextColor(fabFg)
             queueAll.iconTint = ColorStateList.valueOf(fabFg)
         }
-        animator.duration = 400
+        animator.duration = 300
         animator.start()
     }
 
