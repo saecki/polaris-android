@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import agersant.polaris.CollectionItem;
+import agersant.polaris.Playlist;
 import agersant.polaris.api.ItemsCallback;
+import agersant.polaris.api.PlaylistsCallback;
 import agersant.polaris.api.ThumbnailSize;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -88,6 +90,7 @@ public class APIVersion3 extends APIBase implements IRemoteAPI {
         requestQueue.requestAsync(request, callback);
     }
 
+    @Override
     protected void getAlbums(String url, final ItemsCallback handlers) {
         HttpUrl parsedURL = HttpUrl.parse(url);
         if (parsedURL == null) {
@@ -159,6 +162,82 @@ public class APIVersion3 extends APIBase implements IRemoteAPI {
     @Override
     public void search(String query, final ItemsCallback handlers) {
         String requestURL = ServerAPI.getAPIRootURL() + "/search/" + Uri.encode(query);
+        HttpUrl parsedURL = HttpUrl.parse(requestURL);
+        if (parsedURL == null) {
+            handlers.onError();
+            return;
+        }
+
+        Request request = new Request.Builder().url(parsedURL).build();
+        Callback callback = new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                handlers.onError();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.body() == null) {
+                    handlers.onError();
+                    return;
+                }
+
+                Type collectionType = new TypeToken<ArrayList<CollectionItem>>() {
+                }.getType();
+                ArrayList<CollectionItem> items;
+                try {
+                    items = gson.fromJson(response.body().charStream(), collectionType);
+                } catch (JsonSyntaxException e) {
+                    handlers.onError();
+                    return;
+                }
+                handlers.onSuccess(items);
+            }
+        };
+        requestQueue.requestAsync(request, callback);
+    }
+
+    @Override
+    public void getPlaylists(PlaylistsCallback handlers) {
+        String requestURL = ServerAPI.getAPIRootURL() + "/playlists";
+        HttpUrl parsedURL = HttpUrl.parse(requestURL);
+        if (parsedURL == null) {
+            handlers.onError();
+            return;
+        }
+
+        Request request = new Request.Builder().url(parsedURL).build();
+        Callback callback = new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                handlers.onError();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.body() == null) {
+                    handlers.onError();
+                    return;
+                }
+
+                Type collectionType = new TypeToken<ArrayList<Playlist>>() {
+                }.getType();
+                ArrayList<Playlist> items;
+                try {
+                    items = gson.fromJson(response.body().charStream(), collectionType);
+                } catch (JsonSyntaxException e) {
+                    handlers.onError();
+                    return;
+                }
+                handlers.onSuccess(items);
+            }
+        };
+        requestQueue.requestAsync(request, callback);
+    }
+
+    @Override
+    public void getPlaylist(String name, ItemsCallback handlers) {
+        String requestURL = ServerAPI.getAPIRootURL() + "/playlist/" + Uri.encode(name);
         HttpUrl parsedURL = HttpUrl.parse(requestURL);
         if (parsedURL == null) {
             handlers.onError();

@@ -15,4 +15,8 @@ public interface IPolarisAPI {
     void flatten(String path, final ItemsCallback handlers);
 
     void search(String query, final ItemsCallback handlers);
+
+    void getPlaylists(PlaylistsCallback handlers);
+
+    void getPlaylist(String name, ItemsCallback handlers);
 }

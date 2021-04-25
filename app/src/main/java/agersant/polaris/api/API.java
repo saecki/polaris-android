@@ -99,6 +99,14 @@ public class API {
         getAPI().search(query, handlers);
     }
 
+    public void getPlaylists(PlaylistsCallback handlers) {
+        getAPI().getPlaylists(handlers);
+    }
+
+    public void getPlaylist(String name, ItemsCallback handlers) {
+        getAPI().getPlaylist(name, handlers);
+    }
+
     private IPolarisAPI getAPI() {
         if (isOffline()) {
             return localAPI;

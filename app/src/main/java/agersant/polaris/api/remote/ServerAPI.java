@@ -17,6 +17,7 @@ import java.lang.reflect.Type;
 import agersant.polaris.CollectionItem;
 import agersant.polaris.R;
 import agersant.polaris.api.ItemsCallback;
+import agersant.polaris.api.PlaylistsCallback;
 import agersant.polaris.api.ThumbnailSize;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -283,6 +284,36 @@ public class ServerAPI implements IRemoteAPI {
             @Override
             public void onSuccess() {
                 currentVersion.search(query, handlers);
+            }
+
+            @Override
+            public void onError() {
+                handlers.onError();
+            }
+        });
+    }
+
+    @Override
+    public void getPlaylists(PlaylistsCallback handlers) {
+        fetchAPIVersionAsync(new VersionCallback() {
+            @Override
+            public void onSuccess() {
+                currentVersion.getPlaylists(handlers);
+            }
+
+            @Override
+            public void onError() {
+                handlers.onError();
+            }
+        });
+    }
+
+    @Override
+    public void getPlaylist(String name, ItemsCallback handlers) {
+        fetchAPIVersionAsync(new VersionCallback() {
+            @Override
+            public void onSuccess() {
+                currentVersion.getPlaylist(name, handlers);
             }
 
             @Override

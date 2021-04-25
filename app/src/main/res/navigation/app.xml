@@ -29,16 +29,22 @@
         tools:layout="@layout/fragment_browse" />
 
     <fragment
-        android:id="@+id/nav_queue"
-        android:name="agersant.polaris.features.queue.QueueFragment"
-        android:label="@string/queue"
-        tools:layout="@layout/fragment_queue" />
+        android:id="@+id/nav_playlists"
+        android:name="agersant.polaris.features.browse.PlaylistsFragment"
+        android:label="@string/playlists"
+        tools:layout="@layout/fragment_playlists" />
 
     <fragment
         android:id="@+id/nav_now_playing"
         android:name="agersant.polaris.features.player.PlayerFragment"
         android:label="@string/now_playing"
         tools:layout="@layout/fragment_player" />
+
+    <fragment
+        android:id="@+id/nav_queue"
+        android:name="agersant.polaris.features.queue.QueueFragment"
+        android:label="@string/queue"
+        tools:layout="@layout/fragment_queue" />
 
     <fragment
         android:id="@+id/nav_search"

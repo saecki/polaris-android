@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import agersant.polaris.CollectionItem;
 import agersant.polaris.api.ItemsCallback;
+import agersant.polaris.api.PlaylistsCallback;
 import agersant.polaris.api.ThumbnailSize;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -155,6 +156,16 @@ public class APIVersion2 extends APIBase implements IRemoteAPI {
 
     @Override
     public void search(String path, final ItemsCallback handlers) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public void getPlaylists(PlaylistsCallback handlers) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public void getPlaylist(String name, ItemsCallback handlers) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
