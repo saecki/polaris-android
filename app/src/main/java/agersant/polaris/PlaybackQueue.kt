@@ -47,6 +47,7 @@ class PlaybackQueue internal constructor() {
             broadcast(CHANGED_ORDERING)
         }
 
+    private var clearedContent: MutableList<Song>? = null
     var content: MutableList<Song> = mutableListOf()
         set(value) {
             field = value
@@ -114,8 +115,19 @@ class PlaybackQueue internal constructor() {
     }
 
     fun clear() {
-        content.clear()
+        clearedContent = content
+        content = mutableListOf()
         broadcast(REMOVED_ITEMS)
+    }
+
+    fun restore() {
+        clearedContent?.let {
+            if (it.isEmpty()) return
+
+            content = it
+            clearedContent = null
+            broadcast(QUEUED_ITEMS)
+        }
     }
 
     fun swap(fromPosition: Int, toPosition: Int) {
