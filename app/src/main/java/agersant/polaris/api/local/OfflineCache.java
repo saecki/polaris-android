@@ -458,7 +458,7 @@ public class OfflineCache {
     }
 
     public ArrayList<CollectionItem> search(String query) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        throw new UnsupportedOperationException("Not yet implemented"); // TODO implement offline search
     }
 
     private boolean isInternalFile(File file) {
