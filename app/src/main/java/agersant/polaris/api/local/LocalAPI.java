@@ -34,7 +34,7 @@ public class LocalAPI implements IPolarisAPI {
     }
 
     public boolean hasImage(CollectionItem item) {
-        String path = item.getPath();
+        String path = item.getArtwork();
         return offlineCache.hasImage(path);
     }
 
