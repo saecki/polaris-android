@@ -24,7 +24,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 import agersant.polaris.CollectionItem;
@@ -40,9 +39,10 @@ public class OfflineCache {
     public static final String AUDIO_REMOVED_FROM_CACHE = "AUDIO_REMOVED_FROM_CACHE";
     private static final String ITEM_FILENAME = "__polaris__item";
     private static final String AUDIO_FILENAME = "__polaris__audio";
+    private static final String ARTWORK_FILENAME = "__polaris__artwork";
     private static final String META_FILENAME = "__polaris__meta";
     private static final int FIRST_VERSION = 1;
-    private static final int VERSION = 3;
+    private static final int VERSION = 4;
     private static final int BUFFER_SIZE = 1024 * 64;
     private final SharedPreferences preferences;
     private final String cacheSizeKey;
@@ -157,21 +157,18 @@ public class OfflineCache {
         ArrayList<DeletionCandidate> candidates = new ArrayList<>();
         listDeletionCandidates(path, candidates);
 
-        Collections.sort(candidates, new Comparator<DeletionCandidate>() {
-            @Override
-            public int compare(DeletionCandidate a, DeletionCandidate b) {
-                if (a.item == null && b.item != null) {
-                    return -1;
-                }
-                if (b.item == null && a.item != null) {
-                    return 1;
-                }
-                //noinspection ConstantConditions
-                if (b.item != null && a.item != null) {
-                    return -playbackQueue.comparePriorities(player.getCurrentItem(), a.item, b.item);
-                }
-                return (int) (a.metadata.lastUse.getTime() - b.metadata.lastUse.getTime());
+        Collections.sort(candidates, (a, b) -> {
+            if (a.item == null && b.item != null) {
+                return -1;
             }
+            if (b.item == null && a.item != null) {
+                return 1;
+            }
+            //noinspection ConstantConditions
+            if (b.item != null && a.item != null) {
+                return -playbackQueue.comparePriorities(player.getCurrentItem(), a.item, b.item);
+            }
+            return (int) (a.metadata.lastUse.getTime() - b.metadata.lastUse.getTime());
         });
 
         long cleared = 0;
@@ -253,7 +250,7 @@ public class OfflineCache {
 
         String path = item.getPath();
 
-        try (FileOutputStream itemOut = new FileOutputStream(getCacheFile(path, CacheDataType.ITEM, true))) {
+        try (FileOutputStream itemOut = new FileOutputStream(createCacheFile(path, CacheDataType.ITEM))) {
             write(item, itemOut);
         } catch (IOException e) {
             System.out.println("Error while caching item for local use: " + e);
@@ -261,7 +258,7 @@ public class OfflineCache {
         }
 
         if (audio != null) {
-            try (FileOutputStream itemOut = new FileOutputStream(getCacheFile(path, CacheDataType.AUDIO, true))) {
+            try (FileOutputStream itemOut = new FileOutputStream(createCacheFile(path, CacheDataType.AUDIO))) {
                 write(audio, itemOut);
                 broadcast(AUDIO_CACHED);
             } catch (IOException e) {
@@ -280,7 +277,7 @@ public class OfflineCache {
     public synchronized void putImage(CollectionItem item, Bitmap image) {
         String path = item.getPath();
 
-        try (FileOutputStream itemOut = new FileOutputStream(getCacheFile(path, CacheDataType.ITEM, true))) {
+        try (FileOutputStream itemOut = new FileOutputStream(createCacheFile(path, CacheDataType.ITEM))) {
             write(item, itemOut);
         } catch (IOException e) {
             System.out.println("Error while caching item for local use: " + e);
@@ -288,7 +285,7 @@ public class OfflineCache {
 
         if (image != null) {
             String artworkPath = item.getArtwork();
-            try (FileOutputStream itemOut = new FileOutputStream(getCacheFile(artworkPath, CacheDataType.ARTWORK, true))) {
+            try (FileOutputStream itemOut = new FileOutputStream(createCacheFile(artworkPath, CacheDataType.ARTWORK))) {
                 write(image, itemOut);
             } catch (IOException e) {
                 System.out.println("Error while caching artwork for local use: " + e);
@@ -303,54 +300,47 @@ public class OfflineCache {
         return new File(root, path);
     }
 
-    private File getCacheFile(String virtualPath, CacheDataType type, boolean create) throws IOException {
+    private File getCacheFile(String virtualPath, CacheDataType type) {
         File file = getCacheDir(virtualPath);
         switch (type) {
             case ITEM:
-                file = new File(file, ITEM_FILENAME);
-                break;
+                return new File(file, ITEM_FILENAME);
             case AUDIO:
-                file = new File(file, AUDIO_FILENAME);
-                break;
+                return new File(file, AUDIO_FILENAME);
             case ARTWORK:
-                break;
+                return new File(file, ARTWORK_FILENAME);
             case META:
             default:
-                file = new File(file, META_FILENAME);
-                break;
+                return new File(file, META_FILENAME);
         }
-        if (create) {
-            File parent = file.getParentFile();
-            if (!parent.exists()) {
-                if (!parent.mkdirs()) {
-                    throw new IOException("Could not create cache directory: " + parent);
-                }
-            }
-            if (!file.exists()) {
-                if (!file.createNewFile()) {
-                    throw new IOException("Could not create cache file: " + file);
-                }
+    }
+
+    private File createCacheFile(String virtualPath, CacheDataType type) throws IOException {
+        File file = getCacheFile(virtualPath, type);
+
+        File parent = file.getParentFile();
+        if (!parent.exists()) {
+            if (!parent.mkdirs()) {
+                throw new IOException("Could not create cache directory: " + parent);
             }
         }
+        if (!file.exists()) {
+            if (!file.createNewFile()) {
+                throw new IOException("Could not create cache file: " + file);
+            }
+        }
+
         return file;
     }
 
     public boolean hasAudio(String path) {
-        try {
-            File file = getCacheFile(path, CacheDataType.AUDIO, false);
-            return file.exists();
-        } catch (IOException e) {
-            return false;
-        }
+        File file = getCacheFile(path, CacheDataType.AUDIO);
+        return file.exists();
     }
 
     boolean hasImage(String virtualPath) {
-        try {
-            File file = getCacheFile(virtualPath, CacheDataType.ARTWORK, false);
-            return file.exists();
-        } catch (IOException e) {
-            return false;
-        }
+        File file = getCacheFile(virtualPath, CacheDataType.ARTWORK);
+        return file.exists();
     }
 
     MediaSource getAudio(String virtualPath) throws IOException {
@@ -362,21 +352,23 @@ public class OfflineCache {
             metadata.lastUse = new Date();
             saveMetadata(virtualPath, metadata);
         }
-        Uri uri = Uri.fromFile(getCacheFile(virtualPath, CacheDataType.AUDIO, false));
+        Uri uri = Uri.fromFile(getCacheFile(virtualPath, CacheDataType.AUDIO));
         return new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
     }
 
     Bitmap getImage(String virtualPath) throws IOException {
         if (!hasImage(virtualPath)) {
+            System.out.println("has image " + virtualPath + " false");
             throw new FileNotFoundException();
         }
-        File file = getCacheFile(virtualPath, CacheDataType.ARTWORK, false);
+        System.out.println("has image " + virtualPath + " true");
+        File file = getCacheFile(virtualPath, CacheDataType.ARTWORK);
         FileInputStream fileInputStream = new FileInputStream(file);
         return BitmapFactory.decodeFileDescriptor(fileInputStream.getFD());
     }
 
     private void saveMetadata(String virtualPath, ItemCacheMetadata metadata) {
-        try (FileOutputStream metaOut = new FileOutputStream(getCacheFile(virtualPath, CacheDataType.META, true))) {
+        try (FileOutputStream metaOut = new FileOutputStream(createCacheFile(virtualPath, CacheDataType.META))) {
             write(metadata, metaOut);
         } catch (IOException e) {
             System.out.println("Error while caching metadata for local use: " + e);
@@ -384,12 +376,8 @@ public class OfflineCache {
     }
 
     private boolean hasMetadata(String virtualPath) {
-        try {
-            File file = getCacheFile(virtualPath, CacheDataType.META, false);
-            return file.exists();
-        } catch (IOException e) {
-            return false;
-        }
+        File file = getCacheFile(virtualPath, CacheDataType.META);
+        return file.exists();
     }
 
     private ItemCacheMetadata readMetadata(File file) throws IOException {
@@ -406,7 +394,7 @@ public class OfflineCache {
         if (!hasMetadata(virtualPath)) {
             throw new FileNotFoundException();
         }
-        File file = getCacheFile(virtualPath, CacheDataType.META, false);
+        File file = getCacheFile(virtualPath, CacheDataType.META);
         return readMetadata(file);
     }
 
@@ -532,7 +520,7 @@ public class OfflineCache {
         META,
     }
 
-    private class DeletionCandidate {
+    private static class DeletionCandidate {
         final File cachePath;
         final ItemCacheMetadata metadata;
         final CollectionItem item;
