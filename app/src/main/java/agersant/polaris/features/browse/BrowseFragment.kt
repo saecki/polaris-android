@@ -47,10 +47,10 @@ class BrowseFragment : Fragment() {
         setHasOptionsMenu(true)
 
         val binding = FragmentBrowseBinding.inflate(inflater)
-        errorMessage = binding.browseErrorMessage
         progressBar = binding.progressBar
         contentHolder = binding.browseContentHolder
-        errorRetry = binding.browseErrorRetry
+        errorMessage = binding.errorMessage.root
+        errorRetry = binding.errorMessage.retry
         toolbar = requireActivity().findViewById(R.id.toolbar)
 
         model.items.observe(viewLifecycleOwner, this::displayContent)

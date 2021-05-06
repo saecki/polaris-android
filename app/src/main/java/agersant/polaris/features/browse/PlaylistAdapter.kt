@@ -1,18 +1,18 @@
 package agersant.polaris.features.browse
 
+import agersant.polaris.CollectionItem
 import agersant.polaris.PlaybackQueue
-import agersant.polaris.Playlist
-import agersant.polaris.R
 import agersant.polaris.api.API
+import agersant.polaris.databinding.ViewPlaylistItemBinding
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-internal class PlaylistsAdapter(
+internal class PlaylistAdapter(
     private val api: API,
     private val playbackQueue: PlaybackQueue,
-) : RecyclerView.Adapter<PlaylistsItemHolder>() {
+) : RecyclerView.Adapter<PlaylistItemHolder>() {
 
     inner class DiffCallback : DiffUtil.Callback() {
         var oldItems = items
@@ -32,18 +32,16 @@ internal class PlaylistsAdapter(
 
     private val diffCallback = DiffCallback()
 
-    var items: List<Playlist> = listOf()
+    var items: List<CollectionItem> = listOf()
         private set
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsItemHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistItemHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val itemView = inflater.inflate(R.layout.view_playlists_item, parent, false)
-        val itemQueueStatusView = inflater.inflate(R.layout.view_queue_status, parent, false)
-
-        return PlaylistsItemHolder(itemView, itemQueueStatusView, api, playbackQueue, this)
+        val binding = ViewPlaylistItemBinding.inflate(inflater, parent, false)
+        return PlaylistItemHolder(binding, api, playbackQueue)
     }
 
-    override fun onBindViewHolder(holder: PlaylistsItemHolder, position: Int) {
+    override fun onBindViewHolder(holder: PlaylistItemHolder, position: Int) {
         holder.bindItem(items[position])
     }
 
@@ -51,7 +49,7 @@ internal class PlaylistsAdapter(
         return items.size
     }
 
-    fun updateItems(items: List<Playlist>) {
+    fun updateItems(items: List<CollectionItem>) {
         diffCallback.oldItems = this.items
         this.items = items
         val diff = DiffUtil.calculateDiff(diffCallback)

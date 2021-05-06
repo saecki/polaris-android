@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_browse"
@@ -16,38 +16,13 @@
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_centerVertical="true"
         android:indeterminateTint="?colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/browse_error_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:orientation="vertical">
+    <include
+        android:id="@+id/error_message"
+        layout="@layout/view_error_message" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:text="@string/browse_error"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/ic_error_24"
-            app:drawableTint="?colorError" />
-
-        <Button
-            android:id="@+id/browse_error_retry"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/browse_error_retry" />
-
-    </LinearLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

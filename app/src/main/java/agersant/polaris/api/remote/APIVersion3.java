@@ -258,7 +258,7 @@ public class APIVersion3 extends APIBase implements IRemoteAPI {
                     return;
                 }
 
-                Type collectionType = new TypeToken<ArrayList<CollectionItem>>() {
+                Type collectionType = new TypeToken<ArrayList<CollectionItem.Song>>() {
                 }.getType();
                 ArrayList<CollectionItem> items;
                 try {

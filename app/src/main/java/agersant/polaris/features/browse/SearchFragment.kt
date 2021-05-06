@@ -33,8 +33,8 @@ class SearchFragment : Fragment() {
         searchField = binding.searchField
         contentHolder = binding.searchContentHolder
         progressBar = binding.progressBar
-        errorMessage = binding.searchErrorMessage
-        errorRetry = binding.searchErrorRetry
+        errorMessage = binding.errorMessage.root
+        errorRetry = binding.errorMessage.retry
 
         model.items.observe(viewLifecycleOwner, this::displayContent)
         model.fetching.observe(viewLifecycleOwner, progressBar::isVisible::set)

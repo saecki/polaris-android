@@ -43,36 +43,8 @@
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/search_container" />
 
-    <LinearLayout
-        android:id="@+id/search_error_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:text="@string/browse_error"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/ic_error_24"
-            app:drawableTint="?colorError" />
-
-        <Button
-            android:id="@+id/search_error_retry"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/browse_error_retry" />
-
-    </LinearLayout>
+    <include
+        android:id="@+id/error_message"
+        layout="@layout/view_error_message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
