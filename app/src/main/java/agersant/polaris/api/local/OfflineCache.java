@@ -9,8 +9,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
@@ -353,7 +354,7 @@ public class OfflineCache {
             saveMetadata(virtualPath, metadata);
         }
         Uri uri = Uri.fromFile(getCacheFile(virtualPath, CacheDataType.AUDIO));
-        return new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
+        return new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(uri));
     }
 
     Bitmap getImage(String virtualPath) throws IOException {
@@ -438,8 +439,9 @@ public class OfflineCache {
         String name = file.getName();
         boolean isItem = name.equals(ITEM_FILENAME);
         boolean isAudio = name.equals(AUDIO_FILENAME);
+        boolean isArtwork = name.equals(ARTWORK_FILENAME);
         boolean isMeta = name.equals(META_FILENAME);
-        return isItem || isAudio || isMeta;
+        return isItem || isAudio || isArtwork || isMeta;
     }
 
     private boolean containsAudio(File file) {
