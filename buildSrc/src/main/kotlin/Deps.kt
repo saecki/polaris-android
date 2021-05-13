@@ -8,6 +8,10 @@ object Deps {
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
     }
 
+    object Kotlinx {
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0-RC"
+    }
+
     object Androidx {
         const val appcompat = "androidx.appcompat:appcompat:1.3.0"
         const val coreKtx = "androidx.core:core-ktx:1.5.0"
@@ -15,7 +19,7 @@ object Deps {
         const val media = "androidx.media:media:1.3.1"
         const val palette = "androidx.palette:palette:1.0.0"
     }
-    
+
 
     object Nav {
         const val version = "2.4.0-alpha01"
