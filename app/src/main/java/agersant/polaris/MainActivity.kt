@@ -47,7 +47,11 @@ class MainActivity : AppCompatActivity() {
         toolbar.setupWithNavController(navController, appBarConfiguration)
         bottomNav.setupWithNavController(navController)
         backdropNav.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { _, _, _ ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id != R.id.nav_search) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(toolbar.windowToken, 0)
+            }
             backdropLayout.close()
         }
     }

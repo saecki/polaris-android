@@ -4,7 +4,6 @@ import agersant.polaris.CollectionItem
 import agersant.polaris.databinding.FragmentSearchBinding
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -58,13 +56,15 @@ class SearchFragment : Fragment() {
             model.incSearch(searchField.text.toString())
         }
 
-        Handler().postDelayed(50) {
-            searchField.requestFocus()
-            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(searchField, InputMethodManager.SHOW_FORCED)
-        }
-
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        searchField.requestFocus()
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(searchField, InputMethodManager.SHOW_FORCED)
     }
 
     private fun displayContent(items: List<CollectionItem>) {
