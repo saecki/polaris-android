@@ -30,7 +30,6 @@ class SearchViewModel : ViewModel() {
     private val mItems = MutableLiveData(listOf<CollectionItem>())
     private val mFetching = MutableLiveData(false)
     private val mError = MutableLiveData(false)
-    private val serverAPI = PolarisApplication.getState().serverAPI
     private var searchQuery = ""
     private var searchScheduled = false
     private val searchHandler = Handler()
@@ -69,6 +68,6 @@ class SearchViewModel : ViewModel() {
 
     private fun search(query: String) {
         mFetching.value = true
-        serverAPI.search(query, fetchCallback)
+        api.search(query, fetchCallback)
     }
 }

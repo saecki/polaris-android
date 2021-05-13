@@ -95,6 +95,10 @@ public class API {
         getAPI().flatten(path, handlers);
     }
 
+    public void search(String query, ItemsCallback handlers) {
+        getAPI().search(query, handlers);
+    }
+
     private IPolarisAPI getAPI() {
         if (isOffline()) {
             return localAPI;

@@ -457,33 +457,6 @@ public class OfflineCache {
         return flattenDir(dir);
     }
 
-    public ArrayList<CollectionItem> search(String query) {
-        throw new UnsupportedOperationException("Not yet implemented"); // TODO implement offline search
-    }
-
-    private boolean isInternalFile(File file) {
-        String name = file.getName();
-        return name.equals(ITEM_FILENAME)
-            || name.equals(AUDIO_FILENAME)
-            || name.equals(ARTWORK_SMALL_FILENAME)
-            || name.equals(ARTWORK_LARGE_FILENAME)
-            || name.equals(ARTWORK_NATIVE_FILENAME)
-            || name.equals(META_FILENAME);
-    }
-
-    private boolean containsAudio(File file) {
-        if (!file.isDirectory()) {
-            return file.getName().equals(AUDIO_FILENAME);
-        }
-        File[] files = file.listFiles();
-        for (File child : files) {
-            if (containsAudio(child)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private ArrayList<CollectionItem> flattenDir(File source) {
         ArrayList<CollectionItem> out = new ArrayList<>();
         File[] files = source.listFiles();
@@ -514,6 +487,77 @@ public class OfflineCache {
             }
         }
         return out;
+    }
+
+    public ArrayList<CollectionItem> search(String query) {
+        return searchDir(root, query.toLowerCase());
+    }
+
+    private ArrayList<CollectionItem> searchDir(File dir, String query) {
+        ArrayList<CollectionItem> out = new ArrayList<>();
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return out;
+        }
+
+        for (File file : files) {
+            try {
+                if (isInternalFile(file)) {
+                    continue;
+                }
+                CollectionItem item = readItem(file);
+                if (item == null) {
+                    continue;
+                }
+
+                if (item.isDirectory()) {
+                    if (file.getName().toLowerCase().contains(query)) {
+                        out.add(item);
+                        continue;
+                    }
+
+                    ArrayList<CollectionItem> content = searchDir(file, query);
+                    if (content != null) {
+                        out.addAll(content);
+                    }
+                } else if (hasAudio(item.getPath())) {
+                    boolean titleMatches = item.getTitle() != null && item.getTitle().toLowerCase().contains(query);
+                    boolean albumMatches = item.getAlbum() != null && item.getAlbum().toLowerCase().contains(query);
+                    boolean artistMatches = item.getArtist() != null && item.getArtist().toLowerCase().contains(query);
+                    boolean albumArtistMatches = item.getAlbumArtist() != null && item.getAlbumArtist().toLowerCase().contains(query);
+                    if (titleMatches || albumMatches || artistMatches || albumArtistMatches) {
+                        out.add(item);
+                    }
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                return null;
+            }
+        }
+        return out;
+    }
+
+    private boolean isInternalFile(File file) {
+        String name = file.getName();
+        return name.equals(ITEM_FILENAME)
+            || name.equals(AUDIO_FILENAME)
+            || name.equals(ARTWORK_SMALL_FILENAME)
+            || name.equals(ARTWORK_LARGE_FILENAME)
+            || name.equals(ARTWORK_NATIVE_FILENAME)
+            || name.equals(META_FILENAME);
+    }
+
+
+    private boolean containsAudio(File file) {
+        if (!file.isDirectory()) {
+            return file.getName().equals(AUDIO_FILENAME);
+        }
+        File[] files = file.listFiles();
+        for (File child : files) {
+            if (containsAudio(child)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private CollectionItem readItem(File dir) throws IOException, ClassNotFoundException {
