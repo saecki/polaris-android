@@ -70,7 +70,7 @@ internal class BrowseContentAlbum(
 
         when (context.resources.configuration.orientation) {
             Configuration.ORIENTATION_PORTRAIT -> {
-                recyclerView.setOnScrollChangeListener { v, _, _, _, _ ->
+                recyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
                     updateDividerVisibility()
                 }
             }
@@ -100,7 +100,7 @@ internal class BrowseContentAlbum(
         queueAll.setOnClickListener {
             playbackQueue.addItems(adapter.items)
             queueAll.setIconResource(R.drawable.ic_check_24)
-            Handler().postDelayed(1000) {
+            Handler(context.mainLooper).postDelayed(1000) {
                 queueAll.setIconResource(R.drawable.ic_playlist_play_24)
             }
         }
@@ -196,7 +196,7 @@ internal class BrowseContentAlbum(
             motionLayout?.progress = 1f
             recyclerView.scrollToPosition(position - 1)
             queueAll.shrink()
-            Handler().post {
+            Handler(context.mainLooper).post {
                 updateDividerVisibility()
             }
         }
