@@ -1,4 +1,4 @@
-package agersant.polaris.features.browse
+package agersant.polaris.features.playlist
 
 import agersant.polaris.CollectionItem
 import agersant.polaris.PlaybackQueue

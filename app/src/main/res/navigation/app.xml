@@ -30,13 +30,13 @@
 
     <fragment
         android:id="@+id/nav_playlists"
-        android:name="agersant.polaris.features.browse.PlaylistsFragment"
+        android:name="agersant.polaris.features.playlist.PlaylistsFragment"
         android:label="@string/playlists"
         tools:layout="@layout/fragment_playlists" />
 
     <fragment
         android:id="@+id/nav_playlist"
-        android:name="agersant.polaris.features.browse.PlaylistFragment"
+        android:name="agersant.polaris.features.playlist.PlaylistFragment"
         android:label="@string/playlist"
         tools:layout="@layout/fragment_playlist" />
 
