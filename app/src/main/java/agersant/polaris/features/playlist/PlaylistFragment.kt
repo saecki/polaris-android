@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 class PlaylistFragment : Fragment() {
@@ -36,6 +37,10 @@ class PlaylistFragment : Fragment() {
         playlistName = binding.playlistName
 
         recyclerView.setHasFixedSize(true)
+
+        val callback: ItemTouchHelper.Callback = PlaylistTouchCallback()
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
 
         adapter = PlaylistAdapter(model.api, model.playbackQueue)
         recyclerView.adapter = adapter
