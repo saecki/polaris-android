@@ -46,7 +46,7 @@ internal class BrowseContentAlbum(
     private val adapter: BrowseAdapter
 
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = LayoutInflater.from(context)
         val binding = ViewBrowseAlbumBinding.inflate(inflater)
 
         root = binding.root
@@ -84,6 +84,7 @@ internal class BrowseContentAlbum(
                     }
                 }
             }
+            else -> Unit
         }
 
         motionLayout?.addTransitionListener(object : MotionLayout.TransitionListener {
