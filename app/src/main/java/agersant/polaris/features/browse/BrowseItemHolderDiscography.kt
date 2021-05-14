@@ -28,12 +28,12 @@ internal class BrowseItemHolderDiscography(
     public override fun bindItem(item: CollectionItem) {
         super.bindItem(item)
 
-        var artistString = item.albumArtist ?: item.artist ?: ""
+        var artistString = item.albumArtist ?: item.artist.orEmpty()
         if (item.year != -1) {
             artistString += " • ${item.year}"
         }
         artist.text = artistString
-        album.text = item.album ?: ""
+        album.text = item.album.orEmpty()
         if (item.artwork != null) {
             api.loadThumbnailIntoView(item, ThumbnailSize.Small, artwork)
         } else {
