@@ -47,7 +47,7 @@ internal abstract class BrowseItemHolder(
         }
     }
 
-    open fun onSwiped(view: View?) {
+    open fun onSwiped() {
         item?.let {
             when (it) {
                 is Directory -> {
