@@ -4,6 +4,7 @@ import agersant.polaris.CollectionItem
 import agersant.polaris.PolarisApplication
 import agersant.polaris.api.ItemsCallback
 import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,7 +33,7 @@ class SearchViewModel : ViewModel() {
     private val mError = MutableLiveData(false)
     private var searchQuery = ""
     private var searchScheduled = false
-    private val searchHandler = Handler()
+    private val searchHandler = Handler(Looper.getMainLooper())
     private val runSearch = Runnable {
         search(searchQuery)
         searchScheduled = false
