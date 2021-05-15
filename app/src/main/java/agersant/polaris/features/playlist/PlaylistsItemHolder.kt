@@ -6,30 +6,34 @@ import agersant.polaris.Playlist
 import agersant.polaris.R
 import agersant.polaris.api.API
 import agersant.polaris.api.ItemsCallback
+import agersant.polaris.databinding.ViewPlaylistsItemBinding
+import agersant.polaris.databinding.ViewQueueStatusBinding
+import agersant.polaris.features.SwipeableHolder
 import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.postDelayed
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.ceil
 
 internal class PlaylistsItemHolder(
-    itemView: View,
-    private val queueStatusView: View,
     private val api: API,
     private val playbackQueue: PlaybackQueue,
     private val adapter: PlaylistsAdapter,
-) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    itemBinding: ViewPlaylistsItemBinding,
+    queueStatusBinding: ViewQueueStatusBinding,
+) : RecyclerView.ViewHolder(itemBinding.root), SwipeableHolder, View.OnClickListener {
 
     private var item: Playlist? = null
-    private val nameText: TextView = itemView.findViewById(R.id.name)
-    private val queueStatusText: TextView = queueStatusView.findViewById(R.id.status_text)
-    private val queueStatusIcon: ImageView = queueStatusView.findViewById(R.id.status_icon)
+    private val nameText: TextView = itemBinding.name
+    private val queueStatusView = queueStatusBinding.root
+    private val queueStatusText = queueStatusBinding.statusText
+    private val queueStatusIcon = queueStatusBinding.statusIcon
 
     init {
         itemView.setOnClickListener(this)
@@ -50,9 +54,11 @@ internal class PlaylistsItemHolder(
         }
     }
 
-    fun onSwiped(view: View?) {
-        queuePlaylist()
-        setStatusToFetching()
+    override fun onSwiped(direction: Int) {
+        item?.let {
+            queuePlaylist()
+            setStatusToFetching()
+        }
     }
 
     private fun queuePlaylist() {
@@ -106,16 +112,16 @@ internal class PlaylistsItemHolder(
 
     private fun waitAndSwipeBack() {
         val oldItem = item
-        val handler = Handler()
-        handler.postDelayed({
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed(1000) {
             if (item === oldItem) {
                 val position = adapterPosition
                 adapter.notifyItemChanged(position)
             }
-        }, 1000)
+        }
     }
 
-    fun onChildDraw(canvas: Canvas, dX: Float, actionState: Int) {
+    override fun onChildDraw(canvas: Canvas, dX: Float, actionState: Int) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             val widthSpec = View.MeasureSpec.makeMeasureSpec(itemView.width, View.MeasureSpec.EXACTLY)
             val heightSpec = View.MeasureSpec.makeMeasureSpec(itemView.height, View.MeasureSpec.EXACTLY)

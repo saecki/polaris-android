@@ -2,8 +2,9 @@ package agersant.polaris.features.playlist
 
 import agersant.polaris.PlaybackQueue
 import agersant.polaris.Playlist
-import agersant.polaris.R
 import agersant.polaris.api.API
+import agersant.polaris.databinding.ViewPlaylistsItemBinding
+import agersant.polaris.databinding.ViewQueueStatusBinding
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -37,10 +38,10 @@ internal class PlaylistsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsItemHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val itemView = inflater.inflate(R.layout.view_playlists_item, parent, false)
-        val itemQueueStatusView = inflater.inflate(R.layout.view_queue_status, parent, false)
+        val itemBinding = ViewPlaylistsItemBinding.inflate(inflater, parent, false)
+        val queueStatusBinding = ViewQueueStatusBinding.inflate(inflater, parent, false)
 
-        return PlaylistsItemHolder(itemView, itemQueueStatusView, api, playbackQueue, this)
+        return PlaylistsItemHolder(api, playbackQueue, this, itemBinding, queueStatusBinding)
     }
 
     override fun onBindViewHolder(holder: PlaylistsItemHolder, position: Int) {

@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
 
@@ -33,6 +34,15 @@ class PlaylistsFragment : Fragment() {
 
         recyclerView.setHasFixedSize(true)
 
+        val callback: ItemTouchHelper.Callback = object : PlaylistTouchCallback() {
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+                swipeRefresh.isEnabled = (actionState != ItemTouchHelper.ACTION_STATE_SWIPE)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
         adapter = PlaylistsAdapter(model.api, model.playbackQueue)
         recyclerView.adapter = adapter
 
@@ -48,7 +58,7 @@ class PlaylistsFragment : Fragment() {
         return binding.root
     }
 
-    fun updateFetching(fetching: Boolean) {
+    private fun updateFetching(fetching: Boolean) {
         progressBar.isVisible = fetching
         swipeRefresh.isRefreshing = fetching
     }

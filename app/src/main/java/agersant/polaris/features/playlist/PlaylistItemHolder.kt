@@ -7,6 +7,7 @@ import agersant.polaris.api.API
 import agersant.polaris.api.ThumbnailSize
 import agersant.polaris.databinding.ViewPlaylistItemBinding
 import agersant.polaris.databinding.ViewQueueStatusBinding
+import agersant.polaris.features.SwipeableHolder
 import android.graphics.Canvas
 import android.os.Handler
 import android.os.Looper
@@ -22,7 +23,7 @@ internal class PlaylistItemHolder(
     private val playbackQueue: PlaybackQueue,
     itemBinding: ViewPlaylistItemBinding,
     queueStatusBinding: ViewQueueStatusBinding,
-) : RecyclerView.ViewHolder(itemBinding.root) {
+) : RecyclerView.ViewHolder(itemBinding.root), SwipeableHolder {
 
     private val artwork = itemBinding.artwork
     private val title = itemBinding.title
@@ -46,7 +47,7 @@ internal class PlaylistItemHolder(
         setStatusToIdle()
     }
 
-    fun onSwiped() {
+    override fun onSwiped(direction: Int) {
         item?.let(playbackQueue::addItem)
         setStatusToQueued()
     }
@@ -75,7 +76,7 @@ internal class PlaylistItemHolder(
         }
     }
 
-    fun onChildDraw(canvas: Canvas, dX: Float, actionState: Int) {
+    override fun onChildDraw(canvas: Canvas, dX: Float, actionState: Int) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             val widthSpec = View.MeasureSpec.makeMeasureSpec(itemView.width, View.MeasureSpec.EXACTLY)
             val heightSpec = View.MeasureSpec.makeMeasureSpec(itemView.height, View.MeasureSpec.EXACTLY)

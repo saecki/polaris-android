@@ -40,6 +40,7 @@ internal class PlaylistAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val itemBinding = ViewPlaylistItemBinding.inflate(inflater, parent, false)
         val queueStatusBinding = ViewQueueStatusBinding.inflate(inflater, parent, false)
+
         return PlaylistItemHolder(this, api, playbackQueue, itemBinding, queueStatusBinding)
     }
 
