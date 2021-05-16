@@ -8,6 +8,7 @@ import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSource;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
 
 import java.io.File;
 
@@ -28,7 +29,7 @@ class DownloadQueueWorkItem {
     private CollectionItem item;
     private DownloadTask job;
     private MediaSource mediaSource;
-    private DefaultDataSource dataSource;
+    private HttpDataSource dataSource;
 
     DownloadQueueWorkItem(File scratchFile, ServerAPI serverAPI, OfflineCache offlineCache, PolarisPlayer player) {
         this.scratchFile = scratchFile;

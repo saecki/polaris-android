@@ -5,17 +5,17 @@ import android.os.AsyncTask;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.DefaultDataSource;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
 
 
 class DownloadTask extends AsyncTask<Object, Integer, Integer> {
 
     private static final int BUFFER_SIZE = 1024 * 64; // 64 kB
 
-    private final DefaultDataSource dataSource;
+    private final HttpDataSource dataSource;
     private final DataSpec dataSpec;
 
-    DownloadTask(DefaultDataSource dataSource, Uri uri) {
+    DownloadTask(HttpDataSource dataSource, Uri uri) {
         this.dataSource = dataSource;
         dataSpec = new DataSpec(uri);
     }
