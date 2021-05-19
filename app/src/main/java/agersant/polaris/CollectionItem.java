@@ -17,6 +17,10 @@ public class CollectionItem implements Cloneable, Serializable {
     private String artwork;
     private String album;
     private String albumArtist;
+    private String composer;
+    private String lyricist;
+    private String genre;
+    private String label;
     private int trackNumber;
     private int discNumber;
     private int duration;
@@ -46,6 +50,10 @@ public class CollectionItem implements Cloneable, Serializable {
         artwork = getOptionalString(fields, "artwork");
         album = getOptionalString(fields, "album");
         albumArtist = getOptionalString(fields, "album_artist");
+        composer = getOptionalString(fields, "composer");
+        lyricist = getOptionalString(fields, "lyricist");
+        genre = getOptionalString(fields, "genre");
+        label = getOptionalString(fields, "label");
         trackNumber = getOptionalInt(fields, "track_number");
         discNumber = getOptionalInt(fields, "disc_number");
         duration = getOptionalInt(fields, "duration");
@@ -87,28 +95,40 @@ public class CollectionItem implements Cloneable, Serializable {
         return path;
     }
 
-    public String getArtist() {
-        return artist;
-    }
-
-    public String getAlbumArtist() {
-        return albumArtist;
-    }
-
     public String getTitle() {
         return title;
+    }
+
+    public String getArtist() {
+        return artist;
     }
 
     public String getArtwork() {
         return artwork;
     }
 
-    public boolean isDirectory() {
-        return isDirectory;
-    }
-
     public String getAlbum() {
         return album;
+    }
+
+    public String getAlbumArtist() {
+        return albumArtist;
+    }
+
+    public String getComposer() {
+        return composer;
+    }
+
+    public String getLyricist() {
+        return lyricist;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     public int getTrackNumber() {
@@ -125,6 +145,10 @@ public class CollectionItem implements Cloneable, Serializable {
 
     public int getYear() {
         return year;
+    }
+
+    public boolean isDirectory() {
+        return isDirectory;
     }
 
     public static class Directory extends CollectionItem {
