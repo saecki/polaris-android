@@ -17,6 +17,7 @@ import java.lang.reflect.Type;
 import agersant.polaris.CollectionItem;
 import agersant.polaris.R;
 import agersant.polaris.api.ItemsCallback;
+import agersant.polaris.api.ThumbnailSize;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -137,9 +138,13 @@ public class ServerAPI implements IRemoteAPI {
         if (version.major < 5) {
             return new APIVersion4(downloadQueue, requestQueue);
         }
-        return new APIVersion5(downloadQueue, requestQueue);
+        if (version.major < 6) {
+            return new APIVersion5(downloadQueue, requestQueue);
+        }
+        return new APIVersion6(downloadQueue, requestQueue);
     }
 
+    @Override
     public void getRandomAlbums(ItemsCallback handlers) {
         fetchAPIVersionAsync(new VersionCallback() {
             @Override
@@ -154,6 +159,7 @@ public class ServerAPI implements IRemoteAPI {
         });
     }
 
+    @Override
     public void getRecentAlbums(ItemsCallback handlers) {
         fetchAPIVersionAsync(new VersionCallback() {
             @Override
@@ -168,6 +174,7 @@ public class ServerAPI implements IRemoteAPI {
         });
     }
 
+    @Override
     public void setLastFMNowPlaying(String path) {
         fetchAPIVersionAsync(new VersionCallback() {
             @Override
@@ -181,6 +188,7 @@ public class ServerAPI implements IRemoteAPI {
         });
     }
 
+    @Override
     public void scrobbleOnLastFM(String path) {
         fetchAPIVersionAsync(new VersionCallback() {
             @Override
@@ -194,6 +202,7 @@ public class ServerAPI implements IRemoteAPI {
         });
     }
 
+    @Override
     public MediaSource getAudio(CollectionItem item) throws IOException {
         fetchAPIVersion();
         if (currentVersion != null) {
@@ -202,6 +211,7 @@ public class ServerAPI implements IRemoteAPI {
         return null;
     }
 
+    @Override
     public ResponseBody getAudio(String path) throws IOException {
         fetchAPIVersion();
         if (currentVersion != null) {
@@ -210,14 +220,16 @@ public class ServerAPI implements IRemoteAPI {
         return null;
     }
 
-    public ResponseBody getThumbnail(String path) throws IOException {
+    @Override
+    public ResponseBody getThumbnail(String path, ThumbnailSize size) throws IOException {
         fetchAPIVersion();
         if (currentVersion != null) {
-            return currentVersion.getThumbnail(path);
+            return currentVersion.getThumbnail(path, size);
         }
         return null;
     }
 
+    @Override
     public Uri getAudioUri(String path) {
         fetchAPIVersion();
         if (currentVersion != null) {
@@ -226,14 +238,16 @@ public class ServerAPI implements IRemoteAPI {
         return null;
     }
 
-    public Uri getThumbnailUri(String path) {
+    @Override
+    public Uri getThumbnailUri(String path, ThumbnailSize size) {
         fetchAPIVersion();
         if (currentVersion != null) {
-            return currentVersion.getThumbnailUri(path);
+            return currentVersion.getThumbnailUri(path, size);
         }
         return null;
     }
 
+    @Override
     public void browse(String path, ItemsCallback handlers) {
         fetchAPIVersionAsync(new VersionCallback() {
             @Override
@@ -248,6 +262,7 @@ public class ServerAPI implements IRemoteAPI {
         });
     }
 
+    @Override
     public void flatten(String path, ItemsCallback handlers) {
         fetchAPIVersionAsync(new VersionCallback() {
             @Override
@@ -262,12 +277,12 @@ public class ServerAPI implements IRemoteAPI {
         });
     }
 
-    class APIVersion {
+    private static class APIVersion {
         int major;
         int minor;
     }
 
-    interface VersionCallback {
+    private interface VersionCallback {
         void onSuccess();
 
         void onError();

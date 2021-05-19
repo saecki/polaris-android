@@ -46,18 +46,18 @@ public class API {
         return FetchAudioTask.load(this, localAPI, serverAPI, item, callback);
     }
 
-    public void loadImage(CollectionItem item, FetchImageTask.Callback callback) {
+    public void loadThumbnail(CollectionItem item, ThumbnailSize size, FetchImageTask.Callback callback) {
         String artworkPath = item.getArtwork();
         ImageCache cache = ImageCache.getInstance();
-        Bitmap bitmap = cache.get(artworkPath);
+        Bitmap bitmap = cache.get(artworkPath, size);
         if (bitmap != null) {
             callback.onSuccess(bitmap);
             return;
         }
-        FetchImageTask.load(offlineCache, this, serverAPI, localAPI, item, callback);
+        FetchImageTask.load(offlineCache, this, serverAPI, localAPI, item, size, callback);
     }
 
-    public void loadImageIntoView(final CollectionItem item, ImageView view) {
+    public void loadThumbnailIntoView(final CollectionItem item, ThumbnailSize size, ImageView view) {
 
         PolarisApplication polarisApplication = PolarisApplication.getInstance();
         Resources resources = polarisApplication.getResources();
@@ -65,7 +65,7 @@ public class API {
         view.setImageDrawable(asyncDrawable);
 
         final WeakReference<ImageView> imageViewReference = new WeakReference<>(view);
-        loadImage(item, (Bitmap bitmap) -> {
+        loadThumbnail(item, size, (Bitmap bitmap) -> {
             ImageView imageView = imageViewReference.get();
             if (imageView == null) {
                 return;

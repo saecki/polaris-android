@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import agersant.polaris.CollectionItem;
 import agersant.polaris.api.ItemsCallback;
+import agersant.polaris.api.ThumbnailSize;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -21,8 +22,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.BufferedSink;
 
-public class APIVersion2 extends APIBase
-    implements IRemoteAPI {
+public class APIVersion2 extends APIBase implements IRemoteAPI {
 
     private final Gson gson;
 
@@ -35,16 +35,19 @@ public class APIVersion2 extends APIBase
             .create();
     }
 
+    @Override
     String getAudioURL(String path) {
         String serverAddress = ServerAPI.getAPIRootURL();
         return serverAddress + "/serve/" + path;
     }
 
-    String getThumbnailURL(String path) {
+    @Override
+    String getThumbnailURL(String path, ThumbnailSize size) {
         String serverAddress = ServerAPI.getAPIRootURL();
         return serverAddress + "/serve/" + path;
     }
 
+    @Override
     public void browse(String path, final ItemsCallback handlers) {
         String requestURL = ServerAPI.getAPIRootURL() + "/browse/" + path;
         HttpUrl parsedURL = HttpUrl.parse(requestURL);
@@ -82,7 +85,7 @@ public class APIVersion2 extends APIBase
         requestQueue.requestAsync(request, callback);
     }
 
-    void getAlbums(String url, final ItemsCallback handlers) {
+    protected void getAlbums(String url, final ItemsCallback handlers) {
         HttpUrl parsedURL = HttpUrl.parse(url);
         if (parsedURL == null) {
             handlers.onError();
@@ -118,6 +121,7 @@ public class APIVersion2 extends APIBase
         requestQueue.requestAsync(request, callback);
     }
 
+    @Override
     public void flatten(String path, final ItemsCallback handlers) {
         String requestURL = ServerAPI.getAPIRootURL() + "/flatten/" + path;
         Request request = new Request.Builder().url(requestURL).build();
@@ -149,6 +153,7 @@ public class APIVersion2 extends APIBase
         requestQueue.requestAsync(request, callback);
     }
 
+    @Override
     public void setLastFMNowPlaying(String path) {
         String requestURL = ServerAPI.getAPIRootURL() + "/lastfm/now_playing/" + path;
         Request request = new Request.Builder().url(requestURL).put(new RequestBody() {
@@ -174,6 +179,7 @@ public class APIVersion2 extends APIBase
         });
     }
 
+    @Override
     public void scrobbleOnLastFM(String path) {
 
         String requestURL = ServerAPI.getAPIRootURL() + "/lastfm/scrobble/" + path;

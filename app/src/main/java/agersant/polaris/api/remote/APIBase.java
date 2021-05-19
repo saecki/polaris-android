@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import agersant.polaris.CollectionItem;
 import agersant.polaris.api.ItemsCallback;
+import agersant.polaris.api.ThumbnailSize;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
 
@@ -23,15 +24,15 @@ abstract class APIBase {
 
     abstract String getAudioURL(String path);
 
-    abstract String getThumbnailURL(String path);
+    abstract String getThumbnailURL(String path, ThumbnailSize size);
 
     public Uri getAudioUri(String path) {
         String url = getAudioURL(path);
         return Uri.parse(url);
     }
 
-    public Uri getThumbnailUri(String path) {
-        String url = getThumbnailURL(path);
+    public Uri getThumbnailUri(String path, ThumbnailSize size) {
+        String url = getThumbnailURL(path, size);
         return Uri.parse(url);
     }
 
@@ -40,8 +41,8 @@ abstract class APIBase {
         return requestQueue.requestSync(request);
     }
 
-    public ResponseBody getThumbnail(String path) throws IOException {
-        Request request = new Request.Builder().url(getThumbnailUri(path).toString()).build();
+    public ResponseBody getThumbnail(String path, ThumbnailSize size) throws IOException {
+        Request request = new Request.Builder().url(getThumbnailUri(path, size).toString()).build();
         return requestQueue.requestSync(request);
     }
 
