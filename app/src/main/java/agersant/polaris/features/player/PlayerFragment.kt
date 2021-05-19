@@ -5,6 +5,7 @@ import agersant.polaris.PolarisApplication
 import agersant.polaris.PolarisPlayer
 import agersant.polaris.R
 import agersant.polaris.api.API
+import agersant.polaris.api.ThumbnailSize
 import agersant.polaris.databinding.FragmentPlayerBinding
 import agersant.polaris.util.formatTime
 import android.content.BroadcastReceiver
@@ -201,7 +202,7 @@ class PlayerFragment : Fragment() {
         artistText.text = item?.artist ?: unknown
 
         if (item?.artwork != null) {
-            api.loadImageIntoView(item, artwork)
+            api.loadThumbnailIntoView(item, ThumbnailSize.Large, artwork)
         } else {
             artwork.setImageResource(R.drawable.ic_fallback_artwork)
         }

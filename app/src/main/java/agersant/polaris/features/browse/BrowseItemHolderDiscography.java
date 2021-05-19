@@ -8,6 +8,7 @@ import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.R;
 import agersant.polaris.api.API;
+import agersant.polaris.api.ThumbnailSize;
 
 
 class BrowseItemHolderDiscography extends BrowseItemHolder {
@@ -39,7 +40,7 @@ class BrowseItemHolderDiscography extends BrowseItemHolder {
         }
 
         if (item.getArtwork() != null) {
-            api.loadImageIntoView(item, artwork);
+            api.loadThumbnailIntoView(item, ThumbnailSize.Small, artwork);
         } else {
             artwork.setImageResource(R.drawable.ic_fallback_artwork);
         }

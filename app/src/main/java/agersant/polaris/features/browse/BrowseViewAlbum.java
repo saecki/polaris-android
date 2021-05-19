@@ -14,6 +14,7 @@ import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.R;
 import agersant.polaris.api.API;
+import agersant.polaris.api.ThumbnailSize;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,7 +76,7 @@ public class BrowseViewAlbum extends BrowseViewContent {
 
         String artworkPath = item.getArtwork();
         if (artworkPath != null) {
-            api.loadImageIntoView(item, artwork);
+            api.loadThumbnailIntoView(item, ThumbnailSize.Small, artwork);
         }
 
         String titleString = item.getAlbum();

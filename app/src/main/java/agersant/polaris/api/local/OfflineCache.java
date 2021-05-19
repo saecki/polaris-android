@@ -32,6 +32,7 @@ import agersant.polaris.PlaybackQueue;
 import agersant.polaris.PolarisApplication;
 import agersant.polaris.PolarisPlayer;
 import agersant.polaris.R;
+import agersant.polaris.api.ThumbnailSize;
 
 
 public class OfflineCache {
@@ -40,7 +41,9 @@ public class OfflineCache {
     public static final String AUDIO_REMOVED_FROM_CACHE = "AUDIO_REMOVED_FROM_CACHE";
     private static final String ITEM_FILENAME = "__polaris__item";
     private static final String AUDIO_FILENAME = "__polaris__audio";
-    private static final String ARTWORK_FILENAME = "__polaris__artwork";
+    private static final String ARTWORK_SMALL_FILENAME = "__polaris__artwork_small";
+    private static final String ARTWORK_LARGE_FILENAME = "__polaris__artwork_large";
+    private static final String ARTWORK_NATIVE_FILENAME = "__polaris__artwork_native";
     private static final String META_FILENAME = "__polaris__meta";
     private static final int FIRST_VERSION = 1;
     private static final int VERSION = 4;
@@ -275,7 +278,7 @@ public class OfflineCache {
         System.out.println("Saved audio to offline cache: " + path);
     }
 
-    public synchronized void putImage(CollectionItem item, Bitmap image) {
+    public synchronized void putImage(CollectionItem item, ThumbnailSize size, Bitmap image) {
         String path = item.getPath();
 
         try (FileOutputStream itemOut = new FileOutputStream(createCacheFile(path, CacheDataType.ITEM))) {
@@ -286,7 +289,8 @@ public class OfflineCache {
 
         if (image != null) {
             String artworkPath = item.getArtwork();
-            try (FileOutputStream itemOut = new FileOutputStream(createCacheFile(artworkPath, CacheDataType.ARTWORK))) {
+            CacheDataType cacheDataType = getImageCacheDataType(size);
+            try (FileOutputStream itemOut = new FileOutputStream(createCacheFile(artworkPath, cacheDataType))) {
                 write(image, itemOut);
             } catch (IOException e) {
                 System.out.println("Error while caching artwork for local use: " + e);
@@ -308,8 +312,12 @@ public class OfflineCache {
                 return new File(file, ITEM_FILENAME);
             case AUDIO:
                 return new File(file, AUDIO_FILENAME);
-            case ARTWORK:
-                return new File(file, ARTWORK_FILENAME);
+            case ARTWORK_SMALL:
+                return new File(file, ARTWORK_SMALL_FILENAME);
+            case ARTWORK_LARGE:
+                return new File(file, ARTWORK_LARGE_FILENAME);
+            case ARTWORK_NATIVE:
+                return new File(file, ARTWORK_NATIVE_FILENAME);
             case META:
             default:
                 return new File(file, META_FILENAME);
@@ -339,8 +347,9 @@ public class OfflineCache {
         return file.exists();
     }
 
-    boolean hasImage(String virtualPath) {
-        File file = getCacheFile(virtualPath, CacheDataType.ARTWORK);
+    boolean hasImage(String virtualPath, ThumbnailSize size) {
+        CacheDataType cacheDataType = getImageCacheDataType(size);
+        File file = getCacheFile(virtualPath, cacheDataType);
         return file.exists();
     }
 
@@ -357,11 +366,24 @@ public class OfflineCache {
         return new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(uri));
     }
 
-    Bitmap getImage(String virtualPath) throws IOException {
-        if (!hasImage(virtualPath)) {
+    CacheDataType getImageCacheDataType(ThumbnailSize size) {
+        switch (size) {
+            case Large:
+                return CacheDataType.ARTWORK_LARGE;
+            case Native:
+                return CacheDataType.ARTWORK_NATIVE;
+            case Small:
+            default:
+                return CacheDataType.ARTWORK_SMALL;
+        }
+    }
+
+    Bitmap getImage(String virtualPath, ThumbnailSize size) throws IOException {
+        if (!hasImage(virtualPath, size)) {
             throw new FileNotFoundException();
         }
-        File file = getCacheFile(virtualPath, CacheDataType.ARTWORK);
+        CacheDataType cacheDataType = getImageCacheDataType(size);
+        File file = getCacheFile(virtualPath, cacheDataType);
         FileInputStream fileInputStream = new FileInputStream(file);
         return BitmapFactory.decodeFileDescriptor(fileInputStream.getFD());
     }
@@ -437,11 +459,12 @@ public class OfflineCache {
 
     private boolean isInternalFile(File file) {
         String name = file.getName();
-        boolean isItem = name.equals(ITEM_FILENAME);
-        boolean isAudio = name.equals(AUDIO_FILENAME);
-        boolean isArtwork = name.equals(ARTWORK_FILENAME);
-        boolean isMeta = name.equals(META_FILENAME);
-        return isItem || isAudio || isArtwork || isMeta;
+        return name.equals(ITEM_FILENAME)
+            || name.equals(AUDIO_FILENAME)
+            || name.equals(ARTWORK_SMALL_FILENAME)
+            || name.equals(ARTWORK_LARGE_FILENAME)
+            || name.equals(ARTWORK_NATIVE_FILENAME)
+            || name.equals(META_FILENAME);
     }
 
     private boolean containsAudio(File file) {
@@ -516,7 +539,9 @@ public class OfflineCache {
     private enum CacheDataType {
         ITEM,
         AUDIO,
-        ARTWORK,
+        ARTWORK_SMALL,
+        ARTWORK_LARGE,
+        ARTWORK_NATIVE,
         META,
     }
 

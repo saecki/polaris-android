@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import agersant.polaris.CollectionItem;
 import agersant.polaris.api.IPolarisAPI;
 import agersant.polaris.api.ItemsCallback;
+import agersant.polaris.api.ThumbnailSize;
 
 
 public class LocalAPI implements IPolarisAPI {
@@ -33,15 +34,15 @@ public class LocalAPI implements IPolarisAPI {
         return offlineCache.getAudio(path);
     }
 
-    public boolean hasImage(CollectionItem item) {
+    public boolean hasImage(CollectionItem item, ThumbnailSize size) {
         String path = item.getArtwork();
-        return offlineCache.hasImage(path);
+        return offlineCache.hasImage(path, size);
     }
 
-    public Bitmap getImage(CollectionItem item) {
+    public Bitmap getImage(CollectionItem item, ThumbnailSize size) {
         String artworkPath = item.getArtwork();
         try {
-            return offlineCache.getImage(artworkPath);
+            return offlineCache.getImage(artworkPath, size);
         } catch (IOException e) {
             System.out.println("Error while retrieving image from local cache: " + artworkPath);
         }

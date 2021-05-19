@@ -34,6 +34,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import agersant.polaris.api.API;
+import agersant.polaris.api.ThumbnailSize;
 import androidx.navigation.NavDeepLinkBuilder;
 
 
@@ -338,7 +339,7 @@ public class PolarisPlaybackService extends Service {
             notificationBuilder.setLargeIcon(notification.getLargeIcon());
         }
         if (item.getArtwork() != null) {
-            api.loadImage(item, (Bitmap bitmap) -> {
+            api.loadThumbnail(item, ThumbnailSize.Small, (Bitmap bitmap) -> {
                 if (item != player.getCurrentItem()) {
                     return;
                 }
