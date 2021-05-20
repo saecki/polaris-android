@@ -49,8 +49,8 @@ class FetchImageTask private constructor(
         if (bitmap == null) {
             if (!api.isOffline) {
                 try {
-                    val responseBody = serverAPI.getThumbnail(item.artwork, size)
-                    val stream: InputStream = BufferedInputStream(responseBody!!.byteStream())
+                    val inputStream = serverAPI.getThumbnail(item.artwork, size)
+                    val stream: InputStream = BufferedInputStream(inputStream!!)
                     bitmap = BitmapFactory.decodeStream(stream)
                 } catch (e: Exception) {
                     println("Error while downloading image: $e")

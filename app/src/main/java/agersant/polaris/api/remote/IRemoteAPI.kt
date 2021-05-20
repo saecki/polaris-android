@@ -6,6 +6,7 @@ import agersant.polaris.api.ThumbnailSize
 import android.net.Uri
 import okhttp3.ResponseBody
 import java.io.IOException
+import java.io.InputStream
 
 interface IRemoteAPI : IPolarisAPI {
 
@@ -22,5 +23,5 @@ interface IRemoteAPI : IPolarisAPI {
     fun getThumbnailUri(path: String, size: ThumbnailSize): Uri?
 
     @Throws(IOException::class)
-    fun getThumbnail(path: String, size: ThumbnailSize): ResponseBody?
+    fun getThumbnail(path: String, size: ThumbnailSize): InputStream?
 }
