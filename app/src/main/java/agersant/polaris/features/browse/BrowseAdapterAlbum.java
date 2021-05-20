@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
@@ -24,7 +25,7 @@ class BrowseAdapterAlbum extends BrowseAdapter {
     private final PlaybackQueue playbackQueue;
 
     @Override
-    void setItems(ArrayList<? extends CollectionItem> items) {
+    void setItems(List<? extends CollectionItem> items) {
         discSizes = new SparseIntArray();
         for (CollectionItem item : items) {
             int discNumber = item.getDiscNumber();
