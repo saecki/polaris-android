@@ -9,7 +9,7 @@ internal class APIVersion6(
 ) : APIVersion5(downloadQueue, requestQueue) {
 
     override fun getThumbnailURL(path: String, size: ThumbnailSize): String {
-        val serverAddress = ServerAPI.getAPIRootURL()
+        val serverAddress = ServerAPI.aPIRootURL
         return "$serverAddress/thumbnail/${Uri.encode(path)}?size=$size"
     }
 }

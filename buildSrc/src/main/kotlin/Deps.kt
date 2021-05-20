@@ -5,7 +5,16 @@ object Deps {
     object Kotlin {
         const val version = "1.5.10"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
+        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:$version"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
+    }
+
+    object Kotlinx {
+        object Serialization {
+            const val version = "1.2.1"
+            const val core = "org.jetbrains.kotlinx:kotlinx-serialization-core:$version"
+            const val json = "org.jetbrains.kotlinx:kotlinx-serialization-core:$version"
+        }
     }
 
     object Androidx {
@@ -14,7 +23,6 @@ object Deps {
         const val preferenceKtx = "androidx.preference:preference-ktx:1.1.1"
         const val media = "androidx.media:media:1.3.1"
     }
-    
 
     object Nav {
         const val version = "2.4.0-alpha02"
@@ -26,6 +34,13 @@ object Deps {
         const val version = "2.13.3"
         const val core = "com.google.android.exoplayer:exoplayer-core:$version"
         const val flacExtension = "com.github.Saecki.ExoPlayer-Extensions:extension-flac:$version"
+    }
+
+    object KtorClient {
+        const val version = "1.5.4"
+        const val core = "io.ktor:ktor-client-core:$version"
+        const val okhttp = "io.ktor:ktor-client-okhttp:$version"
+        const val serialization = "io.ktor:ktor-client-serialization:$version"
     }
 
     const val material = "com.google.android.material:material:1.3.0"

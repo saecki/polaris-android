@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("plugin.serialization")
     id("name.remal.check-dependency-updates") version "1.3.1"
 }
 
@@ -71,6 +72,12 @@ dependencies {
     implementation(Deps.ExoPlayer.flacExtension) { isTransitive = false }
 
     // Rest client
+    implementation(Deps.Kotlinx.Serialization.core)
+    implementation(Deps.Kotlinx.Serialization.json)
+    implementation(Deps.KtorClient.serialization)
+    implementation(Deps.KtorClient.core)
+    implementation(Deps.KtorClient.okhttp)
+
     implementation(Deps.gson)
     implementation(Deps.okhttp)
 

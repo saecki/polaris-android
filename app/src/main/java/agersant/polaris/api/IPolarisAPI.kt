@@ -6,7 +6,7 @@ import java.io.IOException
 
 interface IPolarisAPI {
     @Throws(IOException::class)
-    fun getAudio(item: CollectionItem): MediaSource
+    fun getAudio(item: CollectionItem): MediaSource?
 
     fun browse(path: String, handlers: ItemsCallback)
 

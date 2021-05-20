@@ -16,7 +16,7 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-class Auth implements Interceptor {
+public class Auth implements Interceptor {
 
     private static final Pattern setCookiePattern = Pattern.compile("^(session=[^;]+)");
     private final AtomicReference<String> syncCookie;
