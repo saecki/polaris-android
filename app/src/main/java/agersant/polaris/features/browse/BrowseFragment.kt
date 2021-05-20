@@ -83,9 +83,9 @@ class BrowseFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         when (navigationMode) {
-            NavigationMode.PATH -> toolbar.setTitle(R.string.collection_browse_directories)
-            NavigationMode.RANDOM -> toolbar.setTitle(R.string.collection_random_albums)
-            NavigationMode.RECENT -> toolbar.setTitle(R.string.collection_recently_added)
+            NavigationMode.PATH -> toolbar.setTitle(R.string.collection_browse)
+            NavigationMode.RANDOM -> toolbar.setTitle(R.string.collection_random)
+            NavigationMode.RECENT -> toolbar.setTitle(R.string.collection_recent)
         }
     }
 

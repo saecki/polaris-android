@@ -42,15 +42,19 @@ android {
     }
     buildFeatures {
         viewBinding = true
-    }
-    kotlinOptions {
-        languageVersion = "1.5"
-        jvmTarget = "11"
-        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        compose = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        languageVersion = "1.4"
+        jvmTarget = "11"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Deps.Androidx.Compose.version
     }
 }
 
@@ -73,6 +77,16 @@ dependencies {
     // Navigation
     implementation(Deps.Androidx.Nav.fragmentKtx)
     implementation(Deps.Androidx.Nav.uiKtx)
+    implementation(Deps.Androidx.Nav.compose)
+
+    // Compose
+    implementation(Deps.Androidx.Compose.ui)
+    implementation(Deps.Androidx.Compose.uiTooling)
+    implementation(Deps.Androidx.Compose.foundation)
+    implementation(Deps.Androidx.Compose.material)
+    implementation(Deps.Androidx.Compose.materialIconsCore)
+    implementation(Deps.Androidx.Compose.materialIconsExtended)
+    implementation(Deps.Androidx.Compose.livedata)
 
     // Preference
     implementation(Deps.Androidx.preferenceKtx)

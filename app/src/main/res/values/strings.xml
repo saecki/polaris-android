@@ -2,9 +2,9 @@
     <string name="app_name">Polaris</string>
 
     <string name="collection">Collection</string>
-    <string name="collection_browse_directories">Browse Directories</string>
-    <string name="collection_random_albums">Random Albums</string>
-    <string name="collection_recently_added">Recently Added</string>
+    <string name="collection_browse">Browse</string>
+    <string name="collection_random">Random</string>
+    <string name="collection_recent">Recent</string>
     <string name="collection_playlists">Playlists</string>
 
     <string name="browse_error">An error occurred while listing content</string>

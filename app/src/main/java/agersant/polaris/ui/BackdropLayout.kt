@@ -1,7 +1,7 @@
 package agersant.polaris.ui
 
 import agersant.polaris.R
-import agersant.polaris.util.dp
+import agersant.polaris.util.dpPixels
 import agersant.polaris.util.getAttrColor
 import android.content.Context
 import android.graphics.Outline
@@ -71,7 +71,7 @@ class BackdropLayout(context: Context, attrs: AttributeSet? = null) : Constraint
         val arr = context.obtainStyledAttributes(attrs, R.styleable.BackdropLayout)
         backdropMenuId = arr.getResourceId(R.styleable.BackdropLayout_backdropMenu, -1)
         toolbarId = arr.getResourceId(R.styleable.BackdropLayout_toolbar, -1)
-        outlineRadius = arr.getDimension(R.styleable.BackdropLayout_cornerRadius, 16.dp)
+        outlineRadius = arr.getDimension(R.styleable.BackdropLayout_cornerRadius, 16.dpPixels)
         arr.recycle()
 
         outlineProvider = object : ViewOutlineProvider() {

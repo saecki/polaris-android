@@ -27,7 +27,7 @@ fun Context.getAttrColor(attr: Int): Int {
     return out.data
 }
 
-val Number.dp: Float
+val Number.dpPixels: Float
     @Dimension
     get() = (this.toFloat() * Resources.getSystem().displayMetrics.density)
 

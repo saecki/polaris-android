@@ -3,7 +3,7 @@ object Deps {
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta02"
 
     object Kotlin {
-        const val version = "1.5.0"
+        const val version = "1.4.32"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:$version"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
@@ -25,6 +25,18 @@ object Deps {
     }
 
     object Androidx {
+
+        object Compose {
+            const val version = "1.0.0-beta07"
+            const val ui = "androidx.compose.ui:ui:$version"
+            const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
+            const val foundation = "androidx.compose.foundation:foundation:$version"
+            const val material = "androidx.compose.material:material:$version"
+            const val materialIconsCore = "androidx.compose.material:material-icons-core:$version"
+            const val materialIconsExtended = "androidx.compose.material:material-icons-extended:$version"
+            const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
+        }
+
         object Media2 {
             const val version = "1.1.3"
             const val common = "androidx.media2:media2-common:$version"
@@ -36,6 +48,7 @@ object Deps {
             const val version = "2.4.0-alpha01"
             const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             const val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
+            const val compose = "androidx.navigation:navigation-compose:$version"
         }
 
         object Lifecycle {
