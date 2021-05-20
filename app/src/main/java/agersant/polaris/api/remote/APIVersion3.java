@@ -24,7 +24,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.BufferedSink;
 
-public class APIVersion3 extends APIBase implements IRemoteAPI {
+public class APIVersion3 extends APIBase {
 
     private final Gson gson;
 

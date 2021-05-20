@@ -12,7 +12,7 @@ import agersant.polaris.api.ThumbnailSize;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
 
-abstract class APIBase {
+abstract class APIBase implements IRemoteAPI {
 
     private final DownloadQueue downloadQueue;
     final RequestQueue requestQueue;
@@ -34,11 +34,6 @@ abstract class APIBase {
     public Uri getThumbnailUri(String path, ThumbnailSize size) {
         String url = getThumbnailURL(path, size);
         return Uri.parse(url);
-    }
-
-    public ResponseBody getAudio(String path) throws IOException {
-        Request request = new Request.Builder().url(getAudioUri(path).toString()).build();
-        return requestQueue.requestSync(request);
     }
 
     public ResponseBody getThumbnail(String path, ThumbnailSize size) throws IOException {
