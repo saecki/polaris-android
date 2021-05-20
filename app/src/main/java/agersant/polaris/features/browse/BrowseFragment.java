@@ -10,6 +10,7 @@ import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
@@ -37,7 +38,7 @@ public class BrowseFragment extends Fragment {
     private NavigationMode navigationMode;
     private SwipyRefreshLayout.OnRefreshListener onRefresh;
     private Toolbar toolbar;
-    private ArrayList<? extends CollectionItem> items;
+    private List<? extends CollectionItem> items;
     private API api;
     private ServerAPI serverAPI;
     private PlaybackQueue playbackQueue;
@@ -62,7 +63,7 @@ public class BrowseFragment extends Fragment {
         final BrowseFragment that = this;
         fetchCallback = new ItemsCallback() {
             @Override
-            public void onSuccess(final ArrayList<? extends CollectionItem> items) {
+            public void onSuccess(final List<? extends CollectionItem> items) {
                 requireActivity().runOnUiThread(() -> {
                     that.progressBar.setVisibility(View.GONE);
                     that.items = items;
@@ -145,7 +146,7 @@ public class BrowseFragment extends Fragment {
         serverAPI.getRecentAlbums(fetchCallback);
     }
 
-    private DisplayMode getDisplayModeForItems(ArrayList<? extends CollectionItem> items) {
+    private DisplayMode getDisplayModeForItems(List<? extends CollectionItem> items) {
         if (items.isEmpty()) {
             return DisplayMode.EXPLORER;
         }

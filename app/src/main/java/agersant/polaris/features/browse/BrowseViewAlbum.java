@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
@@ -57,7 +57,7 @@ public class BrowseViewAlbum extends BrowseViewContent {
     }
 
     @Override
-    void setItems(ArrayList<? extends CollectionItem> items) {
+    void setItems(List<? extends CollectionItem> items) {
 
         Collections.sort(items, new Comparator<CollectionItem>() {
             @Override

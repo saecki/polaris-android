@@ -1,6 +1,7 @@
 package agersant.polaris.features.browse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import agersant.polaris.CollectionItem;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,14 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 abstract class BrowseAdapter
     extends RecyclerView.Adapter<BrowseItemHolder> {
 
-    ArrayList<? extends CollectionItem> items;
+    List<? extends CollectionItem> items;
 
     BrowseAdapter() {
         super();
         setItems(new ArrayList<>());
     }
 
-    void setItems(ArrayList<? extends CollectionItem> items) {
+    void setItems(List<? extends CollectionItem> items) {
         this.items = items;
         notifyDataSetChanged();
     }

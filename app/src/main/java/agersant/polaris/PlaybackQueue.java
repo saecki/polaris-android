@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import agersant.polaris.api.local.OfflineCache;
 import agersant.polaris.api.remote.DownloadQueue;
@@ -73,7 +74,7 @@ public class PlaybackQueue {
         content.add(newItem);
     }
 
-    public void addItems(ArrayList<? extends CollectionItem> items) {
+    public void addItems(List<? extends CollectionItem> items) {
         boolean wasEmpty = size() == 0;
         for (CollectionItem item : items) {
             addItemInternal(item);
