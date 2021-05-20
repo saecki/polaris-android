@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import okhttp3.ResponseBody
 import java.io.IOException
+import java.io.InputStream
 
 class ServerAPI(context: Context) : IRemoteAPI {
 
@@ -153,7 +154,7 @@ class ServerAPI(context: Context) : IRemoteAPI {
     }
 
     @Throws(IOException::class)
-    override fun getThumbnail(path: String, size: ThumbnailSize): ResponseBody? {
+    override fun getThumbnail(path: String, size: ThumbnailSize): InputStream? {
         suspend { fetchAPIVersion() }
         return currentVersion?.getThumbnail(path, size)
     }

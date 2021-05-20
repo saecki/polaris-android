@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.google.android.exoplayer2.source.MediaSource;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import agersant.polaris.CollectionItem;
 import agersant.polaris.api.ItemsCallback;
@@ -36,9 +37,14 @@ abstract class APIBase implements IRemoteAPI {
         return Uri.parse(url);
     }
 
-    public ResponseBody getThumbnail(String path, ThumbnailSize size) throws IOException {
+    public InputStream getThumbnail(String path, ThumbnailSize size) throws IOException {
         Request request = new Request.Builder().url(getThumbnailUri(path, size).toString()).build();
-        return requestQueue.requestSync(request);
+        ResponseBody body = requestQueue.requestSync(request);
+        if (body != null) {
+            return body.byteStream();
+        } else {
+            return null;
+        }
     }
 
     abstract void getAlbums(String url, final ItemsCallback handlers);
