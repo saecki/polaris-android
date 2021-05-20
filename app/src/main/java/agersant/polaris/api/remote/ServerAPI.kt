@@ -153,12 +153,6 @@ class ServerAPI(context: Context) : IRemoteAPI {
     }
 
     @Throws(IOException::class)
-    override fun getAudio(path: String): ResponseBody? {
-        suspend { fetchAPIVersion() }
-        return currentVersion?.getAudio(path)
-    }
-
-    @Throws(IOException::class)
     override fun getThumbnail(path: String, size: ThumbnailSize): ResponseBody? {
         suspend { fetchAPIVersion() }
         return currentVersion?.getThumbnail(path, size)

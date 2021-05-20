@@ -22,8 +22,5 @@ interface IRemoteAPI : IPolarisAPI {
     fun getThumbnailUri(path: String, size: ThumbnailSize): Uri?
 
     @Throws(IOException::class)
-    fun getAudio(path: String): ResponseBody?
-
-    @Throws(IOException::class)
     fun getThumbnail(path: String, size: ThumbnailSize): ResponseBody?
 }
