@@ -10,6 +10,12 @@ object Deps {
     }
 
     object Kotlinx {
+        object Coroutines {
+            const val version = "1.5.0"
+            const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+            const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        }
+
         object Serialization {
             const val version = "1.2.1"
             const val core = "org.jetbrains.kotlinx:kotlinx-serialization-core:$version"
