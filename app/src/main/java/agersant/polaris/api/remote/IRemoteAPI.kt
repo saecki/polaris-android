@@ -1,27 +1,22 @@
 package agersant.polaris.api.remote
 
+import agersant.polaris.CollectionItem
 import agersant.polaris.api.IPolarisAPI
-import agersant.polaris.api.ItemsCallback
 import agersant.polaris.api.ThumbnailSize
+import android.graphics.Bitmap
 import android.net.Uri
-import okhttp3.ResponseBody
-import java.io.IOException
-import java.io.InputStream
 
 interface IRemoteAPI : IPolarisAPI {
 
-    fun getRandomAlbums(handlers: ItemsCallback)
+    suspend fun getRandomAlbums(): List<CollectionItem>?
 
-    fun getRecentAlbums(handlers: ItemsCallback)
+    suspend fun getRecentAlbums(): List<CollectionItem>?
 
-    fun setLastFMNowPlaying(path: String)
+    suspend fun setLastFmNowPlaying(path: String): Boolean
 
-    fun scrobbleOnLastFM(path: String)
+    suspend fun scrobbleOnLastFm(path: String): Boolean
 
-    fun getAudioUri(path: String): Uri?
+    suspend fun getAudioUri(path: String): Uri?
 
-    fun getThumbnailUri(path: String, size: ThumbnailSize): Uri?
-
-    @Throws(IOException::class)
-    fun getThumbnail(path: String, size: ThumbnailSize): InputStream?
+    suspend fun getThumbnail(path: String, size: ThumbnailSize): Bitmap?
 }

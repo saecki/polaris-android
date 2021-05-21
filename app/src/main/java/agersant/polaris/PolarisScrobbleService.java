@@ -109,7 +109,7 @@ public class PolarisScrobbleService extends Service {
         if (currentItem == null) {
             return;
         }
-        serverAPI.setLastFMNowPlaying(currentItem.getPath());
+        serverAPI.setLastFmNowPlayingAsync(currentItem.getPath());
     }
 
     private void tick() {
@@ -134,7 +134,7 @@ public class PolarisScrobbleService extends Service {
         if (!shouldScrobble) {
             return;
         }
-        serverAPI.scrobbleOnLastFM(player.getCurrentItem().getPath());
+        serverAPI.scrobbleOnLastFmAsync(player.getCurrentItem().getPath());
         scrobbledTrack = true;
     }
 }

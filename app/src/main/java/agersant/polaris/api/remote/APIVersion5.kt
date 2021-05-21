@@ -5,12 +5,16 @@ import agersant.polaris.api.remote.ServerAPI.Companion.apiRootURL
 import android.net.Uri
 import io.ktor.client.*
 
-internal class APIVersion6(
+internal open class APIVersion5(
     downloadQueue: DownloadQueue,
-    client: HttpClient,
-) : APIVersion5(downloadQueue, client) {
+    client: HttpClient
+) : APIVersion4(downloadQueue, client) {
+
+    override fun getAudioUrl(path: String): String {
+        return "$apiRootURL/audio/${Uri.encode(path)}"
+    }
 
     override fun getThumbnailUrl(path: String, size: ThumbnailSize): String {
-        return "$apiRootURL/thumbnail/${Uri.encode(path)}?size=$size"
+        return "$apiRootURL/thumbnail/${Uri.encode(path)}"
     }
 }

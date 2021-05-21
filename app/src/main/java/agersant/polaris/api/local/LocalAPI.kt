@@ -2,12 +2,10 @@ package agersant.polaris.api.local
 
 import agersant.polaris.CollectionItem
 import agersant.polaris.api.IPolarisAPI
-import agersant.polaris.api.ItemsCallback
 import agersant.polaris.api.ThumbnailSize
 import android.graphics.Bitmap
 import com.google.android.exoplayer2.source.MediaSource
-import java.io.IOException
-import kotlin.jvm.Throws
+import kotlinx.coroutines.runBlocking
 
 class LocalAPI : IPolarisAPI {
     private lateinit var offlineCache: OfflineCache
@@ -21,37 +19,29 @@ class LocalAPI : IPolarisAPI {
         return offlineCache.hasAudio(path)
     }
 
-    @Throws(IOException::class)
-    override fun getAudio(item: CollectionItem): MediaSource {
-        val path = item.path
-        return offlineCache.getAudio(path)
+    override suspend fun getAudio(item: CollectionItem): MediaSource? {
+        return offlineCache.getAudio(item.path)
+    }
+
+    fun getAudioSync(item: CollectionItem): MediaSource? {
+        return runBlocking { getAudio(item) }
     }
 
     fun hasImage(item: CollectionItem, size: ThumbnailSize): Boolean {
-        val path = item.artwork
+        val path = item.artwork ?: return false
         return offlineCache.hasImage(path, size)
     }
 
-    @Throws(IOException::class)
     fun getImage(item: CollectionItem, size: ThumbnailSize): Bitmap? {
-        return offlineCache.getImage(item.artwork, size)
+        val path = item.artwork ?: return null
+        return offlineCache.getImage(path, size)
     }
 
-    override fun browse(path: String, handlers: ItemsCallback) {
-        val items = offlineCache.browse(path)
-        if (items != null) {
-            handlers.onSuccess(items)
-        } else {
-            handlers.onError()
-        }
+    override suspend fun browse(path: String): List<CollectionItem>? {
+        return offlineCache.browse(path)
     }
 
-    override fun flatten(path: String, handlers: ItemsCallback) {
-        val items = offlineCache.flatten(path)
-        if (items != null) {
-            handlers.onSuccess(items)
-        } else {
-            handlers.onError()
-        }
+    override suspend fun flatten(path: String): List<CollectionItem>? {
+        return offlineCache.flatten(path)
     }
 }
