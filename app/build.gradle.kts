@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
     ndkVersion = "22.1.7171670"
 
     defaultConfig {
-        minSdkVersion(23)
-        targetSdkVersion(30)
+        minSdk = 23
+        targetSdk = 30
 
         applicationId = "agersant.polaris"
         versionName = "0.0"
@@ -27,26 +27,27 @@ android {
     }
     buildTypes {
         getByName("release") {
-            debuggable(false)
-            minifyEnabled(false)
+            isDebuggable = false
+            isMinifyEnabled = false
 
             proguardFiles(getDefaultProguardFile("proguard-android.txt"))
             proguardFiles("proguard-rules.pro")
             signingConfig = signingConfigs["release"]
         }
         getByName("debug") {
-            debuggable(true)
+            isDebuggable = true
         }
     }
     buildFeatures {
         viewBinding = true
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 
