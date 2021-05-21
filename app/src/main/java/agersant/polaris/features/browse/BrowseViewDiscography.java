@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 
+import java.util.List;
+
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.R;
@@ -12,8 +14,6 @@ import agersant.polaris.api.API;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 
 class BrowseViewDiscography extends BrowseViewContent {

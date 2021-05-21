@@ -79,6 +79,7 @@ dependencies {
     // Rest client
     implementation(Deps.Kotlinx.Serialization.core)
     implementation(Deps.Kotlinx.Serialization.json)
+    implementation(Deps.Kotlinx.Serialization.cbor)
     implementation(Deps.KtorClient.serialization)
     implementation(Deps.KtorClient.core)
     implementation(Deps.KtorClient.okhttp)
@@ -88,6 +89,9 @@ dependencies {
 
     // Swipe refresh layout
     implementation(Deps.swipyRefresh)
+
+    // Tests
+    testImplementation(Deps.junit)
 }
 
 task("printVersionCode") {

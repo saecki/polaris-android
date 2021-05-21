@@ -4,8 +4,6 @@ import android.os.AsyncTask;
 
 import com.google.android.exoplayer2.source.MediaSource;
 
-import java.io.IOException;
-
 import agersant.polaris.CollectionItem;
 import agersant.polaris.api.local.LocalAPI;
 import agersant.polaris.api.remote.ServerAPI;
@@ -35,16 +33,18 @@ public class FetchAudioTask extends AsyncTask<Void, Void, MediaSource> {
     @Override
     protected MediaSource doInBackground(Void... params) {
         if (localAPI.hasAudio(item)) {
-            try {
-                return localAPI.getAudio(item);
-            } catch (IOException e) {
+            MediaSource source = localAPI.getAudioSync(item);
+            if (source != null) {
+                return source;
+            } else {
                 System.out.println("IO error while reading offline cache for " + item.getPath());
                 return null;
             }
         } else if (!api.isOffline()) {
-            try {
-                return serverAPI.getAudio(item);
-            } catch (IOException e) {
+            MediaSource source = serverAPI.getAudioSync(item);
+            if (source != null) {
+                return source;
+            } else {
                 System.out.println("IO error while querying server API for " + item.getPath());
                 return null;
             }

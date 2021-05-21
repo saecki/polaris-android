@@ -2,13 +2,11 @@ package agersant.polaris.api
 
 import agersant.polaris.CollectionItem
 import com.google.android.exoplayer2.source.MediaSource
-import java.io.IOException
 
 interface IPolarisAPI {
-    @Throws(IOException::class)
-    fun getAudio(item: CollectionItem): MediaSource?
+    suspend fun getAudio(item: CollectionItem): MediaSource?
 
-    fun browse(path: String, handlers: ItemsCallback)
+    suspend fun browse(path: String): List<CollectionItem>?
 
-    fun flatten(path: String, handlers: ItemsCallback)
+    suspend fun flatten(path: String): List<CollectionItem>?
 }

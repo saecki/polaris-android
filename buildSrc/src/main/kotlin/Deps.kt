@@ -19,7 +19,8 @@ object Deps {
         object Serialization {
             const val version = "1.2.1"
             const val core = "org.jetbrains.kotlinx:kotlinx-serialization-core:$version"
-            const val json = "org.jetbrains.kotlinx:kotlinx-serialization-core:$version"
+            const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
+            const val cbor = "org.jetbrains.kotlinx:kotlinx-serialization-cbor:$version"
         }
     }
 
@@ -55,4 +56,6 @@ object Deps {
     const val okhttp = "com.squareup.okhttp3:okhttp:4.9.1"
 
     const val swipyRefresh = "com.github.orangegangsters:swipy:1.2.3@aar"
+
+    const val junit = "junit:junit:4.13.2"
 }

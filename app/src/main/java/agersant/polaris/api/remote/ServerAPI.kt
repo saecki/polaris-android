@@ -6,21 +6,21 @@ import agersant.polaris.api.ItemsCallback
 import agersant.polaris.api.ThumbnailSize
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.preference.PreferenceManager
 import com.google.android.exoplayer2.source.MediaSource
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
-import io.ktor.client.features.json.*
+import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
-import okhttp3.ResponseBody
-import java.io.IOException
-import java.io.InputStream
+import kotlinx.serialization.json.Json
 
 class ServerAPI(context: Context) : IRemoteAPI {
 
@@ -29,7 +29,7 @@ class ServerAPI(context: Context) : IRemoteAPI {
         private lateinit var preferences: SharedPreferences
 
         @JvmStatic
-        val aPIRootURL: String
+        val apiRootURL: String
             get() {
                 var address = preferences.getString(serverAddressKey, "")!!.trim()
                 if (!address.startsWith("http://") && !address.startsWith("https://")) {
@@ -40,157 +40,139 @@ class ServerAPI(context: Context) : IRemoteAPI {
             }
     }
 
-    private val client: HttpClient
-    private var downloadQueue: DownloadQueue? = null
-    private var currentVersion: IRemoteAPI? = null
-    val auth: Auth
+    private lateinit var downloadQueue: DownloadQueue
+    private val client = buildClient()
+    val auth = Auth(context)
 
     init {
         serverAddressKey = context.getString(R.string.pref_key_server_url)
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        auth = Auth(context)
-        client = HttpClient(OkHttp) {
-            install(JsonFeature) {
-                serializer = KotlinxSerializer()
-            }
-            engine {
-                config {
-                    retryOnConnectionFailure(true)
-                }
-            }
-        }
-
         preferences.registerOnSharedPreferenceChangeListener { _: SharedPreferences?, _: String? ->
             currentVersion = null
         }
     }
 
-    fun initialize(downloadQueue: DownloadQueue?) {
+    fun initialize(downloadQueue: DownloadQueue) {
         this.downloadQueue = downloadQueue
     }
 
-    private suspend fun fetchAPIVersion() {
-        if (currentVersion != null) return
-
-        try {
-            val version = client.get<APIVersion>("$aPIRootURL/version")
-            currentVersion = selectImplementation(version)
-        } catch (e: Exception) {
-            println("Error fetching API version $e")
+    private fun buildClient(config: HttpClientConfig<OkHttpConfig>.() -> Unit = {}): HttpClient = HttpClient(OkHttp) {
+        install(JsonFeature) {
+            serializer = KotlinxSerializer(Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+                coerceInputValues = true
+            })
         }
+        engine {
+            config {
+                retryOnConnectionFailure(true)
+            }
+        }
+        config()
     }
 
-    private fun fetchAPIVersionAsync(callback: VersionCallback) {
-        MainScope().launch(Dispatchers.IO) {
-            fetchAPIVersion()
+    private var currentVersion: IRemoteAPI? = null
+    private suspend fun fetchAPIVersion(): IRemoteAPI? {
+        if (currentVersion != null) return currentVersion
 
-            if (currentVersion != null) {
-                callback.onSuccess()
-            } else {
-                callback.onError()
-            }
+        return try {
+            val version = client.get<APIVersion>("$apiRootURL/version")
+            currentVersion = selectImplementation(version)
+            currentVersion
+        } catch (e: Exception) {
+            println("Error fetching API version $e")
+            null
         }
     }
 
     private fun selectImplementation(version: APIVersion): IRemoteAPI {
-        val requestQueue = RequestQueue(auth)
+        val client = buildClient {
+            engine {
+                addInterceptor(auth)
+            }
+        }
         return when {
-            version.major < 3 -> APIVersion2(downloadQueue, requestQueue)
-            version.major < 4 -> APIVersion3(downloadQueue, requestQueue)
-            version.major < 5 -> APIVersion4(downloadQueue, requestQueue)
-            version.major < 6 -> APIVersion5(downloadQueue, requestQueue)
-            else -> APIVersion6(downloadQueue!!, requestQueue)
+            version.major < 3 -> APIVersion2(downloadQueue, client)
+            version.major < 4 -> APIVersion3(downloadQueue, client)
+            version.major < 5 -> APIVersion4(downloadQueue, client)
+            version.major < 6 -> APIVersion5(downloadQueue, client)
+            else -> APIVersion6(downloadQueue, client)
         }
     }
 
-    override fun getRandomAlbums(handlers: ItemsCallback) {
-        fetchAPIVersionAsync(object : VersionCallback {
-            override fun onSuccess() {
-                currentVersion!!.getRandomAlbums(handlers)
-            }
+    override suspend fun browse(path: String): List<CollectionItem>? {
+        return fetchAPIVersion()?.browse(path)
+    }
 
-            override fun onError() {
+    override suspend fun flatten(path: String): List<CollectionItem>? {
+        return fetchAPIVersion()?.flatten(path)
+    }
+
+    override suspend fun getRandomAlbums(): List<CollectionItem>? {
+        return fetchAPIVersion()?.getRandomAlbums()
+    }
+
+    fun getRandomAlbums(handlers: ItemsCallback) { // TODO: remove when possible
+        GlobalScope.launch(Dispatchers.IO) {
+            val items = getRandomAlbums()
+            if (items != null) {
+                handlers.onSuccess(items)
+            } else {
                 handlers.onError()
             }
-        })
+        }
     }
 
-    override fun getRecentAlbums(handlers: ItemsCallback) {
-        fetchAPIVersionAsync(object : VersionCallback {
-            override fun onSuccess() {
-                currentVersion!!.getRecentAlbums(handlers)
-            }
+    override suspend fun getRecentAlbums(): List<CollectionItem>? {
+        return fetchAPIVersion()?.getRandomAlbums()
+    }
 
-            override fun onError() {
+    fun getRecentAlbums(handlers: ItemsCallback) { // TODO: remove when possible
+        GlobalScope.launch(Dispatchers.IO) {
+            val items = getRecentAlbums()
+            if (items != null) {
+                handlers.onSuccess(items)
+            } else {
                 handlers.onError()
             }
-        })
+        }
     }
 
-    override fun setLastFMNowPlaying(path: String) {
-        fetchAPIVersionAsync(object : VersionCallback {
-            override fun onSuccess() {
-                currentVersion!!.setLastFMNowPlaying(path)
-            }
-
-            override fun onError() {}
-        })
+    override suspend fun setLastFmNowPlaying(path: String): Boolean {
+        return fetchAPIVersion()?.setLastFmNowPlaying(path) ?: false
     }
 
-    override fun scrobbleOnLastFM(path: String) {
-        fetchAPIVersionAsync(object : VersionCallback {
-            override fun onSuccess() {
-                currentVersion!!.scrobbleOnLastFM(path)
-            }
-
-            override fun onError() {}
-        })
+    fun setLastFmNowPlayingAsync(path: String) { // TODO: remove when possible
+        GlobalScope.launch { setLastFmNowPlaying(path) }
     }
 
-    @Throws(IOException::class)
-    override fun getAudio(item: CollectionItem): MediaSource? {
-        suspend { fetchAPIVersion() }
-        return currentVersion?.getAudio(item)
+    override suspend fun scrobbleOnLastFm(path: String): Boolean {
+        return fetchAPIVersion()?.scrobbleOnLastFm(path) ?: false
     }
 
-    @Throws(IOException::class)
-    override fun getThumbnail(path: String, size: ThumbnailSize): InputStream? {
-        suspend { fetchAPIVersion() }
-        return currentVersion?.getThumbnail(path, size)
+    fun scrobbleOnLastFmAsync(path: String) { // TODO: remove when possible
+        GlobalScope.launch { scrobbleOnLastFm(path) }
     }
 
-    override fun getAudioUri(path: String): Uri? {
-        suspend { fetchAPIVersion() }
-        return currentVersion?.getAudioUri(path)
+    override suspend fun getAudio(item: CollectionItem): MediaSource? {
+        return fetchAPIVersion()?.getAudio(item)
     }
 
-    override fun getThumbnailUri(path: String, size: ThumbnailSize): Uri? {
-        suspend { fetchAPIVersion() }
-        return currentVersion?.getThumbnailUri(path, size)
+    fun getAudioSync(item: CollectionItem): MediaSource? { // TODO: remove when possible
+        return runBlocking { getAudio(item) }
     }
 
-    override fun browse(path: String, handlers: ItemsCallback) {
-        fetchAPIVersionAsync(object : VersionCallback {
-            override fun onSuccess() {
-                currentVersion!!.browse(path, handlers)
-            }
-
-            override fun onError() {
-                handlers.onError()
-            }
-        })
+    override suspend fun getThumbnail(path: String, size: ThumbnailSize): Bitmap? {
+        return fetchAPIVersion()?.getThumbnail(path, size)
     }
 
-    override fun flatten(path: String, handlers: ItemsCallback) {
-        fetchAPIVersionAsync(object : VersionCallback {
-            override fun onSuccess() {
-                currentVersion!!.flatten(path, handlers)
-            }
+    override suspend fun getAudioUri(path: String): Uri? {
+        return fetchAPIVersion()?.getAudioUri(path)
+    }
 
-            override fun onError() {
-                handlers.onError()
-            }
-        })
+    fun getAudioUriSync(path: String): Uri? { // TODO: remove when possible
+        return runBlocking { getAudioUri(path) }
     }
 
     @Serializable
@@ -198,10 +180,5 @@ class ServerAPI(context: Context) : IRemoteAPI {
         val major: Int,
         val minor: Int,
     )
-
-    private interface VersionCallback {
-        fun onSuccess()
-        fun onError()
-    }
 
 }

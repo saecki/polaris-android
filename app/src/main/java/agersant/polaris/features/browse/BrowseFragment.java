@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import agersant.polaris.CollectionItem;

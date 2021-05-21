@@ -16,16 +16,16 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.cbor.Cbor
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
 import java.io.OutputStream
-import java.io.Serializable
-import java.util.*
 
 class OfflineCache(
     context: Context,
@@ -47,6 +47,8 @@ class OfflineCache(
         private const val BUFFER_SIZE = 1024 * 64
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
+    private val cbor = Cbor { ignoreUnknownKeys = true }
     private val dataSourceFactory = DefaultDataSourceFactory(context, "Polaris Local")
     private lateinit var root: File
 
@@ -76,9 +78,9 @@ class OfflineCache(
 
     @Throws(IOException::class)
     private fun write(item: CollectionItem, storage: OutputStream) {
-        val objOut = ObjectOutputStream(storage)
-        objOut.writeObject(item)
-        objOut.close()
+        @OptIn(ExperimentalSerializationApi::class)
+        val bytes = cbor.encodeToByteArray(CollectionItem.Serializer, item)
+        storage.write(bytes)
     }
 
     @Throws(IOException::class)
@@ -96,9 +98,9 @@ class OfflineCache(
 
     @Throws(IOException::class)
     private fun write(metadata: ItemCacheMetadata, storage: OutputStream) {
-        val objOut = ObjectOutputStream(storage)
-        objOut.writeObject(metadata)
-        objOut.close()
+        @OptIn(ExperimentalSerializationApi::class)
+        val bytes = cbor.encodeToByteArray(ItemCacheMetadata.serializer(), metadata)
+        storage.write(bytes)
     }
 
     private fun listDeletionCandidates(path: File): MutableList<DeletionCandidate> {
@@ -110,7 +112,7 @@ class OfflineCache(
             if (audio.exists()) {
 
                 var metadata = ItemCacheMetadata()
-                metadata.lastUse = Date(0L)
+                metadata.lastUse = 0L
                 val meta = File(child, META_FILENAME)
                 if (meta.exists()) {
                     try {
@@ -160,7 +162,7 @@ class OfflineCache(
         candidates.sortWith { a: DeletionCandidate, b: DeletionCandidate ->
             when {
                 a.item == null && b.item == null -> {
-                    (a.metadata.lastUse.time - b.metadata.lastUse.time).toInt()
+                    (a.metadata.lastUse - b.metadata.lastUse).toInt()
                 }
                 a.item == null -> -1
                 b.item == null -> 1
@@ -247,10 +249,7 @@ class OfflineCache(
         val path = item.path
         try {
             FileOutputStream(createCacheFile(path, CacheDataType.ITEM)).use { itemOut ->
-                write(
-                    item,
-                    itemOut
-                )
+                write(item, itemOut)
             }
         } catch (e: IOException) {
             println("Error while caching item for local use: $e")
@@ -275,30 +274,22 @@ class OfflineCache(
 
     @Synchronized
     fun putImage(item: CollectionItem, size: ThumbnailSize, image: Bitmap) {
-        val path = item.path
         try {
-            FileOutputStream(createCacheFile(path, CacheDataType.ITEM)).use { itemOut ->
-                write(
-                    item,
-                    itemOut
-                )
+            FileOutputStream(createCacheFile(item.path, CacheDataType.ITEM)).use { itemOut ->
+                write(item, itemOut)
             }
         } catch (e: IOException) {
             println("Error while caching item for local use: $e")
         }
-        val artworkPath = item.artwork
         val cacheDataType = getImageCacheDataType(size)
         try {
-            FileOutputStream(
-                createCacheFile(
-                    artworkPath,
-                    cacheDataType
-                )
-            ).use { itemOut -> write(image, itemOut) }
+            FileOutputStream(createCacheFile(item.artwork!!, cacheDataType)).use { itemOut ->
+                write(image, itemOut)
+            }
         } catch (e: IOException) {
             println("Error while caching artwork for local use: $e")
         }
-        println("Saved image to offline cache: $path")
+        println("Saved image to offline cache: ${item.artwork}")
     }
 
     private fun getCacheDir(virtualPath: String): File {
@@ -354,14 +345,12 @@ class OfflineCache(
         return file.exists()
     }
 
-    @Throws(IOException::class)
-    fun getAudio(virtualPath: String): MediaSource {
-        if (!hasAudio(virtualPath)) {
-            throw FileNotFoundException()
-        }
+    fun getAudio(virtualPath: String): MediaSource? {
+        if (!hasAudio(virtualPath)) return null
+
         if (hasMetadata(virtualPath)) {
             val metadata = getMetadata(virtualPath)
-            metadata.lastUse = Date()
+            metadata.updateUse()
             saveMetadata(virtualPath, metadata)
         }
         val uri = Uri.fromFile(getCacheFile(virtualPath, CacheDataType.AUDIO))
@@ -397,8 +386,12 @@ class OfflineCache(
     @Throws(IOException::class)
     private fun readMetadata(file: File): ItemCacheMetadata {
         try {
-            FileInputStream(file).use { fileInputStream -> ObjectInputStream(fileInputStream).use { objectInputStream -> return objectInputStream.readObject() as ItemCacheMetadata } }
-        } catch (e: ClassNotFoundException) {
+            FileInputStream(file).use { fis ->
+                @OptIn(ExperimentalSerializationApi::class)
+                return cbor.decodeFromByteArray(ItemCacheMetadata.serializer(), fis.readBytes())
+            }
+        } catch (e: SerializationException) {
+            println("Error deserializing metadata file: $file")
             throw FileNotFoundException()
         }
     }
@@ -501,18 +494,21 @@ class OfflineCache(
         return out
     }
 
-    @Throws(IOException::class, ClassNotFoundException::class)
+    @Throws(IOException::class, SerializationException::class)
     private fun readItem(dir: File): CollectionItem? {
         val itemFile = File(dir, ITEM_FILENAME)
         if (!itemFile.exists()) {
             return if (dir.isDirectory) {
                 val path = root.toURI().relativize(dir.toURI()).path
-                CollectionItem.directory(path)
+                CollectionItem.Directory(path = path)
             } else {
                 null
             }
         }
-        FileInputStream(itemFile).use { fileInputStream -> ObjectInputStream(fileInputStream).use { objectInputStream -> return objectInputStream.readObject() as CollectionItem } }
+        FileInputStream(itemFile).use { fis ->
+            @OptIn(ExperimentalSerializationApi::class)
+            return cbor.decodeFromByteArray(CollectionItem.Serializer, fis.readBytes())
+        }
     }
 
     private fun broadcast(event: String) {
@@ -523,14 +519,27 @@ class OfflineCache(
     }
 
     private enum class CacheDataType {
-        ITEM, AUDIO, ARTWORK_SMALL, ARTWORK_LARGE, ARTWORK_NATIVE, META
+        ITEM,
+        AUDIO,
+        ARTWORK_SMALL,
+        ARTWORK_LARGE,
+        ARTWORK_NATIVE,
+        META,
     }
 
-    private class DeletionCandidate constructor(
+    private class DeletionCandidate(
         val cachePath: File,
         val metadata: ItemCacheMetadata,
         val item: CollectionItem?
     )
 
-    private class ItemCacheMetadata(var lastUse: Date = Date()) : Serializable
+    @Serializable
+    private class ItemCacheMetadata(
+        var lastUse: Long = System.currentTimeMillis()
+    ) {
+
+        fun updateUse() {
+            lastUse = System.currentTimeMillis()
+        }
+    }
 }
