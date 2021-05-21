@@ -23,3 +23,7 @@ allprojects {
         maven("https://dl.bintray.com/google/exoplayer")
     }
 }
+
+tasks.create<Delete>("clean") {
+    delete(rootProject.buildDir)
+}
