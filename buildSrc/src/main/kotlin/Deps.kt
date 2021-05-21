@@ -25,6 +25,13 @@ object Deps {
     }
 
     object Androidx {
+        object Media2 {
+            const val version = "1.1.3"
+            const val common = "androidx.media2:media2-common:$version"
+            const val session = "androidx.media2:media2-session:$version"
+            const val player = "androidx.media2:media2-player:$version"
+        }
+
         const val appcompat = "androidx.appcompat:appcompat:1.3.0"
         const val coreKtx = "androidx.core:core-ktx:1.5.0"
         const val preferenceKtx = "androidx.preference:preference-ktx:1.1.1"

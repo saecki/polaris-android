@@ -70,6 +70,9 @@ dependencies {
     implementation(Deps.Androidx.preferenceKtx)
 
     // Media session
+    //implementation(Deps.Androidx.Media2.common)
+    //implementation(Deps.Androidx.Media2.session)
+    //implementation(Deps.Androidx.Media2.player)
     implementation(Deps.Androidx.media)
 
     // Media player

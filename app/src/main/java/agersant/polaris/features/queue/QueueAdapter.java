@@ -46,7 +46,7 @@ class QueueAdapter
 
     @Override
     public int getItemCount() {
-        return playbackQueue.size();
+        return playbackQueue.getSize();
     }
 
     void onItemMove(int fromPosition, int toPosition) {
