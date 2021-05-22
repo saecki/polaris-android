@@ -66,7 +66,6 @@ object Deps {
 
     const val material = "com.google.android.material:material:1.3.0"
 
-    const val gson = "com.google.code.gson:gson:2.8.6"
     const val okhttp = "com.squareup.okhttp3:okhttp:4.9.1"
 
     const val swipyRefresh = "com.github.orangegangsters:swipy:1.2.3@aar"
