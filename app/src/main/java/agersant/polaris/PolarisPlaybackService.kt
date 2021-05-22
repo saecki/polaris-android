@@ -40,7 +40,6 @@ class PolarisPlaybackService : LifecycleService() {
         private const val AUTO_SAVE_DELAY: Long = 5000
     }
 
-    private val binder: IBinder = PolarisBinder()
     private lateinit var receiver: BroadcastReceiver
     private lateinit var audioManager: AudioManager
     private var audioFocusRequest: AudioFocusRequest? = null
@@ -228,12 +227,6 @@ class PolarisPlaybackService : LifecycleService() {
     private fun stopMediaSessionUpdates() {
         mediaSessionUpdateHandler.removeCallbacksAndMessages(null)
     }
-
-    override fun onBind(intent: Intent): IBinder {
-        return binder
-    }
-
-    private inner class PolarisBinder : Binder()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         handleIntent(intent)

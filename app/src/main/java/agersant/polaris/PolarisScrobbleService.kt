@@ -7,9 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Binder
 import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
@@ -22,7 +20,6 @@ class PolarisScrobbleService : LifecycleService() {
         private const val TICK_DELAY = 5000 // ms
     }
 
-    private val binder: IBinder = PolarisBinder()
     private lateinit var receiver: BroadcastReceiver
     private lateinit var tickHandler: Handler
     private lateinit var tickRunnable: Runnable
@@ -79,12 +76,6 @@ class PolarisScrobbleService : LifecycleService() {
         tickHandler.removeCallbacksAndMessages(null)
         super.onDestroy()
     }
-
-    override fun onBind(intent: Intent): IBinder {
-        return binder
-    }
-
-    private inner class PolarisBinder : Binder()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)

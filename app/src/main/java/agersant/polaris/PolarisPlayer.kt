@@ -64,7 +64,8 @@ class PolarisPlayer internal constructor(
     }
 
     private fun broadcast(event: String) {
-        context.sendBroadcast(Intent().setAction(event))
+        val intent = Intent().setAction(event)
+        context.sendBroadcast(intent)
     }
 
     private fun stop() {
