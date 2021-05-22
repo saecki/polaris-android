@@ -139,16 +139,8 @@ class ServerAPI(context: Context) : IRemoteAPI {
         return fetchAPIVersion()?.setLastFmNowPlaying(path) ?: false
     }
 
-    fun setLastFmNowPlayingAsync(path: String) { // TODO: remove when possible
-        GlobalScope.launch { setLastFmNowPlaying(path) }
-    }
-
     override suspend fun scrobbleOnLastFm(path: String): Boolean {
         return fetchAPIVersion()?.scrobbleOnLastFm(path) ?: false
-    }
-
-    fun scrobbleOnLastFmAsync(path: String) { // TODO: remove when possible
-        GlobalScope.launch { scrobbleOnLastFm(path) }
     }
 
     override suspend fun getAudio(item: CollectionItem): MediaSource? {
