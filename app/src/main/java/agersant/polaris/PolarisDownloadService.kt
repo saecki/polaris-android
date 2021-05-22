@@ -3,14 +3,13 @@ package agersant.polaris
 import agersant.polaris.PolarisApp.Companion.state
 import agersant.polaris.api.remote.DownloadQueue
 import android.content.Intent
-import android.os.Binder
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
 
 class PolarisDownloadService : LifecycleService() {
-    private inner class PolarisBinder : Binder()
-
     private lateinit var downloadQueue: DownloadQueue
     private lateinit var timer: Timer
 
@@ -20,7 +19,9 @@ class PolarisDownloadService : LifecycleService() {
         downloadQueue = state.downloadQueue
         timer = Timer()
         timer.scheduleAtFixedRate(1500L, 500L) {
-            downloadQueue.downloadNext()
+            lifecycleScope.launch {
+                downloadQueue.downloadNext()
+            }
         }
     }
 
