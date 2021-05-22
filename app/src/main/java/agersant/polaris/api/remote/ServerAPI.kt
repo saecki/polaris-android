@@ -156,10 +156,6 @@ class ServerAPI(context: Context) : IRemoteAPI {
         return fetchAPIVersion()?.getAudioUri(path)
     }
 
-    fun getAudioUriSync(path: String): Uri? { // TODO: remove when possible
-        return runBlocking { getAudioUri(path) }
-    }
-
     @Serializable
     private class APIVersion(
         val major: Int,
