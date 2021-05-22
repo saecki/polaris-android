@@ -14,7 +14,6 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class PolarisPlayer internal constructor(
     private val context: Context,

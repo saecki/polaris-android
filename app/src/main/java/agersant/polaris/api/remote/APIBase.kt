@@ -38,6 +38,7 @@ abstract class APIBase(
             val stream = response.content.toInputStream()
             BitmapFactory.decodeStream(stream)
         } catch (e: Exception) {
+            println("")
             null
         }
     }

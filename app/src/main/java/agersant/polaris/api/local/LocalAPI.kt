@@ -5,7 +5,6 @@ import agersant.polaris.api.IPolarisAPI
 import agersant.polaris.api.ThumbnailSize
 import android.graphics.Bitmap
 import com.google.android.exoplayer2.source.MediaSource
-import kotlinx.coroutines.runBlocking
 
 class LocalAPI : IPolarisAPI {
     private lateinit var offlineCache: OfflineCache

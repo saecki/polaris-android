@@ -26,7 +26,7 @@ internal class APIVersion2(
         return try {
             client.get(url)
         } catch (e: Exception) {
-            println("Error browsing url: $url: $e")
+            println("Error browsing $url: $e")
             null
         }
     }
@@ -36,7 +36,7 @@ internal class APIVersion2(
         return try {
             client.get<List<CollectionItem.Song>>(url)
         } catch (e: Exception) {
-            println("Error flattening url: $url: $e")
+            println("Error flattening $url: $e")
             null
         }
     }
@@ -45,7 +45,7 @@ internal class APIVersion2(
         return try {
             client.get<List<CollectionItem.Directory>>(url)
         } catch (e: Exception) {
-            println("Error getting albums url: $url: $e")
+            println("Error getting albums $url: $e")
             null
         }
     }
@@ -56,7 +56,7 @@ internal class APIVersion2(
             val status = client.put<HttpStatusCode>(url)
             status == HttpStatusCode.OK
         } catch (e: Exception) {
-            println("Error setting last fm now playing url: $url: $e")
+            println("Error setting last fm now playing $url: $e")
             false
         }
     }
@@ -67,7 +67,7 @@ internal class APIVersion2(
             val status = client.put<HttpStatusCode>(url)
             status == HttpStatusCode.OK
         } catch (e: Exception) {
-            println("Error scrobbling on last fm url: $url: $e")
+            println("Error scrobbling on last fm $url: $e")
             false
         }
     }

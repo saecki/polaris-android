@@ -18,7 +18,6 @@ import com.google.android.exoplayer2.source.MediaSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.lang.ref.WeakReference
 
 class API(context: Context) {
@@ -67,20 +66,12 @@ class API(context: Context) {
         var fromDiskCache = false
 
         if (localAPI.hasImage(item, size)) {
-            try {
-                bitmap = localAPI.getImage(item, size)
-                fromDiskCache = bitmap != null
-            } catch (e: IOException) {
-                println("Error while loading image from disk: $e")
-            }
+            bitmap = localAPI.getImage(item, size)
+            fromDiskCache = bitmap != null
         }
 
         if (bitmap == null && !isOffline) {
-            try {
-                bitmap = serverAPI.getThumbnail(item.artwork, size)
-            } catch (e: Exception) {
-                println("Error while downloading image: $e")
-            }
+            bitmap = serverAPI.getThumbnail(item.artwork, size)
         }
 
         if (bitmap != null) {

@@ -89,11 +89,12 @@ class ServerAPI(context: Context) : IRemoteAPI {
             }
         }
         return when {
-            version.major < 3 -> APIVersion2(downloadQueue, client)
-            version.major < 4 -> APIVersion3(downloadQueue, client)
-            version.major < 5 -> APIVersion4(downloadQueue, client)
-            version.major < 6 -> APIVersion5(downloadQueue, client)
-            else -> APIVersion6(downloadQueue, client)
+            version.major <= 2 -> APIVersion2(downloadQueue, client)
+            version.major <= 3 -> APIVersion3(downloadQueue, client)
+            version.major <= 4 -> APIVersion4(downloadQueue, client)
+            version.major <= 5 -> APIVersion5(downloadQueue, client)
+            version.major <= 6 -> APIVersion6(downloadQueue, client)
+            else -> APIVersion7(downloadQueue, client)
         }
     }
 
