@@ -356,14 +356,18 @@ class OfflineCache(
             .createMediaSource(MediaItem.fromUri(uri))
     }
 
-    @Throws(IOException::class)
     fun getImage(virtualPath: String, size: ThumbnailSize): Bitmap? {
         if (!hasImage(virtualPath, size)) return null
 
         val cacheDataType = getImageCacheDataType(size)
         val file = getCacheFile(virtualPath, cacheDataType)
-        val fileInputStream = FileInputStream(file)
-        return BitmapFactory.decodeFileDescriptor(fileInputStream.fd)
+        return try {
+            val fileInputStream = FileInputStream(file)
+            BitmapFactory.decodeFileDescriptor(fileInputStream.fd)
+        } catch (e: IOException) {
+            println("Error loading image from disk $file: $e")
+            null
+        }
     }
 
     private fun saveMetadata(virtualPath: String, metadata: ItemCacheMetadata) {
