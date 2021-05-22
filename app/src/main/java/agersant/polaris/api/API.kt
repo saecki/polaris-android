@@ -117,9 +117,13 @@ class API(context: Context) {
         }
     }
 
+    suspend fun browse(path: String): List<CollectionItem>? {
+        return api.browse(path)
+    }
+
     fun browse(path: String, handlers: ItemsCallback) { // TODO: remove when possible
         GlobalScope.launch(Dispatchers.IO) {
-            val items = api.browse(path)
+            val items = browse(path)
             if (items != null) {
                 handlers.onSuccess(items)
             } else {
@@ -128,9 +132,13 @@ class API(context: Context) {
         }
     }
 
+    suspend fun flatten(path: String): List<CollectionItem>? {
+        return api.flatten(path)
+    }
+
     fun flatten(path: String, handlers: ItemsCallback) { // TODO: remove when possible
         GlobalScope.launch(Dispatchers.IO) {
-            val items = api.flatten(path)
+            val items = flatten(path)
             if (items != null) {
                 handlers.onSuccess(items)
             } else {
