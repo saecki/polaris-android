@@ -92,7 +92,6 @@ dependencies {
     implementation(Deps.KtorClient.core)
     implementation(Deps.KtorClient.okhttp)
 
-    implementation(Deps.gson)
     implementation(Deps.okhttp)
 
     // Swipe refresh layout
