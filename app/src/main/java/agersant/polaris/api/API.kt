@@ -1,7 +1,7 @@
 package agersant.polaris.api
 
 import agersant.polaris.CollectionItem
-import agersant.polaris.PolarisApplication
+import agersant.polaris.PolarisApp
 import agersant.polaris.R
 import agersant.polaris.api.local.ImageCache.Companion.instance
 import agersant.polaris.api.local.LocalAPI
@@ -14,6 +14,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.widget.ImageView
 import androidx.preference.PreferenceManager
+import com.google.android.exoplayer2.source.MediaSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -41,8 +42,22 @@ class API(context: Context) {
     val isOffline: Boolean
         get() = preferences.getBoolean(offlineModePreferenceKey, false)
 
-    fun loadAudio(item: CollectionItem?, callback: FetchAudioTask.Callback?): FetchAudioTask {
-        return FetchAudioTask.load(this, localAPI, serverAPI, item, callback)
+    suspend fun loadAudio(item: CollectionItem): MediaSource? {
+        if (localAPI.hasAudio(item)) {
+            val source = localAPI.getAudio(item)
+            return source ?: run {
+                println("IO error while reading offline cache for ${item.path}")
+                null
+            }
+        } else if (!isOffline) {
+            val source = serverAPI.getAudio(item)
+            return source ?: run {
+                println("IO error while querying server API for ${item.path}")
+                null
+            }
+        }
+
+        return null
     }
 
     private suspend fun loadThumbnail(item: CollectionItem, size: ThumbnailSize): Bitmap? {
@@ -94,7 +109,7 @@ class API(context: Context) {
     }
 
     fun loadThumbnailIntoView(item: CollectionItem, size: ThumbnailSize, view: ImageView) {
-        val polarisApplication = PolarisApplication.getInstance()
+        val polarisApplication = PolarisApp.instance
         val resources = polarisApplication.resources
         val asyncDrawable = AsyncDrawable(resources, item)
         view.setImageDrawable(asyncDrawable)

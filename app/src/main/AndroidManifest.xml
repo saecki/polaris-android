@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".PolarisApplication"
+        android:name=".PolarisApp"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_rules"
         android:fullBackupOnly="false"

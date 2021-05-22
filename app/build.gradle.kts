@@ -58,13 +58,18 @@ dependencies {
     implementation(Deps.Androidx.appcompat)
     implementation(Deps.material)
 
+    // Lifecycle
+    implementation(Deps.Androidx.Lifecycle.runtime)
+    implementation(Deps.Androidx.Lifecycle.service)
+    implementation(Deps.Androidx.Lifecycle.viewmodel)
+
     // Coroutines
     implementation(Deps.Kotlinx.Coroutines.core)
     implementation(Deps.Kotlinx.Coroutines.android)
 
     // Navigation
-    implementation(Deps.Nav.fragmentKtx)
-    implementation(Deps.Nav.uiKtx)
+    implementation(Deps.Androidx.Nav.fragmentKtx)
+    implementation(Deps.Androidx.Nav.uiKtx)
 
     // Preference
     implementation(Deps.Androidx.preferenceKtx)

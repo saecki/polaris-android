@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import java.util.Random;
 
 import agersant.polaris.PlaybackQueue;
-import agersant.polaris.PolarisApplication;
+import agersant.polaris.PolarisApp;
 import agersant.polaris.PolarisPlayer;
 import agersant.polaris.PolarisState;
 import agersant.polaris.R;
@@ -88,7 +88,7 @@ public class QueueFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        PolarisState state = PolarisApplication.getState();
+        PolarisState state = PolarisApp.getState();
         playbackQueue = state.playbackQueue;
         player = state.player;
         offlineCache = state.offlineCache;

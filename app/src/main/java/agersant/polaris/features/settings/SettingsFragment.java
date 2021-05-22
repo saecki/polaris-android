@@ -3,7 +3,7 @@ package agersant.polaris.features.settings;
 
 import android.os.Bundle;
 
-import agersant.polaris.PolarisApplication;
+import agersant.polaris.PolarisApp;
 import agersant.polaris.R;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
@@ -24,7 +24,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         ListPreference themePreference = findPreference(themeKey);
         themePreference.setOnPreferenceChangeListener((preference, newValue) -> {
             if (newValue != null) {
-                PolarisApplication.getInstance().setTheme(newValue.toString());
+                PolarisApp.getInstance().setTheme(newValue.toString());
             }
             return true;
         });
