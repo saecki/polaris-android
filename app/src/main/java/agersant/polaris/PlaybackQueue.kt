@@ -178,8 +178,7 @@ class PlaybackQueue internal constructor() {
 
     private fun broadcast(event: String) {
         val application = PolarisApp.instance
-        val intent = Intent()
-        intent.action = event
+        val intent = Intent().setAction(event)
         application.sendBroadcast(intent)
     }
 
