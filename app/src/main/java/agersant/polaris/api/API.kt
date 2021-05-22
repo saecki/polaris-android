@@ -85,7 +85,7 @@ class API(context: Context) {
         return bitmap
     }
 
-    fun loadThumbnail(
+    fun loadThumbnail( // TODO: remove when possible
         item: CollectionItem,
         size: ThumbnailSize,
         callback: ImageCallback
@@ -99,7 +99,7 @@ class API(context: Context) {
         }
     }
 
-    fun loadThumbnailIntoView(item: CollectionItem, size: ThumbnailSize, view: ImageView) {
+    fun loadThumbnailIntoView(item: CollectionItem, size: ThumbnailSize, view: ImageView) { // TODO: remove when possible
         val polarisApplication = PolarisApp.instance
         val resources = polarisApplication.resources
         val asyncDrawable = AsyncDrawable(resources, item)
