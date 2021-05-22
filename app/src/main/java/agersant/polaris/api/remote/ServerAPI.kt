@@ -122,7 +122,7 @@ class ServerAPI(context: Context) : IRemoteAPI {
     }
 
     override suspend fun getRecentAlbums(): List<CollectionItem>? {
-        return fetchAPIVersion()?.getRandomAlbums()
+        return fetchAPIVersion()?.getRecentAlbums()
     }
 
     fun getRecentAlbums(handlers: ItemsCallback) { // TODO: remove when possible
