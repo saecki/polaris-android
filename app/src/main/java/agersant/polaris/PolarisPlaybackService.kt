@@ -17,15 +17,16 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.widget.Toast
+import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDeepLinkBuilder
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.cbor.Cbor
 import java.io.*
 
-class PolarisPlaybackService : Service() {
+class PolarisPlaybackService : LifecycleService() {
 
     companion object {
         const val APP_INTENT_COLD_BOOT = "POLARIS_PLAYBACK_SERVICE_COLD_BOOT"
@@ -78,7 +79,7 @@ class PolarisPlaybackService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        val state = PolarisApplication.getState()
+        val state = PolarisApp.state
         api = state.api
         player = state.player
         playbackQueue = state.playbackQueue
@@ -381,12 +382,12 @@ class PolarisPlaybackService : Service() {
             trackProgress = player.positionRelative,
         )
 
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.IO) {
             val storage = File(cacheDir, "playlist.v${PlaybackQueue.State.VERSION}")
             try {
                 FileOutputStream(storage).use { fos ->
                     @OptIn(ExperimentalSerializationApi::class)
-                    val bytes = Cbor.encodeToByteArray(PlaybackQueue.State.serializer(), state)
+                    val bytes = IO.cbor.encodeToByteArray(PlaybackQueue.State.serializer(), state)
                     fos.write(bytes)
                 }
             } catch (e: IOException) {
@@ -401,7 +402,7 @@ class PolarisPlaybackService : Service() {
             FileInputStream(storage).use { fis ->
                 try {
                     @OptIn(ExperimentalSerializationApi::class)
-                    val state = Cbor.decodeFromByteArray(PlaybackQueue.State.serializer(), fis.readBytes())
+                    val state = IO.cbor.decodeFromByteArray(PlaybackQueue.State.serializer(), fis.readBytes())
 
                     state.run {
                         playbackQueue.ordering = queueOrdering

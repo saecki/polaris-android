@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.util.BitSet;
 
 import agersant.polaris.CollectionItem;
-import agersant.polaris.PolarisApplication;
+import agersant.polaris.PolarisApp;
 import agersant.polaris.api.local.OfflineCache;
 
 
@@ -30,7 +30,7 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
 
     @Override
     public DefaultDataSource createDataSource() {
-        return new DefaultDataSource(PolarisApplication.getInstance().getApplicationContext(), dataSource);
+        return new DefaultDataSource(PolarisApp.getInstance().getApplicationContext(), dataSource);
     }
 
     private class PolarisExoPlayerTransferListener implements TransferListener {

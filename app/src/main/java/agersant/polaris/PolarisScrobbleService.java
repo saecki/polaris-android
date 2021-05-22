@@ -33,7 +33,7 @@ public class PolarisScrobbleService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        PolarisState state = PolarisApplication.getState();
+        PolarisState state = PolarisApp.getState();
         api = state.api;
         player = state.player;
         serverAPI = state.serverAPI;

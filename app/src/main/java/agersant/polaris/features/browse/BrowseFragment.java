@@ -13,7 +13,7 @@ import java.util.List;
 
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
-import agersant.polaris.PolarisApplication;
+import agersant.polaris.PolarisApp;
 import agersant.polaris.PolarisState;
 import agersant.polaris.R;
 import agersant.polaris.api.API;
@@ -46,7 +46,7 @@ public class BrowseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        PolarisState state = PolarisApplication.getState();
+        PolarisState state = PolarisApp.getState();
         api = state.api;
         serverAPI = state.serverAPI;
         playbackQueue = state.playbackQueue;

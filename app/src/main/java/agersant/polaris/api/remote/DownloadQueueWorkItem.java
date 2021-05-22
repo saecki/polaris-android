@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSource;
 
 import java.io.File;
 
 import agersant.polaris.CollectionItem;
-import agersant.polaris.PolarisApplication;
+import agersant.polaris.PolarisApp;
 import agersant.polaris.PolarisPlayer;
 import agersant.polaris.api.local.OfflineCache;
 
@@ -73,7 +74,7 @@ class DownloadQueueWorkItem {
         this.item = item;
         Uri uri = serverAPI.getAudioUriSync(item.getPath());
         PolarisExoPlayerDataSourceFactory dsf = new PolarisExoPlayerDataSourceFactory(offlineCache, serverAPI.getAuth(), scratchFile, item);
-        mediaSource = new ExtractorMediaSource.Factory(dsf).createMediaSource(uri);
+        mediaSource = new ProgressiveMediaSource.Factory(dsf).createMediaSource(MediaItem.fromUri(uri));
         dataSource = dsf.createDataSource();
         broadcast(DownloadQueue.WORKLOAD_CHANGED);
     }
@@ -113,7 +114,7 @@ class DownloadQueueWorkItem {
     }
 
     private void broadcast(@SuppressWarnings("SameParameterValue") String event) {
-        PolarisApplication application = PolarisApplication.getInstance();
+        PolarisApp application = PolarisApp.getInstance();
         Intent intent = new Intent();
         intent.setAction(event);
         application.sendBroadcast(intent);

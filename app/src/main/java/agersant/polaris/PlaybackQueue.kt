@@ -59,7 +59,7 @@ class PlaybackQueue internal constructor() {
         }
 
     // Return negative value if a is going to play before b, positive if a is going to play after b
-    fun comparePriorities(currentItem: CollectionItem, a: CollectionItem, b: CollectionItem): Int {
+    fun comparePriorities(currentItem: CollectionItem?, a: CollectionItem, b: CollectionItem): Int {
         val currentIndex = content.indexOf(currentItem)
         val playlistSize = content.size
 
@@ -177,7 +177,7 @@ class PlaybackQueue internal constructor() {
     }
 
     private fun broadcast(event: String) {
-        val application = PolarisApplication.getInstance()
+        val application = PolarisApp.instance
         val intent = Intent()
         intent.action = event
         application.sendBroadcast(intent)
@@ -210,7 +210,7 @@ class PlaybackQueue internal constructor() {
             bestScore = score
             bestItem = item
         }
-        val application = PolarisApplication.getInstance()
+        val application = PolarisApp.instance
         val preferences = PreferenceManager.getDefaultSharedPreferences(application)
         val resources = application.resources
         val numSongsToPreloadKey = resources.getString(R.string.pref_key_num_songs_preload)

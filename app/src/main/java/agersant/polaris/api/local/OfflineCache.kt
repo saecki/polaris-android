@@ -1,8 +1,9 @@
 package agersant.polaris.api.local
 
 import agersant.polaris.CollectionItem
+import agersant.polaris.IO
 import agersant.polaris.PlaybackQueue
-import agersant.polaris.PolarisApplication
+import agersant.polaris.PolarisApp
 import agersant.polaris.PolarisPlayer
 import agersant.polaris.R
 import agersant.polaris.api.ThumbnailSize
@@ -19,7 +20,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.cbor.Cbor
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -47,8 +47,6 @@ class OfflineCache(
         private const val BUFFER_SIZE = 1024 * 64
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
-    private val cbor = Cbor { ignoreUnknownKeys = true }
     private val dataSourceFactory = DefaultDataSourceFactory(context, "Polaris Local")
     private lateinit var root: File
 
@@ -79,7 +77,7 @@ class OfflineCache(
     @Throws(IOException::class)
     private fun write(item: CollectionItem, storage: OutputStream) {
         @OptIn(ExperimentalSerializationApi::class)
-        val bytes = cbor.encodeToByteArray(CollectionItem.Serializer, item)
+        val bytes = IO.cbor.encodeToByteArray(CollectionItem.Serializer, item)
         storage.write(bytes)
     }
 
@@ -99,7 +97,7 @@ class OfflineCache(
     @Throws(IOException::class)
     private fun write(metadata: ItemCacheMetadata, storage: OutputStream) {
         @OptIn(ExperimentalSerializationApi::class)
-        val bytes = cbor.encodeToByteArray(ItemCacheMetadata.serializer(), metadata)
+        val bytes = IO.cbor.encodeToByteArray(ItemCacheMetadata.serializer(), metadata)
         storage.write(bytes)
     }
 
@@ -388,7 +386,7 @@ class OfflineCache(
         try {
             FileInputStream(file).use { fis ->
                 @OptIn(ExperimentalSerializationApi::class)
-                return cbor.decodeFromByteArray(ItemCacheMetadata.serializer(), fis.readBytes())
+                return IO.cbor.decodeFromByteArray(ItemCacheMetadata.serializer(), fis.readBytes())
             }
         } catch (e: SerializationException) {
             println("Error deserializing metadata file: $file")
@@ -507,12 +505,12 @@ class OfflineCache(
         }
         FileInputStream(itemFile).use { fis ->
             @OptIn(ExperimentalSerializationApi::class)
-            return cbor.decodeFromByteArray(CollectionItem.Serializer, fis.readBytes())
+            return IO.cbor.decodeFromByteArray(CollectionItem.Serializer, fis.readBytes())
         }
     }
 
     private fun broadcast(event: String) {
-        val application = PolarisApplication.getInstance()
+        val application = PolarisApp.instance
         val intent = Intent()
         intent.action = event
         application.sendBroadcast(intent)

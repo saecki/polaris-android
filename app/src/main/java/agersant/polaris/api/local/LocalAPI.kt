@@ -23,10 +23,6 @@ class LocalAPI : IPolarisAPI {
         return offlineCache.getAudio(item.path)
     }
 
-    fun getAudioSync(item: CollectionItem): MediaSource? {
-        return runBlocking { getAudio(item) }
-    }
-
     fun hasImage(item: CollectionItem, size: ThumbnailSize): Boolean {
         val path = item.artwork ?: return false
         return offlineCache.hasImage(path, size)

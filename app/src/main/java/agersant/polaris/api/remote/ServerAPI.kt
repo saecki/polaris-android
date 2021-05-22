@@ -1,6 +1,7 @@
 package agersant.polaris.api.remote
 
 import agersant.polaris.CollectionItem
+import agersant.polaris.IO
 import agersant.polaris.R
 import agersant.polaris.api.ItemsCallback
 import agersant.polaris.api.ThumbnailSize
@@ -12,7 +13,7 @@ import androidx.preference.PreferenceManager
 import com.google.android.exoplayer2.source.MediaSource
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
-import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 
 class ServerAPI(context: Context) : IRemoteAPI {
 
@@ -58,11 +58,7 @@ class ServerAPI(context: Context) : IRemoteAPI {
 
     private fun buildClient(config: HttpClientConfig<OkHttpConfig>.() -> Unit = {}): HttpClient = HttpClient(OkHttp) {
         install(JsonFeature) {
-            serializer = KotlinxSerializer(Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-                coerceInputValues = true
-            })
+            serializer = KotlinxSerializer(IO.json)
         }
         engine {
             config {
@@ -157,10 +153,6 @@ class ServerAPI(context: Context) : IRemoteAPI {
 
     override suspend fun getAudio(item: CollectionItem): MediaSource? {
         return fetchAPIVersion()?.getAudio(item)
-    }
-
-    fun getAudioSync(item: CollectionItem): MediaSource? { // TODO: remove when possible
-        return runBlocking { getAudio(item) }
     }
 
     override suspend fun getThumbnail(path: String, size: ThumbnailSize): Bitmap? {

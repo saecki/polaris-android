@@ -1,7 +1,7 @@
 package agersant.polaris.features.player
 
 import agersant.polaris.PlaybackQueue
-import agersant.polaris.PolarisApplication
+import agersant.polaris.PolarisApp
 import agersant.polaris.PolarisPlayer
 import agersant.polaris.R
 import agersant.polaris.api.API
@@ -111,7 +111,7 @@ class PlayerFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         setHasOptionsMenu(true)
 
-        val state = PolarisApplication.getState()
+        val state = PolarisApp.state
         api = state.api
         player = state.player
         playbackQueue = state.playbackQueue
