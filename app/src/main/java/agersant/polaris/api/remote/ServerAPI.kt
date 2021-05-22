@@ -18,10 +18,6 @@ import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 class ServerAPI(context: Context) : IRemoteAPI {
@@ -112,30 +108,8 @@ class ServerAPI(context: Context) : IRemoteAPI {
         return fetchAPIVersion()?.getRandomAlbums()
     }
 
-    fun getRandomAlbums(handlers: ItemsCallback) { // TODO: remove when possible
-        GlobalScope.launch(Dispatchers.IO) {
-            val items = getRandomAlbums()
-            if (items != null) {
-                handlers.onSuccess(items)
-            } else {
-                handlers.onError()
-            }
-        }
-    }
-
     override suspend fun getRecentAlbums(): List<Directory>? {
         return fetchAPIVersion()?.getRecentAlbums()
-    }
-
-    fun getRecentAlbums(handlers: ItemsCallback) { // TODO: remove when possible
-        GlobalScope.launch(Dispatchers.IO) {
-            val items = getRecentAlbums()
-            if (items != null) {
-                handlers.onSuccess(items)
-            } else {
-                handlers.onError()
-            }
-        }
     }
 
     override suspend fun setLastFmNowPlaying(path: String): Boolean {

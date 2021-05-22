@@ -123,17 +123,6 @@ class API(context: Context) {
         return api.browse(path)
     }
 
-    fun browse(path: String, handlers: ItemsCallback) { // TODO: remove when possible
-        GlobalScope.launch(Dispatchers.IO) {
-            val items = browse(path)
-            if (items != null) {
-                handlers.onSuccess(items)
-            } else {
-                handlers.onError()
-            }
-        }
-    }
-
     suspend fun flatten(path: String): List<Song>? {
         return api.flatten(path)
     }
