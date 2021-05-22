@@ -23,6 +23,7 @@ import androidx.navigation.NavDeepLinkBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
 import java.io.*
 
 class PolarisPlaybackService : LifecycleService() {
@@ -408,7 +409,7 @@ class PolarisPlaybackService : LifecycleService() {
                             }
                         }
                     }
-                } catch (e: ClassNotFoundException) {
+                } catch (e: SerializationException) {
                     println("Error while loading PlaybackQueueState object: $e")
                 }
             }
