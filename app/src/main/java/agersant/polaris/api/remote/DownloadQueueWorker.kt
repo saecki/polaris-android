@@ -1,8 +1,8 @@
 package agersant.polaris.api.remote
 
-import agersant.polaris.CollectionItem
 import agersant.polaris.PolarisApp
 import agersant.polaris.PolarisPlayer
+import agersant.polaris.Song
 import agersant.polaris.api.local.OfflineCache
 import android.content.Intent
 import android.net.Uri
@@ -26,9 +26,9 @@ internal class DownloadQueueWorker(
 ) {
 
     private sealed class State {
-        object Uninitialized : State() // TODO better name
-        class Initialized(val item: CollectionItem, val mediaSource: MediaSource, val dataSource: DataSource) : State()
-        class Downloading(val item: CollectionItem, val mediaSource: MediaSource, val dataSource: DataSource, val job: Job) : State()
+        object Uninitialized : State()
+        class Initialized(val song: Song, val mediaSource: MediaSource, val dataSource: DataSource) : State()
+        class Downloading(val song: Song, val mediaSource: MediaSource, val dataSource: DataSource, val job: Job) : State()
     }
 
     companion object {
@@ -37,12 +37,11 @@ internal class DownloadQueueWorker(
 
     private var state: State = State.Uninitialized
 
-    val mediaSource: MediaSource?
+    val streamingMediaSource: MediaSource?
         get() = state.let {
             return when (it) {
                 is State.Initialized -> it.mediaSource
-                is State.Downloading -> null
-                is State.Uninitialized -> null
+                else -> null
             }
         }
 
@@ -64,30 +63,29 @@ internal class DownloadQueueWorker(
             return !isUsedByPlayer
         }
 
-    fun hasMediaSourceFor(item: CollectionItem): Boolean = state.let {
+    fun isStreaming(song: Song): Boolean = state.let {
         return when (it) {
-            is State.Uninitialized -> false
-            is State.Initialized -> it.item.path == item.path
-            is State.Downloading -> it.item.path == item.path
-        }
-    }
-
-    fun isDownloading(item: CollectionItem): Boolean = state.let {
-        when (it) {
-            is State.Downloading -> it.item.path == item.path && it.job.isActive
+            is State.Initialized -> it.song.path == song.path && isUsedByPlayer
             else -> false
         }
     }
 
-    suspend fun assignItem(item: CollectionItem): Boolean {
+    fun isDownloading(song: Song): Boolean = state.let {
+        when (it) {
+            is State.Downloading -> it.song.path == song.path && it.job.isActive
+            else -> false
+        }
+    }
+
+    suspend fun assignItem(song: Song): Boolean {
         reset()
-        val uri = withContext(Dispatchers.IO) { serverAPI.getAudioUri(item.path) }
+        val uri = withContext(Dispatchers.IO) { serverAPI.getAudioUri(song.path) }
         uri ?: return false
 
-        val dsf = PolarisExoPlayerDataSourceFactory(offlineCache, serverAPI.auth, scratchFile, item)
+        val dsf = PolarisExoPlayerDataSourceFactory(offlineCache, serverAPI.auth, scratchFile, song)
         val mediaSource = ProgressiveMediaSource.Factory(dsf).createMediaSource(MediaItem.fromUri(uri))
         val dataSource = dsf.createDataSource()
-        state = State.Initialized(item, mediaSource, dataSource)
+        state = State.Initialized(song, mediaSource, dataSource)
         broadcast(DownloadQueue.WORKLOAD_CHANGED)
         return true
     }
@@ -95,15 +93,15 @@ internal class DownloadQueueWorker(
     suspend fun beginBackgroundDownload(): Boolean = state.run {
         if (this !is State.Initialized) return false
 
-        val uri = withContext(Dispatchers.IO) { serverAPI.getAudioUri(item.path) }
+        val uri = withContext(Dispatchers.IO) { serverAPI.getAudioUri(song.path) }
         uri ?: return false
 
-        println("Beginning background download for: " + item.path)
+        println("Beginning background download for: " + song.path)
         val job = PolarisApp.instance.scope.launch {
             download(dataSource, uri)
         }
 
-        state = State.Downloading(item, mediaSource, dataSource, job)
+        state = State.Downloading(song, mediaSource, dataSource, job)
         broadcast(DownloadQueue.WORKLOAD_CHANGED)
 
         return true
@@ -112,7 +110,7 @@ internal class DownloadQueueWorker(
     fun stopBackgroundDownload() = state.run {
         if (this is State.Downloading) {
             job.cancel()
-            state = State.Initialized(item, mediaSource, dataSource)
+            state = State.Initialized(song, mediaSource, dataSource)
             broadcast(DownloadQueue.WORKLOAD_CHANGED)
         }
     }
