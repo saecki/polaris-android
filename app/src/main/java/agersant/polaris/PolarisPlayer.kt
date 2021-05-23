@@ -37,7 +37,7 @@ class PolarisPlayer internal constructor(
     private var mediaSource: MediaSource? = null
     private var loadAudioJob: Job? = null
     private var resumeProgress: Float
-    var currentItem: Song? = null
+    var currentSong: Song? = null
         private set
 
     init {
@@ -73,27 +73,27 @@ class PolarisPlayer internal constructor(
         mediaPlayer.stop()
         seekToStart()
         mediaSource = null
-        currentItem = null
+        currentSong = null
     }
 
-    fun play(item: Song) {
+    fun play(song: Song) {
         startServices()
         resumeProgress = -1f
-        if (currentItem != null && item.path == currentItem!!.path) {
-            println("Restarting playback for: " + item.path)
+        if (currentSong != null && song.path == currentSong!!.path) {
+            println("Restarting playback for: " + song.path)
             seekToStart()
             resume()
             return
         }
 
-        println("Beginning playback for: " + item.path)
+        println("Beginning playback for: " + song.path)
         stop()
         mediaPlayer.playWhenReady = true
-        currentItem = item
+        currentSong = song
         broadcast(OPENING_TRACK)
 
         loadAudioJob = PolarisApp.instance.scope.launch {
-            val fetchedMediaSource = api.loadAudio(item)
+            val fetchedMediaSource = api.loadAudio(song)
             if (fetchedMediaSource != null) {
                 try {
                     mediaSource = fetchedMediaSource
@@ -105,7 +105,7 @@ class PolarisPlayer internal constructor(
                     broadcast(PLAYBACK_ERROR)
                 }
             } else {
-                println("Could not find audio for item: ${item.path}")
+                println("Could not find audio for item: ${song.path}")
             }
 
             loadAudioJob = null
@@ -137,17 +137,17 @@ class PolarisPlayer internal constructor(
     }
 
     fun skipPrevious() {
-        val currentItem = currentItem
+        val currentItem = currentSong
         advance(currentItem, -1)
     }
 
     fun skipNext(): Boolean {
-        val currentItem = currentItem
+        val currentItem = currentSong
         return advance(currentItem, 1)
     }
 
     val isIdle: Boolean
-        get() = currentItem == null
+        get() = currentSong == null
     val isOpeningSong: Boolean
         get() = loadAudioJob != null
     val isPlaying: Boolean

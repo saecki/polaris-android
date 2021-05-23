@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
-import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.PolarisPlayer;
 import agersant.polaris.R;
@@ -89,23 +88,23 @@ class QueueAdapter
 
         private static class IconUpdateTask extends AsyncTask<Void, Void, QueueItemState> {
 
-            private final CollectionItem item;
+            private final Song song;
             private final WeakReference<QueueItemHolder> itemHolderWeakReference;
             private final OfflineCache offlineCache;
             private final DownloadQueue downloadQueue;
 
-            IconUpdateTask(QueueItemHolder itemHolder, CollectionItem item, OfflineCache offlineCache, DownloadQueue downloadQueue) {
+            IconUpdateTask(QueueItemHolder itemHolder, Song song, OfflineCache offlineCache, DownloadQueue downloadQueue) {
                 this.itemHolderWeakReference = new WeakReference<>(itemHolder);
-                this.item = item;
+                this.song = song;
                 this.offlineCache = offlineCache;
                 this.downloadQueue = downloadQueue;
             }
 
             @Override
             protected QueueItemState doInBackground(Void... objects) {
-                if (offlineCache.hasAudio(item.getPath())) {
+                if (offlineCache.hasAudio(song.getPath())) {
                     return QueueItemState.DOWNLOADED;
-                } else if (downloadQueue.isDownloading(item) || downloadQueue.isStreaming(item)) {
+                } else if (downloadQueue.isDownloading(song) || downloadQueue.isStreaming(song)) {
                     return QueueItemState.DOWNLOADING;
                 } else {
                     return QueueItemState.IDLE;
@@ -118,7 +117,7 @@ class QueueAdapter
                 if (itemHolder == null) {
                     return;
                 }
-                if (itemHolder.item != item) {
+                if (itemHolder.item != song) {
                     return;
                 }
                 itemHolder.setState(state);
@@ -141,7 +140,7 @@ class QueueAdapter
                 setState(QueueItemState.IDLE);
             }
 
-            boolean isPlaying = player.getCurrentItem() == item;
+            boolean isPlaying = player.getCurrentSong() == item;
             queueItemView.setIsPlaying(isPlaying);
 
             if (updateIconTask != null) {

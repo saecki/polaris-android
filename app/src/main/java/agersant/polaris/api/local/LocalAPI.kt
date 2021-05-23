@@ -14,7 +14,7 @@ class LocalAPI : IPolarisAPI {
         this.offlineCache = offlineCache
     }
 
-    fun hasAudio(item: CollectionItem): Boolean {
+    fun hasAudio(item: Song): Boolean {
         val path = item.path
         return offlineCache.hasAudio(path)
     }

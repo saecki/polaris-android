@@ -58,8 +58,8 @@ class DownloadQueue(
         return workers.any { it.isStreaming(song) }
     }
 
-    fun isDownloading(item: Song): Boolean {
-        return workers.any { it.isDownloading(item) }
+    fun isDownloading(song: Song): Boolean {
+        return workers.any { it.isDownloading(song) }
     }
 
     private fun findIdleWorker(): DownloadQueueWorker? {
@@ -76,12 +76,12 @@ class DownloadQueue(
             return
         }
         val worker = findIdleWorker() ?: return
-        val nextItem = playbackQueue.getNextItemToDownload(player.currentItem, offlineCache, this)
-        if (nextItem != null) {
-            if (!offlineCache.makeSpace(nextItem)) {
+        val nextSong = playbackQueue.getNextItemToDownload(player.currentSong, offlineCache, this)
+        if (nextSong != null) {
+            if (!offlineCache.makeSpace(nextSong)) {
                 return
             }
-            worker.assignItem(nextItem)
+            worker.assignItem(nextSong)
             worker.beginBackgroundDownload()
         }
     }

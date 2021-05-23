@@ -194,7 +194,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun updateContent() {
-        val item = player.currentItem
+        val item = player.currentSong
 
         val unknown by lazy { getString(R.string.player_unknown) }
         titleText.text = item?.title ?: unknown
@@ -220,11 +220,11 @@ class PlayerFragment : Fragment() {
         pauseToggle.isClickable = isNotIdle
         pauseToggle.alpha = if (isNotIdle) 1f else disabledAlpha
 
-        val hasNextTrack = playbackQueue.hasNextTrack(player.currentItem)
+        val hasNextTrack = playbackQueue.hasNextTrack(player.currentSong)
         skipNext.isClickable = hasNextTrack
         skipNext.alpha = if (hasNextTrack) 1f else disabledAlpha
 
-        val hasPrevTrack = playbackQueue.hasPreviousTrack(player.currentItem)
+        val hasPrevTrack = playbackQueue.hasPreviousTrack(player.currentSong)
         skipPrevious.isClickable = hasPrevTrack
         skipPrevious.alpha = if (hasPrevTrack) 1f else disabledAlpha
 
@@ -246,7 +246,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun showDetails() {
-        val item = player.currentItem ?: return
+        val item = player.currentSong ?: return
 
         val dialog = requireContext().showDetailsDialog(item)
         dialog.setOnDismissListener {
