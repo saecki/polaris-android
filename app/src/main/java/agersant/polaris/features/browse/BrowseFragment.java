@@ -47,9 +47,9 @@ public class BrowseFragment extends Fragment {
         setHasOptionsMenu(true);
 
         PolarisState state = PolarisApp.getState();
-        api = state.api;
-        serverAPI = state.serverAPI;
-        playbackQueue = state.playbackQueue;
+        api = state.getApi();
+        serverAPI = state.getServerAPI();
+        playbackQueue = state.getPlaybackQueue();
 
         binding = FragmentBrowseBinding.inflate(inflater);
         errorMessage = binding.browseErrorMessage;

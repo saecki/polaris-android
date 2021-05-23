@@ -25,7 +25,7 @@ public class CollectionFragment extends Fragment {
         setHasOptionsMenu(true);
 
         PolarisState state = PolarisApp.getState();
-        this.api = state.api;
+        this.api = state.getApi();
 
         binding = FragmentCollectionBinding.inflate(inflater);
 

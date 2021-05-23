@@ -89,10 +89,10 @@ public class QueueFragment extends Fragment {
         setHasOptionsMenu(true);
 
         PolarisState state = PolarisApp.getState();
-        playbackQueue = state.playbackQueue;
-        player = state.player;
-        offlineCache = state.offlineCache;
-        downloadQueue = state.downloadQueue;
+        playbackQueue = state.getPlaybackQueue();
+        player = state.getPlayer();
+        offlineCache = state.getOfflineCache();
+        downloadQueue = state.getDownloadQueue();
 
         FragmentQueueBinding binding = FragmentQueueBinding.inflate(inflater);
 
