@@ -17,8 +17,10 @@ import android.widget.ImageView
 import androidx.preference.PreferenceManager
 import com.google.android.exoplayer2.source.MediaSource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 
 class API(context: Context) {
@@ -42,26 +44,26 @@ class API(context: Context) {
     val isOffline: Boolean
         get() = preferences.getBoolean(offlineModePreferenceKey, false)
 
-    suspend fun loadAudio(item: Song): MediaSource? {
+    suspend fun loadAudio(item: Song): MediaSource? = withContext(IO) {
         if (localAPI.hasAudio(item)) {
             val source = localAPI.getAudio(item)
-            return source ?: run {
+            return@withContext source ?: run {
                 println("IO error while reading offline cache for ${item.path}")
                 null
             }
         } else if (!isOffline) {
             val source = serverAPI.getAudio(item)
-            return source ?: run {
+            return@withContext source ?: run {
                 println("IO error while querying server API for ${item.path}")
                 null
             }
         }
 
-        return null
+        null
     }
 
-    private suspend fun loadThumbnail(item: CollectionItem, size: ThumbnailSize): Bitmap? {
-        val artwork = item.artwork ?: return null
+    private suspend fun loadThumbnail(item: CollectionItem, size: ThumbnailSize): Bitmap? = withContext(IO) {
+        val artwork = item.artwork ?: return@withContext null
 
         var bitmap: Bitmap? = null
         var fromDiskCache = false
@@ -83,7 +85,7 @@ class API(context: Context) {
             }
         }
 
-        return bitmap
+        return@withContext bitmap
     }
 
     fun loadThumbnail( // TODO: remove when possible
@@ -91,7 +93,7 @@ class API(context: Context) {
         size: ThumbnailSize,
         callback: ImageCallback
     ) {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(IO) {
             val bitmap = loadThumbnail(item, size)
 
             if (bitmap != null) {
@@ -118,12 +120,12 @@ class API(context: Context) {
         }
     }
 
-    suspend fun browse(path: String): List<CollectionItem>? {
-        return api.browse(path)
+    suspend fun browse(path: String): List<CollectionItem>? = withContext(IO) {
+        api.browse(path)
     }
 
     fun browse(path: String, handlers: ItemsCallback) { // TODO: remove when possible
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(IO) {
             val items = browse(path)
             if (items != null) {
                 handlers.onSuccess(items)
@@ -133,12 +135,12 @@ class API(context: Context) {
         }
     }
 
-    suspend fun flatten(path: String): List<Song>? {
-        return api.flatten(path)
+    suspend fun flatten(path: String): List<Song>? = withContext(IO) {
+        api.flatten(path)
     }
 
     fun flatten(path: String, handlers: SongCallback) { // TODO: remove when possible
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(IO) {
             val items = flatten(path)
             if (items != null) {
                 handlers.onSuccess(items)

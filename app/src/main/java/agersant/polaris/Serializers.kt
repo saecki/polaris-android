@@ -4,7 +4,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.cbor.Cbor
 import kotlinx.serialization.json.Json
 
-object IO {
+object Serializers {
     @OptIn(ExperimentalSerializationApi::class)
     val cbor = Cbor {
         ignoreUnknownKeys = true

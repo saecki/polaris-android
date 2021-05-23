@@ -2,8 +2,8 @@ package agersant.polaris.api.remote
 
 import agersant.polaris.CollectionItem
 import agersant.polaris.Directory
-import agersant.polaris.IO
 import agersant.polaris.R
+import agersant.polaris.Serializers
 import agersant.polaris.Song
 import agersant.polaris.api.ItemsCallback
 import agersant.polaris.api.ThumbnailSize
@@ -18,10 +18,10 @@ import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 
 class ServerAPI(context: Context) : IRemoteAPI {
@@ -58,9 +58,9 @@ class ServerAPI(context: Context) : IRemoteAPI {
         this.downloadQueue = downloadQueue
     }
 
-    private fun buildClient(config: HttpClientConfig<OkHttpConfig>.() -> Unit = {}): HttpClient = HttpClient(OkHttp) {
+    private fun buildClient(config: HttpClientConfig<OkHttpConfig>.() -> Unit = {}) = HttpClient(OkHttp) {
         install(JsonFeature) {
-            serializer = KotlinxSerializer(IO.json)
+            serializer = KotlinxSerializer(Serializers.json)
         }
         engine {
             config {
@@ -100,20 +100,20 @@ class ServerAPI(context: Context) : IRemoteAPI {
         }
     }
 
-    override suspend fun browse(path: String): List<CollectionItem>? {
-        return fetchAPIVersion()?.browse(path)
+    override suspend fun browse(path: String): List<CollectionItem>? = withContext(IO) {
+        fetchAPIVersion()?.browse(path)
     }
 
-    override suspend fun flatten(path: String): List<Song>? {
-        return fetchAPIVersion()?.flatten(path)
+    override suspend fun flatten(path: String): List<Song>? = withContext(IO) {
+        fetchAPIVersion()?.flatten(path)
     }
 
-    override suspend fun getRandomAlbums(): List<Directory>? {
-        return fetchAPIVersion()?.getRandomAlbums()
+    override suspend fun getRandomAlbums(): List<Directory>? = withContext(IO) {
+        fetchAPIVersion()?.getRandomAlbums()
     }
 
     fun getRandomAlbums(handlers: ItemsCallback) { // TODO: remove when possible
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(IO) {
             val items = getRandomAlbums()
             if (items != null) {
                 handlers.onSuccess(items)
@@ -123,12 +123,12 @@ class ServerAPI(context: Context) : IRemoteAPI {
         }
     }
 
-    override suspend fun getRecentAlbums(): List<Directory>? {
-        return fetchAPIVersion()?.getRecentAlbums()
+    override suspend fun getRecentAlbums(): List<Directory>? = withContext(IO) {
+        fetchAPIVersion()?.getRecentAlbums()
     }
 
     fun getRecentAlbums(handlers: ItemsCallback) { // TODO: remove when possible
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(IO) {
             val items = getRecentAlbums()
             if (items != null) {
                 handlers.onSuccess(items)
@@ -138,24 +138,24 @@ class ServerAPI(context: Context) : IRemoteAPI {
         }
     }
 
-    override suspend fun setLastFmNowPlaying(path: String): Boolean {
-        return fetchAPIVersion()?.setLastFmNowPlaying(path) ?: false
+    override suspend fun setLastFmNowPlaying(path: String): Boolean = withContext(IO) {
+        fetchAPIVersion()?.setLastFmNowPlaying(path) ?: false
     }
 
-    override suspend fun scrobbleOnLastFm(path: String): Boolean {
-        return fetchAPIVersion()?.scrobbleOnLastFm(path) ?: false
+    override suspend fun scrobbleOnLastFm(path: String): Boolean = withContext(IO) {
+        fetchAPIVersion()?.scrobbleOnLastFm(path) ?: false
     }
 
-    override suspend fun getAudio(item: Song): MediaSource? {
-        return fetchAPIVersion()?.getAudio(item)
+    override suspend fun getAudio(item: Song): MediaSource? = withContext(IO) {
+        fetchAPIVersion()?.getAudio(item)
     }
 
-    override suspend fun getThumbnail(path: String, size: ThumbnailSize): Bitmap? {
-        return fetchAPIVersion()?.getThumbnail(path, size)
+    override suspend fun getThumbnail(path: String, size: ThumbnailSize): Bitmap? = withContext(IO) {
+        fetchAPIVersion()?.getThumbnail(path, size)
     }
 
-    override suspend fun getAudioUri(path: String): Uri? {
-        return fetchAPIVersion()?.getAudioUri(path)
+    override suspend fun getAudioUri(path: String): Uri? = withContext(IO) {
+        fetchAPIVersion()?.getAudioUri(path)
     }
 
     @Serializable

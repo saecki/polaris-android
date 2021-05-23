@@ -2,7 +2,7 @@ package agersant.polaris.api.local
 
 import agersant.polaris.CollectionItem
 import agersant.polaris.Directory
-import agersant.polaris.IO
+import agersant.polaris.Serializers
 import agersant.polaris.PlaybackQueue
 import agersant.polaris.PolarisApp
 import agersant.polaris.PolarisPlayer
@@ -79,7 +79,7 @@ class OfflineCache(
     @Throws(IOException::class)
     private fun write(item: CollectionItem, storage: OutputStream) {
         @OptIn(ExperimentalSerializationApi::class)
-        val bytes = IO.cbor.encodeToByteArray(CollectionItem.Serializer, item)
+        val bytes = Serializers.cbor.encodeToByteArray(CollectionItem.Serializer, item)
         storage.write(bytes)
     }
 
@@ -99,7 +99,7 @@ class OfflineCache(
     @Throws(IOException::class)
     private fun write(metadata: ItemCacheMetadata, storage: OutputStream) {
         @OptIn(ExperimentalSerializationApi::class)
-        val bytes = IO.cbor.encodeToByteArray(ItemCacheMetadata.serializer(), metadata)
+        val bytes = Serializers.cbor.encodeToByteArray(ItemCacheMetadata.serializer(), metadata)
         storage.write(bytes)
     }
 
@@ -392,7 +392,7 @@ class OfflineCache(
         try {
             FileInputStream(file).use { fis ->
                 @OptIn(ExperimentalSerializationApi::class)
-                return IO.cbor.decodeFromByteArray(ItemCacheMetadata.serializer(), fis.readBytes())
+                return Serializers.cbor.decodeFromByteArray(ItemCacheMetadata.serializer(), fis.readBytes())
             }
         } catch (e: SerializationException) {
             println("Error deserializing metadata file: $file")
@@ -514,7 +514,7 @@ class OfflineCache(
         }
         FileInputStream(itemFile).use { fis ->
             @OptIn(ExperimentalSerializationApi::class)
-            return IO.cbor.decodeFromByteArray(CollectionItem.Serializer, fis.readBytes())
+            return Serializers.cbor.decodeFromByteArray(CollectionItem.Serializer, fis.readBytes())
         }
     }
 

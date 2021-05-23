@@ -380,7 +380,7 @@ class PolarisPlaybackService : LifecycleService() {
             try {
                 FileOutputStream(storage).use { fos ->
                     @OptIn(ExperimentalSerializationApi::class)
-                    val bytes = IO.cbor.encodeToByteArray(PlaybackQueue.State.serializer(), state)
+                    val bytes = Serializers.cbor.encodeToByteArray(PlaybackQueue.State.serializer(), state)
                     fos.write(bytes)
                 }
             } catch (e: IOException) {
@@ -395,7 +395,7 @@ class PolarisPlaybackService : LifecycleService() {
             FileInputStream(storage).use { fis ->
                 try {
                     @OptIn(ExperimentalSerializationApi::class)
-                    val state = IO.cbor.decodeFromByteArray(PlaybackQueue.State.serializer(), fis.readBytes())
+                    val state = Serializers.cbor.decodeFromByteArray(PlaybackQueue.State.serializer(), fis.readBytes())
 
                     state.run {
                         playbackQueue.ordering = queueOrdering

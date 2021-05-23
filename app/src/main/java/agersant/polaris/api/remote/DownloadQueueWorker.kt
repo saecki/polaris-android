@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DataSpec
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -79,7 +80,7 @@ internal class DownloadQueueWorker(
 
     suspend fun assignItem(song: Song): Boolean {
         reset()
-        val uri = withContext(Dispatchers.IO) { serverAPI.getAudioUri(song.path) }
+        val uri = serverAPI.getAudioUri(song.path)
         uri ?: return false
 
         val dsf = PolarisExoPlayerDataSourceFactory(offlineCache, serverAPI.auth, scratchFile, song)
@@ -94,7 +95,7 @@ internal class DownloadQueueWorker(
         if (this !is State.Initialized) return false
         if (isStreaming(song)) return false
 
-        val uri = withContext(Dispatchers.IO) { serverAPI.getAudioUri(song.path) }
+        val uri = serverAPI.getAudioUri(song.path)
         uri ?: return false
 
         println("Beginning background download for: " + song.path)
@@ -130,7 +131,7 @@ internal class DownloadQueueWorker(
         application.sendBroadcast(intent)
     }
 
-    private suspend fun download(dataSource: DataSource, uri: Uri) = withContext(Dispatchers.IO) {
+    private suspend fun download(dataSource: DataSource, uri: Uri) = withContext(IO) {
         val dataSpec = DataSpec(uri)
         val buffer = ByteArray(BUFFER_SIZE)
 
