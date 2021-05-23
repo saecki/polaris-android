@@ -59,7 +59,7 @@ class PlaybackQueue internal constructor() {
         }
 
     // Return negative value if a is going to play before b, positive if a is going to play after b
-    fun comparePriorities(currentItem: CollectionItem?, a: CollectionItem, b: CollectionItem): Int {
+    fun comparePriorities(currentItem: Song?, a: Song, b: Song): Int {
         val currentIndex = content.indexOf(currentItem)
         val playlistSize = content.size
 
@@ -178,13 +178,13 @@ class PlaybackQueue internal constructor() {
     }
 
     fun getNextItemToDownload(
-        currentItem: CollectionItem?,
+        currentItem: Song?,
         offlineCache: OfflineCache,
         downloadQueue: DownloadQueue
-    ): CollectionItem? {
+    ): Song? {
         val currentIndex = max(0, content.indexOf(currentItem))
         var bestScore = 0
-        var bestItem: CollectionItem? = null
+        var bestItem: Song? = null
         val playlistSize = content.size
         for (i in 0 until playlistSize) {
             val score = (playlistSize + i - currentIndex) % playlistSize

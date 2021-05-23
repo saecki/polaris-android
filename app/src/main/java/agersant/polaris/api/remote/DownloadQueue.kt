@@ -1,14 +1,13 @@
 package agersant.polaris.api.remote
 
-import agersant.polaris.CollectionItem
 import agersant.polaris.PlaybackQueue
 import agersant.polaris.PolarisPlayer
+import agersant.polaris.Song
 import agersant.polaris.api.API
 import agersant.polaris.api.local.OfflineCache
 import android.content.Context
 import com.google.android.exoplayer2.source.MediaSource
 import java.io.File
-import java.util.*
 
 class DownloadQueue(
     context: Context,
@@ -23,7 +22,7 @@ class DownloadQueue(
         const val WORKLOAD_CHANGED = "WORKLOAD_CHANGED"
     }
 
-    private val workers: ArrayList<DownloadQueueWorker> = ArrayList()
+    private val workers = mutableListOf<DownloadQueueWorker>()
 
     init {
         for (i in 0..1) {
@@ -31,15 +30,14 @@ class DownloadQueue(
             val worker = DownloadQueueWorker(file, serverAPI, offlineCache, player)
             workers.add(worker)
         }
-
     }
 
     @Synchronized
-    suspend fun getAudio(item: CollectionItem): MediaSource? {
-        val existingWorker = findWorkerWithAudioForItem(item)
+    suspend fun getAudio(song: Song): MediaSource? {
+        val existingWorker = findWorkerWithAudioForItem(song)
         if (existingWorker != null) {
             existingWorker.stopBackgroundDownload()
-            return existingWorker.mediaSource
+            return existingWorker.streamingMediaSource
         }
 
         val newWorker = findIdleWorker() ?: findWorkerToInterrupt()
@@ -48,53 +46,28 @@ class DownloadQueue(
             return null
         }
 
-        newWorker.assignItem(item)
-        return newWorker.mediaSource
+        newWorker.assignItem(song)
+        return newWorker.streamingMediaSource
     }
 
-    private fun findWorkerWithAudioForItem(item: CollectionItem): DownloadQueueWorker? {
-        for (worker in workers) {
-            if (worker.hasMediaSourceFor(item)) {
-                return worker
-            }
-        }
-        return null
+    private fun findWorkerWithAudioForItem(song: Song): DownloadQueueWorker? {
+        return workers.firstOrNull { it.isStreaming(song) }
     }
 
-    fun isStreaming(item: CollectionItem?): Boolean {
-        for (worker in workers) {
-            if (worker.hasMediaSourceFor(item!!)) {
-                return true
-            }
-        }
-        return false
+    fun isStreaming(song: Song): Boolean {
+        return workers.any { it.isStreaming(song) }
     }
 
-    fun isDownloading(item: CollectionItem?): Boolean {
-        for (worker in workers) {
-            if (worker.isDownloading(item!!)) {
-                return true
-            }
-        }
-        return false
+    fun isDownloading(item: Song): Boolean {
+        return workers.any { it.isDownloading(item) }
     }
 
     private fun findIdleWorker(): DownloadQueueWorker? {
-        for (worker in workers) {
-            if (worker.isIdle) {
-                return worker
-            }
-        }
-        return null
+        return workers.firstOrNull { it.isIdle }
     }
 
     private fun findWorkerToInterrupt(): DownloadQueueWorker? {
-        for (worker in workers) {
-            if (worker.canBeInterrupted) {
-                return worker
-            }
-        }
-        return null
+        return workers.firstOrNull { it.canBeInterrupted }
     }
 
     @Synchronized
