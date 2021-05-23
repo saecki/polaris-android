@@ -1,11 +1,13 @@
 package agersant.polaris.api.local
 
 import agersant.polaris.CollectionItem
+import agersant.polaris.Directory
 import agersant.polaris.IO
 import agersant.polaris.PlaybackQueue
 import agersant.polaris.PolarisApp
 import agersant.polaris.PolarisPlayer
 import agersant.polaris.R
+import agersant.polaris.Song
 import agersant.polaris.api.ThumbnailSize
 import android.content.Context
 import android.content.Intent
@@ -440,7 +442,7 @@ class OfflineCache(
         return out
     }
 
-    fun flatten(path: String): List<CollectionItem>? {
+    fun flatten(path: String): List<Song>? {
         val dir = getCacheDir(path)
         return flattenDir(dir)
     }
@@ -469,8 +471,8 @@ class OfflineCache(
         return false
     }
 
-    private fun flattenDir(source: File): List<CollectionItem>? {
-        val out = mutableListOf<CollectionItem>()
+    private fun flattenDir(source: File): List<Song>? {
+        val out = mutableListOf<Song>()
 
         val files = source.listFiles() ?: return out
         for (file in files) {
@@ -479,11 +481,14 @@ class OfflineCache(
                     continue
                 }
                 val item = readItem(file) ?: continue
-                if (item.isDirectory) {
-                    val content = flattenDir(file)
-                    content?.run(out::addAll)
-                } else if (hasAudio(item.path)) {
-                    out.add(item)
+                when {
+                    item is Directory -> {
+                        val content = flattenDir(file)
+                        content?.run(out::addAll)
+                    }
+                    item is Song && hasAudio(item.path) -> {
+                        out.add(item)
+                    }
                 }
             } catch (e: IOException) {
                 println("Error while reading offline cache: $e")
@@ -502,7 +507,7 @@ class OfflineCache(
         if (!itemFile.exists()) {
             return if (dir.isDirectory) {
                 val path = root.toURI().relativize(dir.toURI()).path
-                CollectionItem.Directory(path = path)
+                Directory(path = path)
             } else {
                 null
             }

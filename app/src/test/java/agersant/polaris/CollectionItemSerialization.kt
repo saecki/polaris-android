@@ -10,7 +10,7 @@ class CollectionItemSerialization {
     @Test
     fun songJson() {
         println("songJson")
-        val song = CollectionItem.Song(
+        val song = Song(
             path = "Music/Shinedown/Threat to Survival/02 - Shinedown - Cut the Cord.m4a",
             artist = "Shinedown",
             title = "Cut the Cord",
@@ -32,14 +32,14 @@ class CollectionItemSerialization {
         val string = json.encodeToString(CollectionItem.Serializer, song)
         val deserializedSong = json.decodeFromString(CollectionItem.Serializer, string)
 
-        Assert.assertTrue(deserializedSong is CollectionItem.Song)
+        Assert.assertTrue(deserializedSong is Song)
         Assert.assertEquals(deserializedSong, song)
     }
 
     @Test
     fun dirJson() {
         println("dirJson")
-        val dir = CollectionItem.Directory(
+        val dir = Directory(
             path = "Music/Shinedown/Threat to Survival",
             artist = "Shinedown",
             artwork = "Music/Shinedown/Threat to Survival/cover.jpg",
@@ -52,7 +52,7 @@ class CollectionItemSerialization {
         val string = json.encodeToString(CollectionItem.Serializer, dir)
         val deserializedDir = json.decodeFromString(CollectionItem.Serializer, string)
 
-        Assert.assertTrue(deserializedDir is CollectionItem.Directory)
+        Assert.assertTrue(deserializedDir is Directory)
         Assert.assertEquals(deserializedDir, dir)
     }
 
@@ -60,7 +60,7 @@ class CollectionItemSerialization {
     @OptIn(ExperimentalSerializationApi::class)
     fun songCbor() {
         println("songCbor")
-        val song = CollectionItem.Song(
+        val song = Song(
             path = "Music/Shinedown/Threat to Survival/02 - Shinedown - Cut the Cord.m4a",
             artist = "Shinedown",
             title = "Cut the Cord",
@@ -82,7 +82,7 @@ class CollectionItemSerialization {
         val bytes = cbor.encodeToByteArray(CollectionItem.Serializer, song)
         val deserializedSong = cbor.decodeFromByteArray(CollectionItem.Serializer, bytes)
 
-        Assert.assertTrue(deserializedSong is CollectionItem.Song)
+        Assert.assertTrue(deserializedSong is Song)
         Assert.assertEquals(deserializedSong, song)
     }
 
@@ -90,7 +90,7 @@ class CollectionItemSerialization {
     @OptIn(ExperimentalSerializationApi::class)
     fun dirCbor() {
         println("dirCbor")
-        val dir = CollectionItem.Directory(
+        val dir = Directory(
             path = "Music/Shinedown/Threat to Survival",
             artist = "Shinedown",
             artwork = "Music/Shinedown/Threat to Survival/cover.jpg",
@@ -103,7 +103,7 @@ class CollectionItemSerialization {
         val bytes = cbor.encodeToByteArray(CollectionItem.Serializer, dir)
         val deserializedDir = cbor.decodeFromByteArray(CollectionItem.Serializer, bytes)
 
-        Assert.assertTrue(deserializedDir is CollectionItem.Directory)
+        Assert.assertTrue(deserializedDir is Directory)
         Assert.assertEquals(deserializedDir, dir)
     }
 }

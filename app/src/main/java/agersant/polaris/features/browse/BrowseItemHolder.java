@@ -11,10 +11,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import agersant.polaris.CollectionItem;
+import agersant.polaris.Directory;
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.R;
+import agersant.polaris.Song;
 import agersant.polaris.api.API;
 import agersant.polaris.api.ItemsCallback;
+import agersant.polaris.api.SongCallback;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,20 +60,20 @@ abstract class BrowseItemHolder extends RecyclerView.ViewHolder implements View.
 
     @SuppressWarnings("UnusedParameters")
     void onSwiped(final View view) {
-        if (item.isDirectory()) {
+        if (item instanceof Directory) {
             queueDirectory();
             setStatusToFetching();
-        } else {
-            playbackQueue.addItem(item);
+        } else if (item instanceof Song) {
+            playbackQueue.addItem((Song) item);
             setStatusToQueued();
         }
     }
 
     private void queueDirectory() {
         final CollectionItem fetchingItem = item;
-        ItemsCallback handlers = new ItemsCallback() {
+        var handlers = new SongCallback() {
             @Override
-            public void onSuccess(final List<? extends CollectionItem> items) {
+            public void onSuccess(final List<Song> items) {
                 new Handler(Looper.getMainLooper()).post(() -> {
                     playbackQueue.addItems(items);
                     if (item == fetchingItem) {

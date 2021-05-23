@@ -13,6 +13,7 @@ import java.util.List;
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.R;
+import agersant.polaris.Song;
 import agersant.polaris.api.API;
 import agersant.polaris.api.ThumbnailSize;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -58,35 +59,32 @@ public class BrowseViewAlbum extends BrowseViewContent {
 
     @Override
     void setItems(List<? extends CollectionItem> items) {
-
-        Collections.sort(items, new Comparator<CollectionItem>() {
-            @Override
-            public int compare(CollectionItem a, CollectionItem b) {
-                int discDifference = a.getDiscNumber() - b.getDiscNumber();
-                if (discDifference != 0) {
-                    return discDifference;
-                }
-                return a.getTrackNumber() - b.getTrackNumber();
+        var songs = (List<Song>) items;
+        Collections.sort(songs, (a, b) -> {
+            int discDifference = a.getDiscNumber() - b.getDiscNumber();
+            if (discDifference != 0) {
+                return discDifference;
             }
+            return a.getTrackNumber() - b.getTrackNumber();
         });
 
-        adapter.setItems(items);
+        adapter.setItems(songs);
 
-        CollectionItem item = items.get(0);
+        var song = songs.get(0);
 
-        String artworkPath = item.getArtwork();
+        String artworkPath = song.getArtwork();
         if (artworkPath != null) {
-            api.loadThumbnailIntoView(item, ThumbnailSize.Small, artwork);
+            api.loadThumbnailIntoView(song, ThumbnailSize.Small, artwork);
         }
 
-        String titleString = item.getAlbum();
+        String titleString = song.getAlbum();
         if (title != null) {
             title.setText(titleString);
         }
 
-        String artistString = item.getAlbumArtist();
+        String artistString = song.getAlbumArtist();
         if (artistString == null) {
-            artistString = item.getArtist();
+            artistString = song.getArtist();
         }
         if (artist != null) {
             artist.setText(artistString);

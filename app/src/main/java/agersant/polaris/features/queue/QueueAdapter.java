@@ -12,6 +12,7 @@ import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.PolarisPlayer;
 import agersant.polaris.R;
+import agersant.polaris.Song;
 import agersant.polaris.api.local.OfflineCache;
 import agersant.polaris.api.remote.DownloadQueue;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,7 +70,7 @@ class QueueAdapter
         private final PolarisPlayer player;
         private final OfflineCache offlineCache;
         private final DownloadQueue downloadQueue;
-        private CollectionItem item;
+        private Song item;
         private QueueItemState state;
         private AsyncTask<Void, Void, QueueItemState> updateIconTask;
 
@@ -129,7 +130,7 @@ class QueueAdapter
             updateIconTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
-        void bindItem(final CollectionItem item) {
+        void bindItem(final Song item) {
 
             boolean isNewItem = item != this.item;
             this.item = item;

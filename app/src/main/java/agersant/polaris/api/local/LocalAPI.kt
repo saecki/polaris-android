@@ -1,6 +1,7 @@
 package agersant.polaris.api.local
 
 import agersant.polaris.CollectionItem
+import agersant.polaris.Song
 import agersant.polaris.api.IPolarisAPI
 import agersant.polaris.api.ThumbnailSize
 import android.graphics.Bitmap
@@ -18,7 +19,7 @@ class LocalAPI : IPolarisAPI {
         return offlineCache.hasAudio(path)
     }
 
-    override suspend fun getAudio(item: CollectionItem): MediaSource? {
+    override suspend fun getAudio(item: Song): MediaSource? {
         return offlineCache.getAudio(item.path)
     }
 
@@ -36,7 +37,7 @@ class LocalAPI : IPolarisAPI {
         return offlineCache.browse(path)
     }
 
-    override suspend fun flatten(path: String): List<CollectionItem>? {
+    override suspend fun flatten(path: String): List<Song>? {
         return offlineCache.flatten(path)
     }
 }

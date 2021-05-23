@@ -37,7 +37,7 @@ class PolarisPlayer internal constructor(
     private var mediaSource: MediaSource? = null
     private var loadAudioJob: Job? = null
     private var resumeProgress: Float
-    var currentItem: CollectionItem? = null
+    var currentItem: Song? = null
         private set
 
     init {
@@ -76,7 +76,7 @@ class PolarisPlayer internal constructor(
         currentItem = null
     }
 
-    fun play(item: CollectionItem) {
+    fun play(item: Song) {
         startServices()
         resumeProgress = -1f
         if (currentItem != null && item.path == currentItem!!.path) {
@@ -127,7 +127,7 @@ class PolarisPlayer internal constructor(
         broadcast(PAUSED_TRACK)
     }
 
-    private fun advance(currentItem: CollectionItem?, delta: Int): Boolean {
+    private fun advance(currentItem: Song?, delta: Int): Boolean {
         val newTrack = playbackQueue.getNextTrack(currentItem, delta)
         if (newTrack != null) {
             play(newTrack)

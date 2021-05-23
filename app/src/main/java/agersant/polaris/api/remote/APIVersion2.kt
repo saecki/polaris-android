@@ -1,6 +1,8 @@
 package agersant.polaris.api.remote
 
 import agersant.polaris.CollectionItem
+import agersant.polaris.Directory
+import agersant.polaris.Song
 import agersant.polaris.api.ThumbnailSize
 import agersant.polaris.api.remote.ServerAPI.Companion.apiRootURL
 import io.ktor.client.*
@@ -31,19 +33,19 @@ internal class APIVersion2(
         }
     }
 
-    override suspend fun flatten(path: String): List<CollectionItem>? {
+    override suspend fun flatten(path: String): List<Song>? {
         val url = "$apiRootURL/flatten/$path"
         return try {
-            client.get<List<CollectionItem.Song>>(url)
+            client.get(url)
         } catch (e: Exception) {
             println("Error flattening $url: $e")
             null
         }
     }
 
-    override suspend fun getAlbums(url: String): List<CollectionItem>? {
+    override suspend fun getAlbums(url: String): List<Directory>? {
         return try {
-            client.get<List<CollectionItem.Directory>>(url)
+            client.get(url)
         } catch (e: Exception) {
             println("Error getting albums $url: $e")
             null

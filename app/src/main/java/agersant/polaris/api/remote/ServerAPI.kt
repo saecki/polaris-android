@@ -1,8 +1,10 @@
 package agersant.polaris.api.remote
 
 import agersant.polaris.CollectionItem
+import agersant.polaris.Directory
 import agersant.polaris.IO
 import agersant.polaris.R
+import agersant.polaris.Song
 import agersant.polaris.api.ItemsCallback
 import agersant.polaris.api.ThumbnailSize
 import android.content.Context
@@ -102,11 +104,11 @@ class ServerAPI(context: Context) : IRemoteAPI {
         return fetchAPIVersion()?.browse(path)
     }
 
-    override suspend fun flatten(path: String): List<CollectionItem>? {
+    override suspend fun flatten(path: String): List<Song>? {
         return fetchAPIVersion()?.flatten(path)
     }
 
-    override suspend fun getRandomAlbums(): List<CollectionItem>? {
+    override suspend fun getRandomAlbums(): List<Directory>? {
         return fetchAPIVersion()?.getRandomAlbums()
     }
 
@@ -121,7 +123,7 @@ class ServerAPI(context: Context) : IRemoteAPI {
         }
     }
 
-    override suspend fun getRecentAlbums(): List<CollectionItem>? {
+    override suspend fun getRecentAlbums(): List<Directory>? {
         return fetchAPIVersion()?.getRecentAlbums()
     }
 
@@ -144,7 +146,7 @@ class ServerAPI(context: Context) : IRemoteAPI {
         return fetchAPIVersion()?.scrobbleOnLastFm(path) ?: false
     }
 
-    override suspend fun getAudio(item: CollectionItem): MediaSource? {
+    override suspend fun getAudio(item: Song): MediaSource? {
         return fetchAPIVersion()?.getAudio(item)
     }
 

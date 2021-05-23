@@ -10,6 +10,7 @@ import java.util.List;
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.R;
+import agersant.polaris.Song;
 import agersant.polaris.api.API;
 
 import static agersant.polaris.features.browse.BrowseAdapterAlbum.AlbumViewType.DISC_HEADER;
@@ -25,9 +26,10 @@ class BrowseAdapterAlbum extends BrowseAdapter {
 
     @Override
     void setItems(List<? extends CollectionItem> items) {
+        var songs = (List<Song>) items;
         discSizes = new SparseIntArray();
-        for (CollectionItem item : items) {
-            int discNumber = item.getDiscNumber();
+        for (Song song : songs) {
+            int discNumber = song.getDiscNumber();
             discSizes.put(discNumber, 1 + discSizes.get(discNumber, 0));
         }
         numDiscHeaders = discSizes.size();

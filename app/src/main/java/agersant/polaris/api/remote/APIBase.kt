@@ -1,6 +1,8 @@
 package agersant.polaris.api.remote
 
 import agersant.polaris.CollectionItem
+import agersant.polaris.Directory
+import agersant.polaris.Song
 import agersant.polaris.api.ThumbnailSize
 import agersant.polaris.api.remote.ServerAPI.Companion.apiRootURL
 import android.graphics.Bitmap
@@ -21,14 +23,14 @@ abstract class APIBase(
 
     abstract fun getThumbnailUrl(path: String, size: ThumbnailSize): String
 
-    protected abstract suspend fun getAlbums(url: String): List<CollectionItem>?
+    protected abstract suspend fun getAlbums(url: String): List<Directory>?
 
     override suspend fun getAudioUri(path: String): Uri? {
         val url = getAudioUrl(path)
         return Uri.parse(url)
     }
 
-    override suspend fun getAudio(item: CollectionItem): MediaSource? {
+    override suspend fun getAudio(item: Song): MediaSource? {
         return downloadQueue.getAudio(item)
     }
 
@@ -43,12 +45,12 @@ abstract class APIBase(
         }
     }
 
-    override suspend fun getRandomAlbums(): List<CollectionItem>? {
+    override suspend fun getRandomAlbums(): List<Directory>? {
         val url = "$apiRootURL/random/"
         return getAlbums(url)
     }
 
-    override suspend fun getRecentAlbums(): List<CollectionItem>? {
+    override suspend fun getRecentAlbums(): List<Directory>? {
         val url = "$apiRootURL/recent/"
         return getAlbums(url)
     }
