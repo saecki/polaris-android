@@ -1,7 +1,7 @@
 package agersant.polaris.features.player
 
-import agersant.polaris.CollectionItem
 import agersant.polaris.R
+import agersant.polaris.Song
 import agersant.polaris.databinding.ViewDetailsBinding
 import agersant.polaris.databinding.ViewDetailsItemBinding
 import agersant.polaris.util.formatTime
@@ -12,7 +12,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 
-fun Context.showDetailsDialog(item: CollectionItem): AlertDialog {
+fun Context.showDetailsDialog(song: Song): AlertDialog {
     val inflater = LayoutInflater.from(this)
     val detailsBinding = ViewDetailsBinding.inflate(inflater).apply {
         scrollView.setOnScrollChangeListener { v, _, _, _, _ ->
@@ -36,19 +36,19 @@ fun Context.showDetailsDialog(item: CollectionItem): AlertDialog {
             }
         }
 
-        addValue(R.string.details_title, item.title)
-        addValue(R.string.details_album, item.album)
-        addValue(R.string.details_artist, item.artist)
-        addValue(R.string.details_album_artist, item.albumArtist)
-        addValue(R.string.details_composer, item.composer)
-        addValue(R.string.details_lyricist, item.lyricist)
-        addValue(R.string.details_genre, item.genre)
-        addValue(R.string.details_release_label, item.label)
-        addValue(R.string.details_year, item.year)
-        addValue(R.string.details_track_number, item.trackNumber)
-        addValue(R.string.details_disc_number, item.discNumber)
-        if (item.duration != -1) {
-            addValue(R.string.details_duration, formatTime(item.duration))
+        addValue(R.string.details_title, song.title)
+        addValue(R.string.details_album, song.album)
+        addValue(R.string.details_artist, song.artist)
+        addValue(R.string.details_album_artist, song.albumArtist)
+        addValue(R.string.details_composer, song.composer)
+        addValue(R.string.details_lyricist, song.lyricist)
+        addValue(R.string.details_genre, song.genre)
+        addValue(R.string.details_release_label, song.label)
+        addValue(R.string.details_year, song.year)
+        addValue(R.string.details_track_number, song.trackNumber)
+        addValue(R.string.details_disc_number, song.discNumber)
+        if (song.duration != -1) {
+            addValue(R.string.details_duration, formatTime(song.duration))
         }
     }
 

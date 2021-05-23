@@ -3,6 +3,7 @@ package agersant.polaris.api
 import agersant.polaris.CollectionItem
 import agersant.polaris.PolarisApp
 import agersant.polaris.R
+import agersant.polaris.Song
 import agersant.polaris.api.local.ImageCache.Companion.instance
 import agersant.polaris.api.local.LocalAPI
 import agersant.polaris.api.local.OfflineCache
@@ -41,7 +42,7 @@ class API(context: Context) {
     val isOffline: Boolean
         get() = preferences.getBoolean(offlineModePreferenceKey, false)
 
-    suspend fun loadAudio(item: CollectionItem): MediaSource? {
+    suspend fun loadAudio(item: Song): MediaSource? {
         if (localAPI.hasAudio(item)) {
             val source = localAPI.getAudio(item)
             return source ?: run {
@@ -60,7 +61,7 @@ class API(context: Context) {
     }
 
     private suspend fun loadThumbnail(item: CollectionItem, size: ThumbnailSize): Bitmap? {
-        item.artwork ?: return null
+        val artwork = item.artwork ?: return null
 
         var bitmap: Bitmap? = null
         var fromDiskCache = false
@@ -71,12 +72,12 @@ class API(context: Context) {
         }
 
         if (bitmap == null && !isOffline) {
-            bitmap = serverAPI.getThumbnail(item.artwork, size)
+            bitmap = serverAPI.getThumbnail(artwork, size)
         }
 
         if (bitmap != null) {
             val cache = instance
-            cache[item.artwork, size] = bitmap
+            cache[artwork, size] = bitmap
             if (!fromDiskCache) {
                 offlineCache.putImage(item, size, bitmap)
             }
@@ -132,11 +133,11 @@ class API(context: Context) {
         }
     }
 
-    suspend fun flatten(path: String): List<CollectionItem>? {
+    suspend fun flatten(path: String): List<Song>? {
         return api.flatten(path)
     }
 
-    fun flatten(path: String, handlers: ItemsCallback) { // TODO: remove when possible
+    fun flatten(path: String, handlers: SongCallback) { // TODO: remove when possible
         GlobalScope.launch(Dispatchers.IO) {
             val items = flatten(path)
             if (items != null) {

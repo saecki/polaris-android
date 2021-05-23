@@ -8,6 +8,7 @@ import java.util.Locale;
 import agersant.polaris.CollectionItem;
 import agersant.polaris.PlaybackQueue;
 import agersant.polaris.R;
+import agersant.polaris.Song;
 import agersant.polaris.api.API;
 
 
@@ -26,14 +27,16 @@ class BrowseItemHolderAlbumTrack extends BrowseItemHolder {
     void bindItem(CollectionItem item) {
         super.bindItem(item);
 
-        String title = item.getTitle();
+        var song = (Song) item;
+
+        String title = song.getTitle();
         if (title != null) {
             titleText.setText(title);
         } else {
-            titleText.setText(item.getName());
+            titleText.setText(song.getName());
         }
 
-        Integer trackNumber = item.getTrackNumber();
+        int trackNumber = song.getTrackNumber();
         if (trackNumber >= 0) {
             trackNumberText.setText(String.format((Locale) null, "%1$02d.", trackNumber));
         } else {

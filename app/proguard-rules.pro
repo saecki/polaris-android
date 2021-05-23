@@ -17,3 +17,5 @@
 #}
 
 -dontwarn okio.**
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.AnnotationsKt

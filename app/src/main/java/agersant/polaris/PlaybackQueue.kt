@@ -20,10 +20,10 @@ class PlaybackQueue internal constructor() {
 
     @Serializable
     internal data class State(
-        @JvmField val queueOrdering: Ordering = Ordering.SEQUENCE,
-        @JvmField val queueContent: MutableList<CollectionItem> = mutableListOf(),
-        @JvmField val queueIndex: Int = -1,
-        @JvmField val trackProgress: Float = 0f,
+        val queueOrdering: Ordering = Ordering.SEQUENCE,
+        val queueContent: MutableList<Song> = mutableListOf(),
+        val queueIndex: Int = -1,
+        val trackProgress: Float = 0f,
     ) {
         companion object {
             const val VERSION = 5
@@ -47,7 +47,7 @@ class PlaybackQueue internal constructor() {
             broadcast(CHANGED_ORDERING)
         }
 
-    var content: MutableList<CollectionItem> = mutableListOf()
+    var content: MutableList<Song> = mutableListOf()
         set(value) {
             field = value
             broadcast(OVERWROTE_QUEUE)
@@ -81,17 +81,12 @@ class PlaybackQueue internal constructor() {
         return scoreA - scoreB
     }
 
-    private fun addItemInternal(item: CollectionItem) {
-        val newItem = try {
-            item.clone()
-        } catch (e: Exception) {
-            System.err.println("Error while cloning CollectionItem: $e")
-            return
-        }
-        content.add(newItem)
+    private fun addItemInternal(item: Song) {
+        content.removeIf { it.path == item.path }
+        content.add(item)
     }
 
-    fun addItems(items: List<CollectionItem>) {
+    fun addItems(items: List<Song>) {
         val wasEmpty = size == 0
         for (item in items) {
             addItemInternal(item)
@@ -102,7 +97,7 @@ class PlaybackQueue internal constructor() {
         }
     }
 
-    fun addItem(item: CollectionItem) {
+    fun addItem(item: Song) {
         val wasEmpty = size == 0
         addItemInternal(item)
         broadcast(QUEUED_ITEM)
@@ -137,11 +132,11 @@ class PlaybackQueue internal constructor() {
         broadcast(REORDERED_ITEMS)
     }
 
-    fun getItem(position: Int): CollectionItem? {
+    fun getItem(position: Int): Song? {
         return content.getOrNull(position)
     }
 
-    fun getNextTrack(from: CollectionItem?, delta: Int): CollectionItem? {
+    fun getNextTrack(from: Song?, delta: Int): Song? {
         if (content.isEmpty()) {
             return null
         }
@@ -168,11 +163,11 @@ class PlaybackQueue internal constructor() {
         }
     }
 
-    fun hasNextTrack(currentItem: CollectionItem?): Boolean {
+    fun hasNextTrack(currentItem: Song?): Boolean {
         return getNextTrack(currentItem, 1) != null
     }
 
-    fun hasPreviousTrack(currentItem: CollectionItem?): Boolean {
+    fun hasPreviousTrack(currentItem: Song?): Boolean {
         return getNextTrack(currentItem, -1) != null
     }
 
