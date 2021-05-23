@@ -122,14 +122,14 @@ class OfflineCache(
                     }
                 }
 
-                var item: CollectionItem? = null
-                try {
-                    item = readItem(child)
+                val item = try {
+                    readItem(child)
                 } catch (e: Exception) {
                     println("Error reading collection item for $child $e")
+                    null
                 }
 
-                val candidate = DeletionCandidate(child, metadata, item)
+                val candidate = DeletionCandidate(child, metadata, item as? Song)
                 candidates.add(candidate)
             } else if (child.isDirectory) {
                 candidates.addAll(listDeletionCandidates(child))
@@ -156,7 +156,7 @@ class OfflineCache(
         return size
     }
 
-    private fun removeOldAudio(path: File, newItem: CollectionItem, bytesToSave: Long): Boolean {
+    private fun removeOldAudio(path: File, newSong: Song, bytesToSave: Long): Boolean {
         val candidates = listDeletionCandidates(path)
 
         candidates.sortWith { a: DeletionCandidate, b: DeletionCandidate ->
@@ -166,7 +166,7 @@ class OfflineCache(
                 }
                 a.item == null -> -1
                 b.item == null -> 1
-                else -> -playbackQueue.comparePriorities(player.currentItem, a.item, b.item)
+                else -> -playbackQueue.comparePriorities(player.currentSong, a.item, b.item)
             }
         }
 
@@ -174,9 +174,9 @@ class OfflineCache(
         for (candidate in candidates) {
             if (candidate.item != null) {
                 if (playbackQueue.comparePriorities(
-                        player.currentItem,
+                        player.currentSong,
                         candidate.item,
-                        newItem
+                        newSong
                     ) <= 0
                 ) {
                     continue
@@ -201,13 +201,13 @@ class OfflineCache(
     }
 
     @Synchronized
-    fun makeSpace(item: CollectionItem): Boolean {
+    fun makeSpace(song: Song): Boolean {
         val cacheSize = getCacheSize(root)
         val cacheCapacity = cacheCapacity
         val overflow = cacheSize - cacheCapacity
         var success = true
         if (overflow > 0) {
-            success = removeOldAudio(root, item, overflow)
+            success = removeOldAudio(root, song, overflow)
             removeEmptyDirectories(root)
         }
         return success
@@ -244,12 +244,12 @@ class OfflineCache(
     }
 
     @Synchronized
-    fun putAudio(item: CollectionItem, audio: FileInputStream?) {
-        makeSpace(item) // TODO we don't need this called so often. Every n minutes should do.
-        val path = item.path
+    fun putAudio(song: Song, audio: FileInputStream?) {
+        makeSpace(song) // TODO we don't need this called so often. Every n minutes should do.
+        val path = song.path
         try {
             FileOutputStream(createCacheFile(path, CacheDataType.ITEM)).use { itemOut ->
-                write(item, itemOut)
+                write(song, itemOut)
             }
         } catch (e: IOException) {
             println("Error while caching item for local use: $e")
@@ -536,7 +536,7 @@ class OfflineCache(
     private class DeletionCandidate(
         val cachePath: File,
         val metadata: ItemCacheMetadata,
-        val item: CollectionItem?
+        val item: Song?
     )
 
     @Serializable

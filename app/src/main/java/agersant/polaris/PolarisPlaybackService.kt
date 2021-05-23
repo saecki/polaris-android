@@ -45,7 +45,7 @@ class PolarisPlaybackService : LifecycleService() {
     private lateinit var audioManager: AudioManager
     private var audioFocusRequest: AudioFocusRequest? = null
     private var notification: Notification? = null
-    private var notificationItem: CollectionItem? = null
+    private var notificationSong: Song? = null
     private lateinit var notificationManager: NotificationManager
     private lateinit var autoSaveHandler: Handler
     private lateinit var autoSaveRunnable: Runnable
@@ -180,26 +180,26 @@ class PolarisPlaybackService : LifecycleService() {
 
         mediaSession.setPlaybackState(builder.build())
         val metadataBuilder = MediaMetadataCompat.Builder()
-        val currentItem = player.currentItem
-        if (currentItem != null) {
-            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentItem.title)
-            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentItem.artist)
-            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentItem.album)
+        val currentSong = player.currentSong
+        if (currentSong != null) {
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.title)
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.artist)
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.album)
             metadataBuilder.putString(
                 MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST,
-                currentItem.albumArtist
+                currentSong.albumArtist
             )
             metadataBuilder.putLong(
                 MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER,
-                currentItem.trackNumber.toLong()
+                currentSong.trackNumber.toLong()
             )
             metadataBuilder.putLong(
                 MediaMetadataCompat.METADATA_KEY_DISC_NUMBER,
-                currentItem.discNumber.toLong()
+                currentSong.discNumber.toLong()
             )
             metadataBuilder.putLong(
                 MediaMetadataCompat.METADATA_KEY_YEAR,
-                currentItem.year.toLong()
+                currentSong.year.toLong()
             )
         }
         metadataBuilder.putLong(
@@ -266,7 +266,7 @@ class PolarisPlaybackService : LifecycleService() {
 
     private fun pushSystemNotification() {
         val isPlaying = player.isPlaying
-        val item = player.currentItem ?: return
+        val song = player.currentSong ?: return
 
         // On tap action
         val tapPendingIntent = NavDeepLinkBuilder(this)
@@ -287,24 +287,24 @@ class PolarisPlaybackService : LifecycleService() {
         }
         notificationBuilder.setShowWhen(false)
             .setSmallIcon(R.drawable.notification_icon)
-            .setContentTitle(item.title)
-            .setContentText(item.artist)
+            .setContentTitle(song.title)
+            .setContentText(song.artist)
             .setVisibility(Notification.VISIBILITY_PUBLIC)
             .setContentIntent(tapPendingIntent)
             .setDeleteIntent(dismissPendingIntent).style = Notification.MediaStyle()
             .setShowActionsInCompactView()
 
         // Add album art
-        if (item === notificationItem && notification != null && notification?.getLargeIcon() != null) {
+        if (song === notificationSong && notification != null && notification?.getLargeIcon() != null) {
             notificationBuilder.setLargeIcon(notification?.getLargeIcon())
         }
-        if (item.artwork != null) {
-            api.loadThumbnail(item, ThumbnailSize.Small) { bitmap: Bitmap? ->
-                if (item !== player.currentItem) {
+        if (song.artwork != null) {
+            api.loadThumbnail(song, ThumbnailSize.Small) { bitmap: Bitmap? ->
+                if (song !== player.currentSong) {
                     return@loadThumbnail
                 }
                 notificationBuilder.setLargeIcon(bitmap)
-                emitNotification(notificationBuilder, item)
+                emitNotification(notificationBuilder, song)
             }
         }
 
@@ -342,7 +342,7 @@ class PolarisPlaybackService : LifecycleService() {
         )
 
         // Emit notification
-        emitNotification(notificationBuilder, item)
+        emitNotification(notificationBuilder, song)
         if (isPlaying) {
             startForeground(MEDIA_NOTIFICATION, notification)
         } else {
@@ -350,8 +350,8 @@ class PolarisPlaybackService : LifecycleService() {
         }
     }
 
-    private fun emitNotification(notificationBuilder: Notification.Builder, item: CollectionItem) {
-        notificationItem = item
+    private fun emitNotification(notificationBuilder: Notification.Builder, song: Song) {
+        notificationSong = song
         notification = notificationBuilder.build()
         notificationManager.notify(MEDIA_NOTIFICATION, notification)
     }
@@ -371,7 +371,7 @@ class PolarisPlaybackService : LifecycleService() {
         val state = PlaybackQueue.State(
             queueOrdering = playbackQueue.ordering,
             queueContent = playbackQueue.content,
-            queueIndex = playbackQueue.content.indexOf(player.currentItem),
+            queueIndex = playbackQueue.content.indexOf(player.currentSong),
             trackProgress = player.positionRelative,
         )
 
@@ -401,9 +401,9 @@ class PolarisPlaybackService : LifecycleService() {
                         playbackQueue.ordering = queueOrdering
                         playbackQueue.content = queueContent
                         if (queueIndex >= 0) {
-                            val currentItem = playbackQueue.getItem(queueIndex)
-                            if (currentItem != null) {
-                                player.play(currentItem)
+                            val currentSong = playbackQueue.getItem(queueIndex)
+                            if (currentSong != null) {
+                                player.play(currentSong)
                                 player.pause()
                                 player.seekToRelative(trackProgress)
                             }

@@ -14,8 +14,8 @@ import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.util.BitSet;
 
-import agersant.polaris.CollectionItem;
 import agersant.polaris.PolarisApp;
+import agersant.polaris.Song;
 import agersant.polaris.api.local.OfflineCache;
 
 
@@ -23,8 +23,8 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
 
     private final PolarisExoPlayerHttpDataSource dataSource;
 
-    PolarisExoPlayerDataSourceFactory(OfflineCache offlineCache, Auth auth, File scratchLocation, CollectionItem item) {
-        PolarisExoPlayerHttpDataSourceFactory dataSourceFactory = new PolarisExoPlayerHttpDataSourceFactory(offlineCache, auth, scratchLocation, item);
+    PolarisExoPlayerDataSourceFactory(OfflineCache offlineCache, Auth auth, File scratchLocation, Song song) {
+        PolarisExoPlayerHttpDataSourceFactory dataSourceFactory = new PolarisExoPlayerHttpDataSourceFactory(offlineCache, auth, scratchLocation, song);
         dataSource = dataSourceFactory.createDataSource();
     }
 
@@ -61,16 +61,16 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
 
         private final File scratchLocation;
         private final OfflineCache offlineCache;
-        private final CollectionItem item;
+        private final Song song;
         private BitSet bytesStreamed;
         private RandomAccessFile file;
 
-        PolarisExoPlayerHttpDataSource(OfflineCache offlineCache, RequestProperties requestProperties, PolarisExoPlayerTransferListener listener, File scratchLocation, CollectionItem item) {
+        PolarisExoPlayerHttpDataSource(OfflineCache offlineCache, RequestProperties requestProperties, PolarisExoPlayerTransferListener listener, File scratchLocation, Song song) {
             super("Polaris Android", DEFAULT_CONNECT_TIMEOUT_MILLIS, DEFAULT_READ_TIMEOUT_MILLIS, true, requestProperties); //TODO: use factory instead of deprecated constructor
             addTransferListener(listener);
             this.scratchLocation = scratchLocation;
             this.offlineCache = offlineCache;
-            this.item = item;
+            this.song = song;
         }
 
         @Override
@@ -119,7 +119,7 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
             }
 
             if (bytesStreamed.nextClearBit(0) >= length) {
-                System.out.println("Streaming complete, saving file for local use: " + item.getPath());
+                System.out.println("Streaming complete, saving file for local use: " + song.getPath());
                 try {
                     file.close();
                 } catch (Exception e) {
@@ -128,7 +128,7 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
                 file = null;
 
                 try (FileInputStream scratchFile = new FileInputStream(scratchLocation)) {
-                    offlineCache.putAudio(item, scratchFile);
+                    offlineCache.putAudio(song, scratchFile);
                 } catch (Exception e) {
                     System.out.println("Error while saving stream audio in offline cache: " + e);
                 }
@@ -153,14 +153,14 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
 
         final OfflineCache offlineCache;
         final Auth auth;
-        final CollectionItem item;
+        final Song song;
         final File scratchLocation;
 
-        PolarisExoPlayerHttpDataSourceFactory(OfflineCache offlineCache, Auth auth, File scratchLocation, CollectionItem item) {
+        PolarisExoPlayerHttpDataSourceFactory(OfflineCache offlineCache, Auth auth, File scratchLocation, Song song) {
             this.offlineCache = offlineCache;
             this.auth = auth;
             this.scratchLocation = scratchLocation;
-            this.item = item;
+            this.song = song;
         }
 
         @Override
@@ -175,7 +175,7 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
                 requestProperties.set("Authorization", authRaw);
             }
 
-            return new PolarisExoPlayerHttpDataSource(offlineCache, requestProperties, new PolarisExoPlayerTransferListener(), scratchLocation, item);
+            return new PolarisExoPlayerHttpDataSource(offlineCache, requestProperties, new PolarisExoPlayerTransferListener(), scratchLocation, song);
         }
     }
 }

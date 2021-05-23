@@ -92,6 +92,7 @@ internal class DownloadQueueWorker(
 
     suspend fun beginBackgroundDownload(): Boolean = state.run {
         if (this !is State.Initialized) return false
+        if (isStreaming(song)) return false
 
         val uri = withContext(Dispatchers.IO) { serverAPI.getAudioUri(song.path) }
         uri ?: return false

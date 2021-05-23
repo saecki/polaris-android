@@ -84,7 +84,7 @@ class PolarisScrobbleService : LifecycleService() {
 
     private fun nowPlaying() {
         if (api.isOffline) return
-        val item = player.currentItem ?: return
+        val item = player.currentSong ?: return
 
         lifecycleScope.launch(Dispatchers.IO) {
             serverAPI.setLastFmNowPlaying(item.path)
@@ -95,7 +95,7 @@ class PolarisScrobbleService : LifecycleService() {
         if (api.isOffline) return
         if (scrobbledTrack || seekedWithinTrack) return
         if (!player.isPlaying) return
-        val item = player.currentItem ?: return
+        val item = player.currentSong ?: return
 
         val duration = player.duration / 1000 // in seconds
         val currentTime = player.currentPosition / 1000 // in seconds
