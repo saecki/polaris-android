@@ -5,4 +5,5 @@ import io.ktor.client.*
 internal open class APIVersion6(
     downloadQueue: DownloadQueue,
     client: HttpClient,
-) : APIVersion5(downloadQueue, client)
+    apiRootUrl: String,
+) : APIVersion5(downloadQueue, client, apiRootUrl)

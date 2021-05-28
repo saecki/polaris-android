@@ -1,10 +1,8 @@
 package agersant.polaris.api.remote
 
-import agersant.polaris.CollectionItem
 import agersant.polaris.Directory
 import agersant.polaris.Song
 import agersant.polaris.api.ThumbnailSize
-import agersant.polaris.api.remote.ServerAPI.Companion.apiRootURL
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -17,6 +15,7 @@ import io.ktor.utils.io.jvm.javaio.*
 abstract class APIBase(
     private val downloadQueue: DownloadQueue,
     protected val client: HttpClient,
+    protected val apiRootUrl: String,
 ) : IRemoteAPI {
 
     abstract fun getAudioUrl(path: String): String
@@ -46,12 +45,12 @@ abstract class APIBase(
     }
 
     override suspend fun getRandomAlbums(): List<Directory>? {
-        val url = "$apiRootURL/random/"
+        val url = "$apiRootUrl/random/"
         return getAlbums(url)
     }
 
     override suspend fun getRecentAlbums(): List<Directory>? {
-        val url = "$apiRootURL/recent/"
+        val url = "$apiRootUrl/recent/"
         return getAlbums(url)
     }
 }

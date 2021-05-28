@@ -16,7 +16,7 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class Auth implements Interceptor {
+public class CookieAuth implements Interceptor {
 
     private static final Pattern setCookiePattern = Pattern.compile("^(session=[^;]+)");
     private final AtomicReference<String> syncCookie;
@@ -24,7 +24,7 @@ public class Auth implements Interceptor {
     private final String usernameKey;
     private final String passwordKey;
 
-    Auth(Context context) {
+    CookieAuth(Context context) {
         this.syncCookie = new AtomicReference<>(null);
         this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.usernameKey = context.getString(R.string.pref_key_username);

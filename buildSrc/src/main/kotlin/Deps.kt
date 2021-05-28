@@ -58,8 +58,9 @@ object Deps {
     }
 
     object KtorClient {
-        const val version = "1.5.4"
+        const val version = "1.6.0"
         const val core = "io.ktor:ktor-client-core:$version"
+        const val auth = "io.ktor:ktor-client-auth:$version"
         const val okhttp = "io.ktor:ktor-client-okhttp:$version"
         const val serialization = "io.ktor:ktor-client-serialization:$version"
     }

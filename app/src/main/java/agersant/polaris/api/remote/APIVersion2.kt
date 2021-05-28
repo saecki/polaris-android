@@ -4,7 +4,6 @@ import agersant.polaris.CollectionItem
 import agersant.polaris.Directory
 import agersant.polaris.Song
 import agersant.polaris.api.ThumbnailSize
-import agersant.polaris.api.remote.ServerAPI.Companion.apiRootURL
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -12,19 +11,20 @@ import io.ktor.http.*
 internal class APIVersion2(
     downloadQueue: DownloadQueue,
     client: HttpClient,
-) : APIBase(downloadQueue, client) {
+    apiRootUrl: String,
+) : APIBase(downloadQueue, client, apiRootUrl) {
 
     override fun getAudioUrl(path: String): String {
-        return "$apiRootURL/serve/$path"
+        return "$apiRootUrl/serve/$path"
     }
 
     override fun getThumbnailUrl(path: String, size: ThumbnailSize): String {
-        val serverAddress = apiRootURL
+        val serverAddress = apiRootUrl
         return "$serverAddress/serve/$path"
     }
 
     override suspend fun browse(path: String): List<CollectionItem>? {
-        val url = "$apiRootURL/browse/$path"
+        val url = "$apiRootUrl/browse/$path"
         return try {
             client.get(url)
         } catch (e: Exception) {
@@ -34,7 +34,7 @@ internal class APIVersion2(
     }
 
     override suspend fun flatten(path: String): List<Song>? {
-        val url = "$apiRootURL/flatten/$path"
+        val url = "$apiRootUrl/flatten/$path"
         return try {
             client.get(url)
         } catch (e: Exception) {
@@ -53,7 +53,7 @@ internal class APIVersion2(
     }
 
     override suspend fun setLastFmNowPlaying(path: String): Boolean {
-        val url = "$apiRootURL/lastfm/now_playing/$path"
+        val url = "$apiRootUrl/lastfm/now_playing/$path"
         return try {
             val status = client.put<HttpStatusCode>(url)
             status == HttpStatusCode.OK
@@ -64,7 +64,7 @@ internal class APIVersion2(
     }
 
     override suspend fun scrobbleOnLastFm(path: String): Boolean {
-        val url = "$apiRootURL/lastfm/scrobble/$path"
+        val url = "$apiRootUrl/lastfm/scrobble/$path"
         return try {
             val status = client.put<HttpStatusCode>(url)
             status == HttpStatusCode.OK

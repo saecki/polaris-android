@@ -8,57 +8,62 @@ import agersant.polaris.Song
 import agersant.polaris.api.ItemsCallback
 import agersant.polaris.api.ThumbnailSize
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.preference.PreferenceManager
 import com.google.android.exoplayer2.source.MediaSource
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.auth.*
+import io.ktor.client.features.auth.providers.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 
-class ServerAPI(context: Context) : IRemoteAPI {
+class ServerAPI(private val context: Context) : IRemoteAPI {
 
-    companion object {
-        private lateinit var serverAddressKey: String
-        private lateinit var preferences: SharedPreferences
-
-        @JvmStatic
-        val apiRootURL: String
-            get() {
-                var address = preferences.getString(serverAddressKey, "")!!.trim()
-                if (!address.startsWith("http://") && !address.startsWith("https://")) {
-                    address = "http://$address"
-                }
-                address = address.replace("/$".toRegex(), "")
-                return "$address/api"
-            }
-    }
-
+    private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val serverUrlKey = context.getString(R.string.pref_key_server_url)
+    private val usernameKey = context.getString(R.string.pref_key_username)
+    private val passwordKey = context.getString(R.string.pref_key_password)
     private lateinit var downloadQueue: DownloadQueue
     private val client = buildClient()
-    val auth = Auth(context)
+    val cookieAuth = CookieAuth(context)
+    private var currentVersion: IRemoteAPI? = null
 
     init {
-        serverAddressKey = context.getString(R.string.pref_key_server_url)
-        preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        preferences.registerOnSharedPreferenceChangeListener { _: SharedPreferences?, _: String? ->
-            currentVersion = null
+        preferences.registerOnSharedPreferenceChangeListener { _, key ->
+            when (key) {
+                serverUrlKey, usernameKey, passwordKey -> {
+                    currentVersion = null
+                }
+                else -> Unit
+            }
         }
     }
+
+    private val apiRootUrl: String
+        get() {
+            val address = preferences.getString(serverUrlKey, "")!!.trim().trimEnd('/')
+
+            return if (!address.startsWith("http://") && !address.startsWith("https://")) {
+                "http://$address/api"
+            } else {
+                "$address/api"
+            }
+        }
 
     fun initialize(downloadQueue: DownloadQueue) {
         this.downloadQueue = downloadQueue
     }
 
-    private fun buildClient(config: HttpClientConfig<OkHttpConfig>.() -> Unit = {}) = HttpClient(OkHttp) {
+    private fun buildClient(configure: HttpClientConfig<OkHttpConfig>.() -> Unit = {}) = HttpClient(OkHttp) {
         install(JsonFeature) {
             serializer = KotlinxSerializer(Serializers.json)
         }
@@ -67,15 +72,14 @@ class ServerAPI(context: Context) : IRemoteAPI {
                 retryOnConnectionFailure(true)
             }
         }
-        config()
+        configure()
     }
 
-    private var currentVersion: IRemoteAPI? = null
     private suspend fun fetchAPIVersion(): IRemoteAPI? {
         if (currentVersion != null) return currentVersion
 
         return try {
-            val version = client.get<APIVersion>("$apiRootURL/version")
+            val version = client.get<APIVersion>("$apiRootUrl/version")
             currentVersion = selectImplementation(version)
             currentVersion
         } catch (e: Exception) {
@@ -85,19 +89,39 @@ class ServerAPI(context: Context) : IRemoteAPI {
     }
 
     private fun selectImplementation(version: APIVersion): IRemoteAPI {
-        val client = buildClient {
-            engine {
-                addInterceptor(auth)
+        val authenticatedClient = buildClient {
+            when {
+                version.major <= 5 -> engine {
+                    addInterceptor(cookieAuth)
+                }
+                else -> install(Auth) {
+                    bearer {
+                        loadTokens { login() }
+                    }
+                }
             }
         }
         return when {
-            version.major <= 2 -> APIVersion2(downloadQueue, client)
-            version.major <= 3 -> APIVersion3(downloadQueue, client)
-            version.major <= 4 -> APIVersion4(downloadQueue, client)
-            version.major <= 5 -> APIVersion5(downloadQueue, client)
-            version.major <= 6 -> APIVersion6(downloadQueue, client)
-            else -> APIVersion7(downloadQueue, client)
+            version.major <= 2 -> APIVersion2(downloadQueue, authenticatedClient, apiRootUrl)
+            version.major <= 3 -> APIVersion3(downloadQueue, authenticatedClient, apiRootUrl)
+            version.major <= 4 -> APIVersion4(downloadQueue, authenticatedClient, apiRootUrl)
+            version.major <= 5 -> APIVersion5(downloadQueue, authenticatedClient, apiRootUrl)
+            version.major <= 6 -> APIVersion6(downloadQueue, authenticatedClient, apiRootUrl)
+            else -> APIVersion7(downloadQueue, authenticatedClient, apiRootUrl)
         }
+    }
+
+    private suspend fun login(): BearerTokens {
+        val username = preferences.getString(usernameKey, "")!!
+        val password = preferences.getString(passwordKey, "")!!
+
+        println("getting bearer token")
+        val auth = client.post<Authorization>("$apiRootUrl/auth/") {
+            contentType(ContentType.Application.Json)
+            body = Credentials(username, password)
+        }
+
+        return BearerTokens(accessToken = auth.token, refreshToken = auth.token)
     }
 
     override suspend fun browse(path: String): List<CollectionItem>? = withContext(IO) {

@@ -93,6 +93,7 @@ dependencies {
     implementation(Deps.Kotlinx.Serialization.cbor)
     implementation(Deps.KtorClient.serialization)
     implementation(Deps.KtorClient.core)
+    implementation(Deps.KtorClient.auth)
     implementation(Deps.KtorClient.okhttp)
 
     implementation(Deps.okhttp)

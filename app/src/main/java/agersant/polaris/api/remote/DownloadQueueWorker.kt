@@ -12,7 +12,6 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DataSpec
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -83,7 +82,7 @@ internal class DownloadQueueWorker(
         val uri = serverAPI.getAudioUri(song.path)
         uri ?: return false
 
-        val dsf = PolarisExoPlayerDataSourceFactory(offlineCache, serverAPI.auth, scratchFile, song)
+        val dsf = PolarisExoPlayerDataSourceFactory(offlineCache, serverAPI.cookieAuth, scratchFile, song)
         val mediaSource = ProgressiveMediaSource.Factory(dsf).createMediaSource(MediaItem.fromUri(uri))
         val dataSource = dsf.createDataSource()
         state = State.Initialized(song, mediaSource, dataSource)

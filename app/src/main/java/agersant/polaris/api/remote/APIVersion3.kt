@@ -4,7 +4,6 @@ import agersant.polaris.CollectionItem
 import agersant.polaris.Directory
 import agersant.polaris.Song
 import agersant.polaris.api.ThumbnailSize
-import agersant.polaris.api.remote.ServerAPI.Companion.apiRootURL
 import android.net.Uri
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -13,18 +12,19 @@ import io.ktor.http.*
 internal open class APIVersion3(
     downloadQueue: DownloadQueue,
     client: HttpClient,
-) : APIBase(downloadQueue, client) {
+    apiRootUrl: String,
+) : APIBase(downloadQueue, client, apiRootUrl) {
 
     override fun getAudioUrl(path: String): String {
-        return "$apiRootURL/serve/${Uri.encode(path)}"
+        return "$apiRootUrl/serve/${Uri.encode(path)}"
     }
 
     override fun getThumbnailUrl(path: String, size: ThumbnailSize): String {
-        return "$apiRootURL/serve/${Uri.encode(path)}"
+        return "$apiRootUrl/serve/${Uri.encode(path)}"
     }
 
     override suspend fun browse(path: String): List<CollectionItem>? {
-        val url = "$apiRootURL/browse/${Uri.encode(path)}"
+        val url = "$apiRootUrl/browse/${Uri.encode(path)}"
         return try {
             client.get(url)
         } catch (e: Exception) {
@@ -34,7 +34,7 @@ internal open class APIVersion3(
     }
 
     override suspend fun flatten(path: String): List<Song>? {
-        val url = "$apiRootURL/flatten/${Uri.encode(path)}"
+        val url = "$apiRootUrl/flatten/${Uri.encode(path)}"
         return try {
             client.get(url)
         } catch (e: Exception) {
@@ -53,7 +53,7 @@ internal open class APIVersion3(
     }
 
     override suspend fun setLastFmNowPlaying(path: String): Boolean {
-        val url = "$apiRootURL/lastfm/now_playing/${Uri.encode(path)}"
+        val url = "$apiRootUrl/lastfm/now_playing/${Uri.encode(path)}"
         return try {
             val status = client.put<HttpStatusCode>(url)
             status == HttpStatusCode.OK
@@ -64,7 +64,7 @@ internal open class APIVersion3(
     }
 
     override suspend fun scrobbleOnLastFm(path: String): Boolean {
-        val url = "$apiRootURL/lastfm/scrobble/${Uri.encode(path)}"
+        val url = "$apiRootUrl/lastfm/scrobble/${Uri.encode(path)}"
         return try {
             val status = client.put<HttpStatusCode>(url)
             status == HttpStatusCode.OK

@@ -23,8 +23,8 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
 
     private final PolarisExoPlayerHttpDataSource dataSource;
 
-    PolarisExoPlayerDataSourceFactory(OfflineCache offlineCache, Auth auth, File scratchLocation, Song song) {
-        PolarisExoPlayerHttpDataSourceFactory dataSourceFactory = new PolarisExoPlayerHttpDataSourceFactory(offlineCache, auth, scratchLocation, song);
+    PolarisExoPlayerDataSourceFactory(OfflineCache offlineCache, CookieAuth cookieAuth, File scratchLocation, Song song) {
+        PolarisExoPlayerHttpDataSourceFactory dataSourceFactory = new PolarisExoPlayerHttpDataSourceFactory(offlineCache, cookieAuth, scratchLocation, song);
         dataSource = dataSourceFactory.createDataSource();
     }
 
@@ -152,13 +152,13 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
     private class PolarisExoPlayerHttpDataSourceFactory implements DataSource.Factory {
 
         final OfflineCache offlineCache;
-        final Auth auth;
+        final CookieAuth cookieAuth;
         final Song song;
         final File scratchLocation;
 
-        PolarisExoPlayerHttpDataSourceFactory(OfflineCache offlineCache, Auth auth, File scratchLocation, Song song) {
+        PolarisExoPlayerHttpDataSourceFactory(OfflineCache offlineCache, CookieAuth cookieAuth, File scratchLocation, Song song) {
             this.offlineCache = offlineCache;
-            this.auth = auth;
+            this.cookieAuth = cookieAuth;
             this.scratchLocation = scratchLocation;
             this.song = song;
         }
@@ -167,11 +167,11 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
         public PolarisExoPlayerHttpDataSource createDataSource() {
 
             HttpDataSource.RequestProperties requestProperties = new HttpDataSource.RequestProperties();
-            String authCookie = auth.getCookieHeader();
+            String authCookie = cookieAuth.getCookieHeader();
             if (authCookie != null) {
                 requestProperties.set("Cookie", authCookie);
             } else {
-                String authRaw = auth.getAuthorizationHeader();
+                String authRaw = cookieAuth.getAuthorizationHeader();
                 requestProperties.set("Authorization", authRaw);
             }
 
