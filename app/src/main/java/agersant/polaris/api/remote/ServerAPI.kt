@@ -13,9 +13,11 @@ import android.net.Uri
 import androidx.preference.PreferenceManager
 import com.google.android.exoplayer2.source.MediaSource
 import io.ktor.client.*
+import io.ktor.client.engine.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.auth.*
 import io.ktor.client.features.auth.providers.*
+import io.ktor.client.features.cookies.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
@@ -29,6 +31,7 @@ import kotlinx.serialization.Serializable
 class ServerAPI(private val context: Context) : IRemoteAPI {
 
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val authTokenKey = context.getString(R.string.pref_key_auth_token)
     private val serverUrlKey = context.getString(R.string.pref_key_server_url)
     private val usernameKey = context.getString(R.string.pref_key_username)
     private val passwordKey = context.getString(R.string.pref_key_password)
@@ -89,39 +92,64 @@ class ServerAPI(private val context: Context) : IRemoteAPI {
     }
 
     private fun selectImplementation(version: APIVersion): IRemoteAPI {
-        val authenticatedClient = buildClient {
+        val authClient = buildClient {
             when {
-                version.major <= 5 -> engine {
-                    addInterceptor(cookieAuth)
-                }
-                else -> install(Auth) {
-                    bearer {
-                        loadTokens { login() }
-                    }
-                }
+                version.major <= 6 -> configureBasicCookieAuth()
+                else -> configureBearerAuth()
             }
         }
+
         return when {
-            version.major <= 2 -> APIVersion2(downloadQueue, authenticatedClient, apiRootUrl)
-            version.major <= 3 -> APIVersion3(downloadQueue, authenticatedClient, apiRootUrl)
-            version.major <= 4 -> APIVersion4(downloadQueue, authenticatedClient, apiRootUrl)
-            version.major <= 5 -> APIVersion5(downloadQueue, authenticatedClient, apiRootUrl)
-            version.major <= 6 -> APIVersion6(downloadQueue, authenticatedClient, apiRootUrl)
-            else -> APIVersion7(downloadQueue, authenticatedClient, apiRootUrl)
+            version.major <= 2 -> APIVersion2(downloadQueue, authClient, apiRootUrl)
+            version.major <= 3 -> APIVersion3(downloadQueue, authClient, apiRootUrl)
+            version.major <= 4 -> APIVersion4(downloadQueue, authClient, apiRootUrl)
+            version.major <= 5 -> APIVersion5(downloadQueue, authClient, apiRootUrl)
+            version.major <= 6 -> APIVersion6(downloadQueue, authClient, apiRootUrl)
+            else -> APIVersion7(downloadQueue, authClient, apiRootUrl)
         }
     }
 
-    private suspend fun login(): BearerTokens {
-        val username = preferences.getString(usernameKey, "")!!
-        val password = preferences.getString(passwordKey, "")!!
+    private fun <T : HttpClientEngineConfig> HttpClientConfig<T>.configureBasicCookieAuth() {
+        println("Using basic authentication")
 
-        println("getting bearer token")
-        val auth = client.post<Authorization>("$apiRootUrl/auth/") {
-            contentType(ContentType.Application.Json)
-            body = Credentials(username, password)
+        install(HttpCookies) {
+            storage = AcceptAllCookiesStorage()
         }
+        install(Auth) {
+            basic {
+                sendWithoutRequest { false }
+                credentials {
+                    val username = preferences.getString(usernameKey, "")!!
+                    val password = preferences.getString(passwordKey, "")!!
+                    BasicAuthCredentials(username, password)
+                }
+            }
+        }
+    }
 
-        return BearerTokens(accessToken = auth.token, refreshToken = auth.token)
+    private fun <T : HttpClientEngineConfig> HttpClientConfig<T>.configureBearerAuth() {
+        println("Using bearer authentication")
+
+        install(Auth) {
+            bearer {
+                loadTokens {
+                    val authToken = preferences.getString(authTokenKey, null)
+                    if (authToken != null) {
+                        return@loadTokens BearerTokens(accessToken = authToken, refreshToken = "")
+                    }
+
+                    val username = preferences.getString(usernameKey, "")!!
+                    val password = preferences.getString(passwordKey, "")!!
+                    val auth = client.post<Authorization>("$apiRootUrl/auth/") {
+                        contentType(ContentType.Application.Json)
+                        body = Credentials(username, password)
+                    }
+
+                    preferences.edit().putString(authTokenKey, auth.token).apply()
+                    BearerTokens(accessToken = auth.token, refreshToken = "")
+                }
+            }
+        }
     }
 
     override suspend fun browse(path: String): List<CollectionItem>? = withContext(IO) {

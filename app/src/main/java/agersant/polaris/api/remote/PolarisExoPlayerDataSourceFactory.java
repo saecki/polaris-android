@@ -14,6 +14,8 @@ import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.util.BitSet;
 
+import javax.xml.transform.Source;
+
 import agersant.polaris.PolarisApp;
 import agersant.polaris.Song;
 import agersant.polaris.api.local.OfflineCache;
@@ -33,30 +35,6 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
         return new DefaultDataSource(PolarisApp.getInstance().getApplicationContext(), dataSource);
     }
 
-    private class PolarisExoPlayerTransferListener implements TransferListener {
-
-        @Override
-        public void onTransferInitializing(DataSource source, DataSpec dataSpec, boolean isNetwork) {
-        }
-
-
-        @Override
-        public void onTransferStart(DataSource source, DataSpec dataSpec, boolean isNetwork) {
-
-        }
-
-        @Override
-        public void onBytesTransferred(DataSource source, DataSpec dataSpec, boolean isNetwork, int bytesTransferred) {
-
-        }
-
-        @Override
-        public void onTransferEnd(DataSource source, DataSpec dataSpec, boolean isNetwork) {
-            PolarisExoPlayerHttpDataSource ds = (PolarisExoPlayerHttpDataSource) source;
-            ds.onTransferEnd();
-        }
-    }
-
     private class PolarisExoPlayerHttpDataSource extends DefaultHttpDataSource {
 
         private final File scratchLocation;
@@ -65,9 +43,8 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
         private BitSet bytesStreamed;
         private RandomAccessFile file;
 
-        PolarisExoPlayerHttpDataSource(OfflineCache offlineCache, RequestProperties requestProperties, PolarisExoPlayerTransferListener listener, File scratchLocation, Song song) {
+        PolarisExoPlayerHttpDataSource(OfflineCache offlineCache, RequestProperties requestProperties, File scratchLocation, Song song) {
             super("Polaris Android", DEFAULT_CONNECT_TIMEOUT_MILLIS, DEFAULT_READ_TIMEOUT_MILLIS, true, requestProperties); //TODO: use factory instead of deprecated constructor
-            addTransferListener(listener);
             this.scratchLocation = scratchLocation;
             this.offlineCache = offlineCache;
             this.song = song;
@@ -98,6 +75,7 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
                             throw new IOException("Could not cleanse stream scratch location: " + scratchLocation);
                         }
                     }
+                    System.out.println("Opening file: " + scratchLocation);
                     file = new RandomAccessFile(scratchLocation, "rw");
                 } catch (Exception e) {
                     System.out.println("Error while opening stream file: " + e);
@@ -137,7 +115,10 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
             return out;
         }
 
-        void onTransferEnd() {
+        @Override
+        public void close() throws HttpDataSourceException {
+            super.close();
+            System.out.println("Closing file: " + scratchLocation);
             try {
                 if (file != null) {
                     file.close();
@@ -175,7 +156,7 @@ public final class PolarisExoPlayerDataSourceFactory implements DataSource.Facto
                 requestProperties.set("Authorization", authRaw);
             }
 
-            return new PolarisExoPlayerHttpDataSource(offlineCache, requestProperties, new PolarisExoPlayerTransferListener(), scratchLocation, song);
+            return new PolarisExoPlayerHttpDataSource(offlineCache, requestProperties, scratchLocation, song);
         }
     }
 }
