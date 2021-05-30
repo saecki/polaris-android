@@ -8,6 +8,7 @@ import agersant.polaris.Song
 import agersant.polaris.api.ItemsCallback
 import agersant.polaris.api.ThumbnailSize
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.preference.PreferenceManager
@@ -44,15 +45,17 @@ class ServerAPI(context: Context) : IRemoteAPI {
     private val mAuthClient = MutableStateFlow<HttpClient?>(null)
     val authClient = mAuthClient.asStateFlow()
 
-    init {
-        preferences.registerOnSharedPreferenceChangeListener { _, key ->
-            when (key) {
-                serverUrlKey, usernameKey, passwordKey -> {
-                    currentVersion = null
-                }
-                else -> Unit
+    private val preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        when (key) {
+            serverUrlKey, usernameKey, passwordKey -> {
+                currentVersion = null
+                mAuthClient.value = null
             }
         }
+    }
+
+    init {
+        preferences.registerOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     private val apiRootUrl: String
