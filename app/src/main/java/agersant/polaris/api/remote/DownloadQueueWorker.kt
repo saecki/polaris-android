@@ -82,7 +82,7 @@ internal class DownloadQueueWorker(
         val uri = serverAPI.getAudioUri(song.path)
         uri ?: return false
 
-        val dsf = PolarisExoPlayerDataSourceFactory(offlineCache, serverAPI.cookieAuth, scratchFile, song)
+        val dsf = PolarisHttpDataSourceFactory(serverAPI, offlineCache, scratchFile, song)
         val mediaSource = ProgressiveMediaSource.Factory(dsf).createMediaSource(MediaItem.fromUri(uri))
         val dataSource = dsf.createDataSource()
         state = State.Initialized(song, mediaSource, dataSource)

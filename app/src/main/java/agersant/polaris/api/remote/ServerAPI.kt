@@ -14,7 +14,7 @@ import androidx.preference.PreferenceManager
 import com.google.android.exoplayer2.source.MediaSource
 import io.ktor.client.*
 import io.ktor.client.engine.*
-import io.ktor.client.engine.okhttp.*
+import io.ktor.client.engine.cio.*
 import io.ktor.client.features.auth.*
 import io.ktor.client.features.auth.providers.*
 import io.ktor.client.features.cookies.*
@@ -24,11 +24,13 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 
-class ServerAPI(private val context: Context) : IRemoteAPI {
+class ServerAPI(context: Context) : IRemoteAPI {
 
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val authTokenKey = context.getString(R.string.pref_key_auth_token)
@@ -37,8 +39,10 @@ class ServerAPI(private val context: Context) : IRemoteAPI {
     private val passwordKey = context.getString(R.string.pref_key_password)
     private lateinit var downloadQueue: DownloadQueue
     private val client = buildClient()
-    val cookieAuth = CookieAuth(context)
+
     private var currentVersion: IRemoteAPI? = null
+    private val mAuthClient = MutableStateFlow<HttpClient?>(null)
+    val authClient = mAuthClient.asStateFlow()
 
     init {
         preferences.registerOnSharedPreferenceChangeListener { _, key ->
@@ -66,14 +70,9 @@ class ServerAPI(private val context: Context) : IRemoteAPI {
         this.downloadQueue = downloadQueue
     }
 
-    private fun buildClient(configure: HttpClientConfig<OkHttpConfig>.() -> Unit = {}) = HttpClient(OkHttp) {
+    private fun buildClient(configure: HttpClientConfig<CIOEngineConfig>.() -> Unit = {}) = HttpClient(CIO) {
         install(JsonFeature) {
             serializer = KotlinxSerializer(Serializers.json)
-        }
-        engine {
-            config {
-                retryOnConnectionFailure(true)
-            }
         }
         configure()
     }
@@ -94,10 +93,12 @@ class ServerAPI(private val context: Context) : IRemoteAPI {
     private fun selectImplementation(version: APIVersion): IRemoteAPI {
         val authClient = buildClient {
             when {
-                version.major <= 6 -> configureBasicCookieAuth()
+                version.major <= 5 -> configureBasicCookieAuth()
                 else -> configureBearerAuth()
             }
         }
+
+        mAuthClient.value = authClient
 
         return when {
             version.major <= 2 -> APIVersion2(downloadQueue, authClient, apiRootUrl)
@@ -110,8 +111,6 @@ class ServerAPI(private val context: Context) : IRemoteAPI {
     }
 
     private fun <T : HttpClientEngineConfig> HttpClientConfig<T>.configureBasicCookieAuth() {
-        println("Using basic authentication")
-
         install(HttpCookies) {
             storage = AcceptAllCookiesStorage()
         }
@@ -128,8 +127,6 @@ class ServerAPI(private val context: Context) : IRemoteAPI {
     }
 
     private fun <T : HttpClientEngineConfig> HttpClientConfig<T>.configureBearerAuth() {
-        println("Using bearer authentication")
-
         install(Auth) {
             bearer {
                 loadTokens {

@@ -19,7 +19,7 @@ class PolarisPlayer internal constructor(
     private val context: Context,
     private val api: API,
     private val playbackQueue: PlaybackQueue
-) : Player.EventListener {
+) : Player.Listener {
 
     companion object {
         const val PLAYBACK_ERROR = "PLAYBACK_ERROR"

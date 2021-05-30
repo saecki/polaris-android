@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -94,9 +92,7 @@ dependencies {
     implementation(Deps.KtorClient.serialization)
     implementation(Deps.KtorClient.core)
     implementation(Deps.KtorClient.auth)
-    implementation(Deps.KtorClient.okhttp)
-
-    implementation(Deps.okhttp)
+    implementation(Deps.KtorClient.cio)
 
     // Swipe refresh layout
     implementation(Deps.swipyRefresh)

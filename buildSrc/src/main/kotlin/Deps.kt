@@ -52,7 +52,7 @@ object Deps {
     }
 
     object ExoPlayer {
-        const val version = "2.13.3"
+        const val version = "2.14.0"
         const val core = "com.google.android.exoplayer:exoplayer-core:$version"
         const val flacExtension = "com.github.Saecki.ExoPlayer-Extensions:extension-flac:$version"
     }
@@ -61,13 +61,11 @@ object Deps {
         const val version = "1.6.0"
         const val core = "io.ktor:ktor-client-core:$version"
         const val auth = "io.ktor:ktor-client-auth:$version"
-        const val okhttp = "io.ktor:ktor-client-okhttp:$version"
+        const val cio = "io.ktor:ktor-client-cio:$version"
         const val serialization = "io.ktor:ktor-client-serialization:$version"
     }
 
     const val material = "com.google.android.material:material:1.3.0"
-
-    const val okhttp = "com.squareup.okhttp3:okhttp:4.9.1"
 
     const val swipyRefresh = "com.github.orangegangsters:swipy:1.2.3@aar"
 
