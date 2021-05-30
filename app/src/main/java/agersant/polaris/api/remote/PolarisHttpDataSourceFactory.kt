@@ -88,10 +88,11 @@ class PolarisHttpDataSourceFactory internal constructor(
 
             runBlocking { channel.discardExact(dataSpec.position) }
 
+            val maxLength = contentLength - dataSpec.position.toInt()
             val bytesRemaining = if (dataSpec.length == C.LENGTH_UNSET.toLong()) {
-                contentLength - dataSpec.position.toInt()
+                maxLength
             } else {
-                dataSpec.length.toInt()
+                minOf(dataSpec.length.toInt(), maxLength)
             }
 
             state = State.Opened(
