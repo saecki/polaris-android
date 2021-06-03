@@ -1,6 +1,6 @@
 object Deps {
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta02"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta03"
 
     object Kotlin {
         const val version = "1.5.10"
