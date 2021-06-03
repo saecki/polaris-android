@@ -17,7 +17,7 @@ object Deps {
     
 
     object Nav {
-        const val version = "2.4.0-alpha01"
+        const val version = "2.4.0-alpha02"
         const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
         const val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
     }
